@@ -11,7 +11,7 @@ parent_klass ||= nil
       <% if v[:nested] %>
 
         <%= f.simple_fields_for k do |f2| %>
-          <%= render(partial: 'fields', locals: { klass: v[:class], f: f2, parent_klass: klass  }) %>
+          <%= render(partial: 'fields', locals: { klass: v[:reflection].klass, f: f2, parent_klass: klass  }) %>
         <% end %>
 
       <% elsif !inverse_relationship_exists?(klass, k, parent_klass) %>
@@ -25,7 +25,7 @@ parent_klass ||= nil
     <% elsif v[:type] == 'polymorphic' %>
 
       <%= f.input(k, as: 'polymorphic') %>
-      
+
     <% else %>
 
       <%
