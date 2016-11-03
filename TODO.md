@@ -45,6 +45,7 @@ filters:
   * Simply have the object respond to a permanent? method
 
 * 'Preview' button ?
+* accepts_nested_attributes_for
 
 ## Collections
 * Specifying the collection for an association (possibly just use validates_inclusion_in??)
