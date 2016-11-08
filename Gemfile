@@ -17,5 +17,6 @@ gemspec
 group :development do
   gem "refile", '>= 0.6', require: "refile/rails"
   gem "refile-mini_magick"
+  gem 'web-console'
   # gem "refile-s3"
 end

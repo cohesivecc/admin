@@ -8,7 +8,7 @@ class Location < ActiveRecord::Base
 
   attachment :image, type: :image
 
-  accepts_nested_attributes_for :addresses
+  accepts_nested_attributes_for :addresses, allow_destroy: true
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z0-9]*\Z/i, message: "must only include letters and numbers" }
 

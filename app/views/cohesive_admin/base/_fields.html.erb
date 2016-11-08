@@ -2,6 +2,7 @@
 klass ||= nil
 f ||= nil
 parent_klass ||= nil
+include_destroy ||= true
 %>
 <% if klass && f %>
 
@@ -9,10 +10,17 @@ parent_klass ||= nil
     <% if v[:type] == 'association' %>
 
       <% if v[:nested] %>
-
         <%= f.simple_fields_for k do |f2| %>
-          <%= render(partial: 'fields', locals: { klass: v[:class], f: f2, parent_klass: klass  }) %>
+          <div class="card-panel">
+            <%= render(partial: 'fields', locals: { klass: v[:reflection].klass, f: f2, parent_klass: klass  }) %>
+            <% if include_destroy %>
+              <%= f2.hidden_field :_destroy %>
+              <%= link_to "remove", '#', class: "remove_fields" %>
+            <% end %>
+          </div>
         <% end %>
+
+        <%= link_to_add_nested("Add #{v[:reflection].klass}", f, k ) %>
 
       <% elsif !inverse_relationship_exists?(klass, k, parent_klass) %>
         <div class="row">
@@ -25,7 +33,7 @@ parent_klass ||= nil
     <% elsif v[:type] == 'polymorphic' %>
 
       <%= f.input(k, as: 'polymorphic') %>
-      
+
     <% else %>
 
       <%
