@@ -9,18 +9,23 @@
 $ ->
   # kick things off
   $('select').material_select()
+  $('.modal').modal()
+  $('.collapsible').collapsible()
   $(".button-collapse").sideNav()
 
-  $('form').on 'click', '.add_fields', (event) ->
+  $('[data-nested]').on 'click', '[data-add]', (event) ->
     event.preventDefault();
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(this).before($(this).data('fields').replace(regexp, time))
 
-  $('form').on 'click', '.remove_fields', (event) ->
-    $(this).prev('input[type=hidden]').val('1')
-    $(this).closest('.card-panel').hide()
+  $('[data-nested]').on 'click', '[data-destroy]', (event) ->
     event.preventDefault()
+    event.stopPropagation()
+    if(confirm("Are you sure you want to delete this item?"))
+      obj = $('[data-object="'+$(@).data('destroy')+'"]')
+      obj.find('input[id$="_destroy"]').val('1')
+      obj.hide()
 
   $('[data-sortable]').sortable({
     containment: 'parent',
