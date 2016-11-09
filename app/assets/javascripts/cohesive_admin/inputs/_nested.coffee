@@ -5,7 +5,12 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
     object_id = new Date().getTime()
     source = $('[data-nested-template]').html();
     template = Handlebars.compile(source);
-    index = parseInt($('[data-nested] .collapsible-body').last().find("label").attr('for').match(/\d+/)[0] ) + 1
+    index_value = $('[data-nested] .collapsible-body').last().find("label").attr('for')
+    if index_value != undefined
+      index = parseInt(index_value.match(/\d+/)[0] ) + 1
+    else
+      index = 0
+
     context = { index: index, object_id: object_id }
     html = template(context)
     $('[data-nested]').append(html)
