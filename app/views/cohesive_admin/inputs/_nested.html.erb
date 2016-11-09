@@ -2,14 +2,22 @@
   <div class="col m10">
     <%= content_tag(:h5, options[:v][:reflection].klass.admin_display_name.to_s.humanize.titleize) %>
   </div>
-  <div class="col s12 m2 right-align">
+  <div class="col s12 m2 right-align" data-nested-title>
     <a href="#" class="waves-effect waves-light btn-floating blue" data-add><i class="material-icons">add</i></a>
     <% unless [:belongs_to, :has_one].include?(options[:v][:reflection].macro) %>
     <script data-nested-template type="text/x-handlebars-template">
-      <%= options[:f].simple_fields_for options[:k], options[:v][:reflection].klass.new(), child_index: "{{index}}" do |f2| %>
-        <%= render(partial: 'fields', locals: { klass: options[:v][:reflection].klass, f: f2, parent_klass: options[:klass]  }) %>
-        <%= f2.hidden_field :_destroy %>
-      <% end %>
+      <li data-object="{{object_id}}">
+        <div class="collapsible-header">
+          <%= link_to("New #{options[:v][:reflection].klass.admin_display_name.to_s.humanize.titleize}", '#{{object_id}}') -%>
+          <a href="#!" class="secondary-content" data-destroy="{{object_id}}"><i class="material-icons">delete</i></a>
+        </div>
+        <div class="collapsible-body">
+          <%= options[:f].simple_fields_for options[:k], options[:v][:reflection].klass.new(), child_index: "{{index}}" do |f2| %>
+            <%= render(partial: 'fields', locals: { klass: options[:v][:reflection].klass, f: f2, parent_klass: options[:klass]  }).gsub(/(__index__)/, '{{index}}').html_safe %>
+            <%= f2.hidden_field(:_destroy).gsub(/(__index__)/, '{{index}}').html_safe %>
+          <% end %>
+        </div>
+      </li>
     </script>
     <% end %>
   </div>

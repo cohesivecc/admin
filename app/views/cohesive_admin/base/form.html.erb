@@ -1,5 +1,4 @@
 <%= simple_form_for(@object, include_id: true, html: { multipart: true, id: 'object-form' }) do |f| %>
-
 	<div class="card-panel">
 		<%= render(partial: 'fields', locals: { klass: @klass, f: f }) %>
 	</div>
