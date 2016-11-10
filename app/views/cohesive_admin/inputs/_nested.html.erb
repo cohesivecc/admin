@@ -3,7 +3,7 @@
     <%= content_tag(:h5, options[:v][:reflection].klass.admin_display_name.to_s.humanize.titleize) %>
   </div>
   <div class="col s12 m2 right-align" data-nested-title>
-    <a href="#" class="waves-effect waves-light btn-floating blue" data-add><i class="material-icons">add</i></a>
+    <a href="#" class="waves-effect waves-light btn-floating blue" data-add="<%= options[:v][:reflection].klass.to_s.parameterize.underscore.downcase %>" ><i class="material-icons">add</i></a>
     <% unless [:belongs_to, :has_one].include?(options[:v][:reflection].macro) %>
     <script data-nested-template type="text/x-handlebars-template">
       <li data-object="{{object_id}}">
@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<ul class="collapsible popout" data-collapsible="accordion" data-nested>
+<ul class="collapsible popout" data-collapsible="accordion" data-nested="<%= options[:v][:reflection].klass.to_s.parameterize.underscore.downcase %>">
   <%= options[:f].simple_fields_for options[:k] do |f2| %>
     <li data-object="<%= f2.object.object_id %>">
       <div class="collapsible-header">
