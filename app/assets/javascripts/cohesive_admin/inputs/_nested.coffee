@@ -2,19 +2,20 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
 
   $('[data-nested-title]').on 'click', '[data-add]', (event) ->
     event.preventDefault();
+    data_name = $(@).data('add')
     object_id = new Date().getTime()
-    source = $('[data-nested-template]').html();
+    source = $('[data-nested-template="'+data_name+'"]').html();
     template = Handlebars.compile(source);
     data_name = $(@).data('add')
-    index_value = $('[data-nested] .collapsible-body').last().find("label").attr('for')
+    index_value = $('[data-nested="'+data_name+'"] .collapsible-body').last().find("label").attr('for')
     if index_value != undefined
       index = parseInt(index_value.match(/\d+/)[0] ) + 1
     else
       index = 0
-
     context = { index: index, object_id: object_id }
     html = template(context)
     $('[data-nested="'+data_name+'"]').append(html)
+
 
   $('[data-nested]').on 'click', '[data-destroy]', (event) ->
     event.preventDefault()

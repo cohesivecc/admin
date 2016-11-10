@@ -10,6 +10,8 @@ parent_klass ||= nil
 
       <% if v[:nested] %>
 
+    
+
         <%= f.input(k, as: :nested, v: v, f: f, k: k, klass: klass) %>
 
         <%#= link_to_add_nested("Add #{v[:reflection].klass}", f, k ) %>

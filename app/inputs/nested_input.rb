@@ -5,7 +5,7 @@ class NestedInput < SimpleForm::Inputs::Base
     @options[:label] = false
   end
 
-  def input
+  def input()
     @builder.template.render(partial: 'cohesive_admin/inputs/nested', locals: { options: options} )
     # "$ #{@builder.text_field(attribute_name, merged_input_options)}".html_safe
   end
