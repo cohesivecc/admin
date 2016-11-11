@@ -24,8 +24,9 @@ Gem::Specification.new do |s|
   s.add_dependency "coffee-rails"
   s.add_dependency 'jquery-rails', ['>= 3.0', '< 5']
   s.add_dependency 'jquery-ui-rails', '~> 5.0'
-  s.add_dependency 'materialize-sass', '~> 0.97.7'
+  s.add_dependency 'materialize-sass', '~> 0.97.8'
   s.add_dependency 'puma'
+  s.add_dependency 'turbolinks', '~> 5.0.0'
 
   s.add_dependency "bcrypt-ruby", "~> 3.1.5"
 

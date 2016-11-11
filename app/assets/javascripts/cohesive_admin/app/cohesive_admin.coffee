@@ -5,3 +5,16 @@ class window.CohesiveAdmin
   @initialize: (@config) ->
     # publish initialize event
     $(document).trigger('cohesive_admin.initialized')
+
+    CohesiveAdmin.refreshForm()
+    # listen for dynamic changes to the form
+    $(document).off('cohesive_admin.form_change').on('cohesive_admin.form_change', () ->
+      CohesiveAdmin.refreshForm()
+    )
+
+  @refreshForm: () ->
+    if($('#object-form').length)
+      $('select').material_select()
+      $('.collapsible').collapsible()
+      Materialize.updateTextFields()
+      $('textarea.wysiwyg').froalaEditor()

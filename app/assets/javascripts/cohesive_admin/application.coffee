@@ -1,16 +1,17 @@
 #= require jquery2
 #= require jquery-ui
 #= require jquery_ujs
+#= require turbolinks
 #= require materialize-sprockets
 #= require_tree ./includes
 #= require_tree ./app
 #= require_tree ./inputs
 
+
+
+
 $ ->
   # kick things off
-  $('select').material_select()
-  $('.modal').modal()
-  $('.collapsible').collapsible()
   $(".button-collapse").sideNav()
 
   $('[data-sortable]').sortable({

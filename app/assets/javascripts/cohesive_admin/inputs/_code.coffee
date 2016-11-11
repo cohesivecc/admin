@@ -1,5 +1,5 @@
 
-$ ->
+$(document).on('turbolinks:load', () ->
   $('textarea.code').each(() ->
     CodeMirror.fromTextArea($(@)[0], {
       lineNumbers: true,
@@ -9,3 +9,4 @@ $ ->
       mode: 'javascript'
     })
   )
+)

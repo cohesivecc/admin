@@ -5,5 +5,5 @@ class Manager < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, presence: true
 
-  belongs_to :address
+  belongs_to :address, inverse_of: :managers
 end

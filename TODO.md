@@ -46,6 +46,10 @@ filters:
 
 * 'Preview' button ?
 * accepts_nested_attributes_for
+  * How can we allow assignment of already existing content?
+  * Allow removal without destruction
+
+* Turbolinks testing and conversion
 
 ## Collections
 * Specifying the collection for an association (possibly just use validates_inclusion_in??)

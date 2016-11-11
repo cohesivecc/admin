@@ -1,6 +1,6 @@
 # asynchronously load Froala and S3 settings for security purposes
 $(document).on( 'cohesive_admin.initialized', (e) ->
-  
+
   config = CohesiveAdmin.config
 
   $.FroalaEditor.DEFAULTS.key = config.froala.key
@@ -18,8 +18,8 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
       keyStart: config.aws.key_start + 'images/',
       callback: (url, key) ->
         # // The URL and Key returned from Amazon.
-        console.log (url);
-        console.log (key);
+        # console.log (url);
+        # console.log (key);
       params: {
         acl: config.aws.acl,
         AWSAccessKeyId: config.aws.access_key_id,
@@ -34,8 +34,8 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
       keyStart: config.aws.key_start + 'files/',
       callback: (url, key) ->
         # // The URL and Key returned from Amazon.
-        console.log (url);
-        console.log (key);
+        # console.log (url);
+        # console.log (key);
       params: {
         acl: config.aws.acl,
         AWSAccessKeyId: config.aws.access_key_id,
@@ -53,6 +53,7 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
                                               }
     froala_config.imageManagerPreloader    = config.aws.assets.preloader
 
-
-  $('textarea.wysiwyg').froalaEditor(froala_config)
+  CohesiveAdmin.config.froala.config = froala_config
+  $.extend($.FroalaEditor.DEFAULTS, froala_config)
+  $('textarea.wysiwyg').froalaEditor()
 )

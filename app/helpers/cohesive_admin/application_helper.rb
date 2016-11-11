@@ -2,8 +2,22 @@ module CohesiveAdmin
   module ApplicationHelper
 
     def inverse_relationship_exists?(child, association, parent)
+      return false unless child && association && parent
+      
       association = association.to_s
-      (parent.reflections.values.include?(child.reflections[association].inverse_of) rescue false)
+      if child_r = child.reflections[association]
+        if child_r.polymorphic?
+          parent.reflections.each do |k,v|
+            if v.options[:as] == child_r.name
+              return true
+            end
+          end
+          return false
+        else
+          (parent.reflections.values.include?(child_r.inverse_of) rescue false)
+        end
+      end
+
     end
 
     def admin_config_to_js
@@ -42,7 +56,7 @@ module CohesiveAdmin
 
       javascript_tag do
         raw %Q{
-          $(function() {
+          $(document).on("turbolinks:load", function() {
             CohesiveAdmin.initialize(#{js_config.to_json})
           })
         }
