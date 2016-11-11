@@ -1,0 +1,24 @@
+<%
+klass ||= nil
+f ||= nil
+parent_klass ||= nil
+
+
+id    ||= f.object.object_id
+label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{klass.admin_display_name.titleize}" : f.object.to_label
+%>
+
+<li data-nested-object="<%= id %>" class="">
+  <div class="collapsible-header">
+    <%= content_tag(:span, f.object.errors.count, class: 'new badge red', data: { 'badge-caption' => 'errors' }) unless f.object.errors.blank? %>
+    <%= link_to(label, "##{id}", data: { turbolinks: false }) -%>
+    <a href="#!" class="secondary-content" data-nested-destroy="<%= id %>"><i class="material-icons">delete</i></a>
+  </div>
+  <div class="collapsible-body">
+    <div class="nested-form-fields">
+      <%= f.hidden_field :_destroy %>
+      <%= f.hidden_field :id %>
+      <%= render(partial: '/cohesive_admin/base/fields', locals: { klass: klass, f: f, parent_klass: parent_klass  }) %>
+    </div>
+  </div>
+</li>

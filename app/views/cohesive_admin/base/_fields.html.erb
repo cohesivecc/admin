@@ -6,25 +6,30 @@ parent_klass ||= nil
 <% if klass && f %>
 
   <% klass.admin_fields.each do |k,v| %>
-    <% if v[:type] == 'association' %>
 
+
+    <% if v[:type] == 'association' %>
       <% if v[:nested] %>
 
-        <%= f.simple_fields_for k do |f2| %>
-          <%= render(partial: 'fields', locals: { klass: v[:reflection].klass, f: f2, parent_klass: klass  }) %>
-        <% end %>
+        <div class="row">
+          <div class="col s12">
+            <%= f.input(k, as: :nested) %>
+          </div>
+        </div>
 
       <% elsif !inverse_relationship_exists?(klass, k, parent_klass) %>
+
         <div class="row">
           <div class="col s12">
             <%= f.association(k, include_blank: true) %>
           </div>
         </div>
+
       <% end %>
 
     <% elsif v[:type] == 'polymorphic' %>
 
-      <%= f.input(k, as: 'polymorphic') %>
+      <%= f.input(k, as: 'polymorphic') unless inverse_relationship_exists?(klass, k, parent_klass) %>
 
     <% else %>
 

@@ -1,0 +1,8 @@
+fields:
+  locatable: polymorphic
+  street:
+  city:
+  state:
+  zip:
+  description: wysiwyg
+  managers: association

@@ -1,7 +1,9 @@
 
-$(document).on( 'cohesive_admin.initialized', (e) ->
-  
-  $('select[data-polymorphic-type]').on('change', () ->
+# TODO: fix this listener to prevent it from firing multiple times (due to Turbolinks)
+
+$(document).on('cohesive_admin.initialized', (e) ->
+
+  $(document).off('change', 'select[data-polymorphic-type]').on('change', 'select[data-polymorphic-type]', () ->
     field         = $(@).data('polymorphic-type')
     initial_type  = $(@).data('initial')
     id_input      = $('select[data-polymorphic-key="'+field+'"]')
@@ -26,5 +28,11 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
         complete: (request) ->
           return
       })
-  ).trigger('change')
+  )
+  $('select[data-polymorphic-type]').each(() ->
+    unless $(@).data('initialized')
+      $(@).trigger('change')
+      $(@).data('initialized', true)
+  )
+
 )

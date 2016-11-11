@@ -1,0 +1,32 @@
+<%
+f ||= nil
+attribute_name ||= nil
+klass ||= nil
+parent_klass ||= nil
+
+singular  ||= false
+title     = klass.admin_display_name.titleize
+%>
+
+<div data-nested class="input-field nested">
+  <%= content_tag(:label, (singular ? title : title.pluralize)) %>
+
+
+  <ul class="collapsible popout" data-collapsible="accordion" data-nested-list>
+    <%= f.simple_fields_for(attribute_name) do |f2| %>
+      <%= render(partial: '/cohesive_admin/inputs/nested/li', locals: { f: f2, klass: klass, parent_klass: parent_klass }) %>
+    <% end %>
+    <li>
+      <%= content_tag(:a, class: 'collapsible-add-link green-text', data: { turbolinks: false, 'nested-add' => true }) do %>
+        <span class="secondary-content"><i class="material-icons green-text">add</i></span>
+        Add New <%= title %>
+      <% end %>
+    </li>
+  </ul>
+
+  <ul data-nested-template type="text/x-handlebars-template" style="display: none">
+    <%= f.simple_fields_for(attribute_name, klass.new(), child_index: "{{index}}") do |f2| %>
+      <%= render(partial: '/cohesive_admin/inputs/nested/li', locals: { f: f2, klass: klass, parent_klass: parent_klass, id: '{{object_id}}', label: "New #{title}"  }) %>
+    <% end %>
+  </ul>
+</div>
