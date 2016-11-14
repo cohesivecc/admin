@@ -1,6 +1,6 @@
 class Location < ActiveRecord::Base
 
-  cohesive_admin({ finder: :find_by_slug })
+  cohesive_admin
 
   # has_one :address, inverse_of: :location
   has_many :addresses, as: :locatable, inverse_of: :locatable

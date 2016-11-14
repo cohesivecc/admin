@@ -8,6 +8,29 @@ module CohesiveAdmin
     before_action :set_header
     before_action :load_object, only: [:edit, :update, :destroy, :show]
 
+    # Force the classes to use the primary key as the to_param within our CMS
+    # This addresses the scenario where the to_param fields can be manipulated in CMS,
+    # creating a condition whereby the finder method can't find the object to update it because it has changed.
+    #
+    # Best practice: all your cohesive_admin models should have the 'id' column as the primary key -
+    # regardless of what is used as to_param on the front-end of your site.
+    around_action do |controller, action|
+
+      @klass.class_eval do
+        alias :__cohesive_admin_to_param :to_param
+        def to_param() send(self.class.primary_key).to_s end
+      end
+
+      begin
+        action.call
+      ensure
+        @klass.class_eval do
+          alias :to_param :__cohesive_admin_to_param
+        end
+      end
+    end
+
+
 
     def index
       @skope = @klass.admin_sortable? ? @klass.admin_sorted : @klass.all
