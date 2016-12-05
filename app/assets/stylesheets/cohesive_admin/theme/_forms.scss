@@ -27,7 +27,7 @@
     }
   }
 
-  &.wysiwyg, &.code, &.refile > .file-field {
+  &.wysiwyg, &.code, &.nested, &.refile > .file-field {
     padding-top: 1em;
     > label {
       font-size: 0.8rem;
@@ -40,5 +40,41 @@
     margin: 1rem 0 0 0;
     border: none;
     overflow: visible;
+  }
+}
+
+// Nested Form Field
+.collapsible.popout {
+  .collapsible-header {
+    span.badge.new.red {
+      background-color: transparent !important;
+      &:before {
+        background-color: color("red", "base") !important;
+      }
+    }
+  }
+
+  .collapsible-body > .nested-form-fields {
+    padding: 2rem;
+    background: color("grey", "lighten-5");
+  }
+  .collapsible-add-link {
+    // mimic the display of .collapsible-header, but without the collapsible click handlers
+    display: block;
+    cursor: pointer;
+    min-height: 3rem;
+    line-height: 3rem;
+    padding: 0 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    i {
+      width: 2rem;
+      font-size: 1.6rem;
+      line-height: 3rem;
+      display: block;
+      float: left;
+      text-align: center;
+      margin-right: 1rem;
+    }
   }
 }

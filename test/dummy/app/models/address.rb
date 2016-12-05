@@ -7,5 +7,7 @@ class Address < ActiveRecord::Base
   validates :state,   presence: true
 
   belongs_to :locatable, polymorphic: true
+  has_many :managers, inverse_of: :address
+  accepts_nested_attributes_for :managers, allow_destroy: true
   validates :locatable_type, inclusion: { in: ['Person', 'Location'] }
 end

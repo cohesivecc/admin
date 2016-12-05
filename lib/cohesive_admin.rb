@@ -1,6 +1,7 @@
 require "cohesive_admin/engine"
 require "cohesive_admin/configuration"
 require "cohesive_admin/amazon_signature"
+require "turbolinks"
 
 module CohesiveAdmin
   extend ActiveSupport::Autoload

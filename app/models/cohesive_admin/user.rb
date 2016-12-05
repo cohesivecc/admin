@@ -13,6 +13,10 @@ module CohesiveAdmin
 
     validates :name, presence: true
 
+    def self.model_name
+      ActiveModel::Name.new(self, nil, "CohesiveAdmin::User")
+    end
+
     def as_json(options={})
       super(except: [:password_digest])
     end

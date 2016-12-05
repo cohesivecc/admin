@@ -39,26 +39,21 @@ filters:
   * :color?
 * Add 'type' to code editor (html, json, ruby)
 
-* Polymorphic association
-
 * "Permanent" object concept - don't allow deletion?
   * Simply have the object respond to a permanent? method
 
 * 'Preview' button ?
 * accepts_nested_attributes_for
+  * How can we allow assignment of already existing content?
+  * Allow removal without destruction
 
-## Collections
-* Specifying the collection for an association (possibly just use validates_inclusion_in??)
+* Turbolinks testing and conversion
 
 ## UI
 * Add help text to YAML config
 * Default sort items list by created date?
 * Allow multiple columns in index view:
   * :to_label_columns (?) [:name, :category_name, :created_at]
-
-## Polymorphic associations
-* How to handle selection & assignment
-* Possibly related to Collections solution above?
 
 ## WYSIWYG - Images & Files
 * Create similar proxy functionality for Files (a FileManager plugin)

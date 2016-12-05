@@ -144,7 +144,7 @@ module CohesiveAdmin::Concerns::Resource
               @admin_fields[k] = {
                 type:           field,
                 reflection:     r,
-                nested:         self.nested_attributes_options.symbolize_keys.has_key?(k.to_sym)
+                nested:         self.nested_attributes_options[k.to_sym]
               }
             else
               field = :string if field.blank? # default to standard <input type="text" />
@@ -172,6 +172,7 @@ module CohesiveAdmin::Concerns::Resource
             r = f[:reflection]
             if f[:nested]
               a["#{k}_attributes".to_sym] = [:id] + r.klass.admin_strong_params
+              a["#{k}_attributes".to_sym] << '_destroy' if f[:nested][:allow_destroy]
 
             elsif r.macro == :belongs_to
               @admin_strong_params << r.foreign_key
@@ -188,7 +189,7 @@ module CohesiveAdmin::Concerns::Resource
           end
         end
 
-        @admin_strong_params << a
+        @admin_strong_params << a unless a.blank?
       end
       @admin_strong_params
     end
