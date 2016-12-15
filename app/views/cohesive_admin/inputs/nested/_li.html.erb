@@ -4,7 +4,7 @@ f ||= nil
 parent_klass ||= nil
 
 
-id    ||= f.object.object_id
+id    = Time.now.to_i
 label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{klass.admin_display_name.titleize}" : f.object.to_label
 %>
 
