@@ -4,11 +4,11 @@ f ||= nil
 parent_klass ||= nil
 
 
-id    = Time.now.to_i
+id    ||= f.object.object_id
 label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{klass.admin_display_name.titleize}" : f.object.to_label
 %>
 
-<li data-nested-object="<%= id %>" class="">
+<li data-nested-object="<%= id %>">
   <div class="collapsible-header">
     <%= content_tag(:span, f.object.errors.count, class: 'new badge red', data: { 'badge-caption' => 'errors' }) unless f.object.errors.blank? %>
     <%= link_to(label, "##{id}", data: { turbolinks: false }) -%>

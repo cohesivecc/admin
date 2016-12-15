@@ -11,7 +11,18 @@ class window.NestedInput
 
   constructor: (@ele) ->
 
-    @template = Handlebars.compile($(@ele).children('[data-nested-template]').remove().html())
+    @t        = $(@ele).children('[data-nested-template]')
+    @key      = @t.data('nested-template')
+    @t_html   = @t.remove().html()
+
+    ind_regex = new RegExp("_{"+@key+"_index}_", 'g')
+    obj_regex = new RegExp("_{"+@key+"_object_id}_", 'g')
+
+    @t_html   = @t_html.replace(obj_regex, "{{"+@key+"_object_id}}").replace(ind_regex, "{{"+@key+"_index}}")
+
+
+    # @template = Handlebars.compile($(@ele).children('[data-nested-template]').remove().html())
+    @template = Handlebars.compile(@t_html)
     @list     = $(@ele).children('[data-nested-list]')
 
     @list.off('click.collapse', '> li a[data-nested-add]').on('click.collapse', '> li a[data-nested-add]', (e) =>
@@ -28,7 +39,10 @@ class window.NestedInput
 
   add: () =>
     timestamp = new Date().getTime()
-    @list.children('li:last').before( @template({ index: timestamp, object_id: timestamp }) )
+    data = { }
+    data[@key+"_index"]     = timestamp
+    data[@key+"_object_id"] = timestamp
+    @list.children('li:last').before( @template(data) )
     NestedInput.initialize()
     $(document).trigger('cohesive_admin.form_change') # re-initialize any new select boxes, etc.
 
