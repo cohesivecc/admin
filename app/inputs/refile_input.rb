@@ -20,6 +20,10 @@ class RefileInput < SimpleForm::Inputs::Base
     # grab the Refile attachment_field markup
     html = @builder.label(attribute_name)
 
+    if input_html_options[:help]
+      merged_input_options.delete(:help)
+    end
+
     html += template.content_tag(:div, raw(%Q{
       <span>Select File</span>
       #{@builder.attachment_field(attribute_name, merged_input_options)}

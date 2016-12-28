@@ -7,7 +7,14 @@ parent_klass ||= nil
 
   <% klass.admin_fields.each do |k,v| %>
 
+    <%
+      v[:type] = v["type"] if v["type"] != nil
+      v[:help] = v["help"] if v["help"] != nil
+      v[:placeholder] = v["placeholder"] if v["placeholder"] != nil
+     %>
 
+    <%= f.hint(v[:help]) if v[:help] %>
+    
     <% if v[:type] == 'association' %>
       <% if v[:nested] %>
 
@@ -35,6 +42,8 @@ parent_klass ||= nil
 
       <%
       input_html = {}
+      input_html[:help] = v[:help]
+      input_html[:placeholder] = v[:placeholder]
       input_html[:class] = 'materialize-textarea' if v[:type].to_sym == :text
       %>
 

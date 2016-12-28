@@ -78,3 +78,14 @@
     }
   }
 }
+
+.help-block {
+  padding-left: 1em;
+  font-size: 0.8em;
+  // top: -30px;
+  // position: relative;
+  color: #607d8b;
+  &:before {
+    content: '** '
+  }
+}

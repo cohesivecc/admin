@@ -1,6 +1,9 @@
 fields:
   slug:
-  image: refile
+  image:
+    type: refile
+    help: "Upload a picture here"
+    placeholder: "Here is some placeholder text"
   json_data: code
   addresses: association
   jobs: association
