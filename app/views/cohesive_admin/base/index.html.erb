@@ -27,6 +27,7 @@
         <tr>
           <td>
             <%= link_to(i.to_label, [:edit, i]) %>
+            <%= link_to("Duplicate", [:duplicate, i], method: :post, class: 'right') %>
           </td>
         </tr>
       <% end %>

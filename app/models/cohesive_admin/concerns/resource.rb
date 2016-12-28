@@ -86,7 +86,8 @@ module CohesiveAdmin::Concerns::Resource
           name: self.name,
           finder: :find,
           fields: {},
-          sort: false
+          sort: false,
+          duplicate: false
         }.merge(@admin_args.symbolize_keys)
 
         # attempt to parse config file
@@ -124,6 +125,7 @@ module CohesiveAdmin::Concerns::Resource
         end
 
         self.admin_sortable(@admin_config[:sort]) if @admin_config[:sort]
+        self.admin_duplicatable(@admin_config[:duplicate]) if @admin_config[:duplicate]
 
         @admin_config
       else
