@@ -1,4 +1,6 @@
 fields:
   name:
+    type: string
+    help: "This is help text"
   locations: association
 sort: position

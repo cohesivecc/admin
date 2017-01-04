@@ -6,7 +6,7 @@ module CohesiveAdmin
 
     before_action :set_klass
     before_action :set_header
-    before_action :load_object, only: [:edit, :update, :destroy, :show, :duplicate]
+    before_action :load_object, only: [:edit, :update, :destroy, :show, :clone]
 
     # Force the classes to use the primary key as the to_param within our CMS
     # This addresses the scenario where the to_param fields can be manipulated in CMS,
@@ -109,17 +109,8 @@ module CohesiveAdmin
       render text: ''
     end
 
-    def duplicate
-      # @object.duplicate_record
-      copied_object = @object.duplicate_record(@object.id)
-      redirect_to "/admin/#{@klass.to_s.downcase.pluralize}/#{copied_object}/edit"
-      # [:edit, copied_object]
-    end
-
     def clone
-      @existing = @klass.admin_find(params[:id]) rescue nil
-      render_404 unless @existing
-      @object = @klass.new(@existing.attributes)
+      @object = @klass.new(@object.attributes)
       respond_to do |format|
         format.html { render file: 'cohesive_admin/base/form' }
       end

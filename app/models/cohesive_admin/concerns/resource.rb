@@ -138,23 +138,39 @@ module CohesiveAdmin::Concerns::Resource
         ### @admin_fields ###
         @admin_fields = {}
         @admin_config[:fields].each do |k, field|
-
-          if field.nil? || field.is_a?(String)
-            # parse
-            if %w{association polymorphic}.include?(field)
-              r = self.reflections[k.to_s]
-              @admin_fields[k] = {
-                type:           field,
-                reflection:     r,
-                nested:         self.nested_attributes_options[k.to_sym]
-              }
-            else
-              field = :string if field.blank? # default to standard <input type="text" />
-              @admin_fields[k] = { type: field }
-            end
-          else
-            @admin_fields[k] = field
+          attrs = {}
+          if field.blank?
+            attrs[:type] = :string
+          elsif field.is_a?(String)
+            attrs[:type] = field
+          elsif field.is_a?(Hash)
+            attrs = field.symbolize_keys
           end
+
+          if %w{association polymorphic}.include?(attrs[:type])
+            r = self.reflections[k.to_s]
+            attrs[:reflection] = r
+            attrs[:nested] = self.nested_attributes_options[k.to_sym]
+          end
+
+          @admin_fields[k] = attrs
+
+          # if field.is_a?(String)
+          #   # parse
+          #   if %w{association polymorphic}.include?(field)
+          #     r = self.reflections[k.to_s]
+          #     @admin_fields[k] = {
+          #       type:           field,
+          #       reflection:     r,
+          #       nested:         self.nested_attributes_options[k.to_sym]
+          #     }
+          #   else
+          #     field = :string if field.blank? # default to standard <input type="text" />
+          #     @admin_fields[k] = { type: field }
+          #   end
+          # else
+          #   @admin_fields[k] = field
+          # end
         end
         @admin_fields
       else

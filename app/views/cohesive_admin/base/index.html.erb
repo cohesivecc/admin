@@ -26,10 +26,10 @@
       <% @items.each do |i| %>
         <tr>
           <td>
-            <%= link_to(i.to_label, [:edit, i]) %>
-            <%= link_to([:clone, i], method: :get, class: 'right') do %>
+            <%= link_to([:clone, i], class: 'secondary-content') do %>
               <i class="material-icons">library_add</i>
             <% end if @klass.admin_duplicatable? %>
+            <%= link_to(i.to_label, [:edit, i]) %>
           </td>
         </tr>
       <% end %>
