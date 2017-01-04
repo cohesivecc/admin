@@ -1,0 +1,7 @@
+duplicate: true
+fields:
+  name:
+    type: string
+    help: "This is the display name for the person."
+  email: email
+  address: association

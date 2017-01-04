@@ -53,6 +53,7 @@ module CohesiveAdmin
 
     def create
       @object = @klass.new(klass_params)
+
       if @object.save
         respond_to do |format|
           format.html {
@@ -109,21 +110,19 @@ module CohesiveAdmin
     end
 
     def duplicate
-      @new_object = @object.dup
-      if @new_object.save
-        respond_to do |format|
-          format.html {
-            flash_success("#{klass_header} successfully duplicated!")
-            redirect_to @klass
-          }
-          format.json { render json: @object.to_json(methods: [:to_label]) }
-        end
-      else
-        flash_error("There was a problem creating the #{klass_header}.")
-        redirect_to @klass
+      # @object.duplicate_record
+      copied_object = @object.duplicate_record(@object.id)
+      redirect_to "/admin/#{@klass.to_s.downcase.pluralize}/#{copied_object}/edit"
+      # [:edit, copied_object]
+    end
+
+    def clone
+      @existing = @klass.admin_find(params[:id]) rescue nil
+      render_404 unless @existing
+      @object = @klass.new(@existing.attributes)
+      respond_to do |format|
+        format.html { render file: 'cohesive_admin/base/form' }
       end
-
-
     end
 
     def destroy

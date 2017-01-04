@@ -24,6 +24,7 @@ CohesiveAdmin::Engine.routes.draw do
       resources ActiveModel::Naming.route_key(m), controller: :base, defaults: { class_name: m.name } do #, constraints: { class_name: Regexp.new("^#{m.name}$") }#, concerns: :paginatable
         member do
           post :duplicate
+          get  :clone
         end
         collection do
           if m.admin_config && m.admin_sortable?

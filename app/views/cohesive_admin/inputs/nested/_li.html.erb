@@ -13,11 +13,16 @@ label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{klass
     <%= content_tag(:span, f.object.errors.count, class: 'new badge red', data: { 'badge-caption' => 'errors' }) unless f.object.errors.blank? %>
     <%= link_to(label, "##{id}", data: { turbolinks: false }) -%>
     <a href="#!" class="secondary-content" data-nested-destroy="<%= id %>"><i class="material-icons">delete</i></a>
+    <% if klass.admin_duplicatable? && false %>
+      <%= link_to '#', class: "secondary-content" do %>
+        <i class="material-icons">library_add</i>
+      <% end %>
+    <% end %>
   </div>
   <div class="collapsible-body">
     <div class="nested-form-fields">
       <%= f.hidden_field :_destroy %>
-      <%= f.hidden_field :id %>
+      <%= f.hidden_field :id, value: (params[:action] == 'clone' ? nil : f.object.id)  %>
       <%= render(partial: '/cohesive_admin/base/fields', locals: { klass: klass, f: f, parent_klass: parent_klass  }) %>
     </div>
   </div>

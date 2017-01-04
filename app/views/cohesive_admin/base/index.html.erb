@@ -27,7 +27,9 @@
         <tr>
           <td>
             <%= link_to(i.to_label, [:edit, i]) %>
-            <%= link_to("Duplicate", [:duplicate, i], method: :post, class: 'right') %>
+            <%= link_to([:clone, i], method: :get, class: 'right') do %>
+              <i class="material-icons">library_add</i>
+            <% end if @klass.admin_duplicatable? %>
           </td>
         </tr>
       <% end %>

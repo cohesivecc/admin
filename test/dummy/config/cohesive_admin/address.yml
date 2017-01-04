@@ -1,3 +1,4 @@
+duplicate: true
 fields:
   locatable: polymorphic
   street:

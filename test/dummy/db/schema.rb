@@ -62,8 +62,7 @@ ActiveRecord::Schema.define(version: 20161110160143) do
   add_index "locations", ["slug"], name: "index_locations_on_slug"
 
   create_table "managers", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "name"
     t.string   "email"
     t.string   "phone_number"
     t.integer  "address_id"

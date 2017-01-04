@@ -6,6 +6,7 @@
     <div class="col s12">
 			<button type="submit" class="waves-effect waves-light btn" data-disable-with="Saving...">Save</button>
 			<%= link_to('Delete', @object, method: 'delete', class: "waves-effect waves-light btn red", data: { confirm: "Are you sure you want to delete this #{klass_header.downcase}?", disable_with: 'Deleting...' }) unless @object.new_record? %>
+			<%#= link_to('Duplicate', [:duplicate, @object], method: 'post', class: "waves-effect waves-light btn teal darken-3", data: { disable_with: "Duplicating..."}) if @klass.admin_duplicatable? %>
 			<%= link_to('Cancel', @klass, class: 'waves-effect waves-grey btn-flat') -%>
 		</div>
 	</div>

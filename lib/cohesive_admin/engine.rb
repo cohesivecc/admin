@@ -14,7 +14,9 @@ module CohesiveAdmin
     initializer 'cohesive_admin.include_concerns' do
       ActionDispatch::Reloader.to_prepare do
         ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Resource)
-        ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable) # add new concerns for loading
+        ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable)
+        ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Duplicatable)
+         # add new concerns for loading
       end
     end
 
