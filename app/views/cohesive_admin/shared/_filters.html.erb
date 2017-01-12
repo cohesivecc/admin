@@ -1,0 +1,28 @@
+<ul class="collapsible" data-collapsible="accordion">
+  <li>
+    <div class="collapsible-header"><i class="material-icons">filter_drama</i>Search / Filter</div>
+    <div class="collapsible-body card">
+      <% @klass.admin_fields.each do |k, field| %>
+        <% if (field[:type] == "association" && field[:filter] == true) %>
+          <div class="search-panel card-content">
+            <%= form_tag @klass, method: :get, class: "search-form" do %>
+              <div class="input-field">
+                <%= select_tag(
+                  "#{k}_id",
+                  options_from_collection_for_select(
+                    k.classify.constantize.all,
+                    :id,
+                    :to_label,
+                    params["#{k}_id"]
+                  ),
+                  { include_blank: true, class: 'select-search', data: { disable_with: 'Searching...' } }
+                ) %>
+              </div>
+              <%= submit_tag "Search", class: "btn" %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    </li>
+</ul>

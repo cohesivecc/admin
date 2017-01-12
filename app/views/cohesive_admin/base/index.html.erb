@@ -7,11 +7,13 @@
   <% end  if @klass.admin_sortable? %>
 <% end %>
 
+<%= render 'cohesive_admin/shared/filters' %>
+
 <div class="card-panel">
   <table class="bordered highlight">
     <thead>
       <tr>
-        <th><%= @klass.display_name_method.to_s.humanize.titleize %></th>
+        <th><%= @klass.display_name_method.to_s.humanize.titleize %> Foo</th>
       </tr>
     </thead>
 

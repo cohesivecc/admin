@@ -35,7 +35,17 @@ module CohesiveAdmin
     def index
       @skope = @klass.admin_sortable? ? @klass.admin_sorted : @klass.all
       @skope = @skope.page(params[:page]) unless params[:page] == 'all'
-      @items = @skope.all
+      search_values = {}
+      params.each do |k,v|
+        if k.include?("_id")
+          search_values[k] = v
+        end
+      end
+      if search_values.length > 0
+        @items = @skope.where("#{search_values.flatten[0]} = ?", search_values.flatten[1])
+      else
+        @items = @skope.all
+      end
 
       respond_to do |format|
         format.html { render file: 'cohesive_admin/base/index' }

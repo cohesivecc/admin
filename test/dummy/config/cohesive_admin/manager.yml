@@ -4,4 +4,6 @@ fields:
     type: string
     help: "This is the display name for the person."
   email: email
-  address: association
+  address:
+    type: association
+    filter: true
