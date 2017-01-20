@@ -20,6 +20,18 @@ module CohesiveAdmin
         self.config.managed_models << klass
       end
     end
+    
+    # If a project has multiple models configured for the CMS,
+    # and the db doesn't exist or isn't migrated,
+    # only display the log warning about it once.
+    def db_is_not_connected
+      unless @db_connection_warning
+        @db_connection_warning = true
+        unconnected_message = "CohesiveAdmin failed to initialize - no database connection available. Be sure to create your database, run the CohesiveAdmin generators, migrate your database, and try again."
+        puts(unconnected_message)
+        Rails.logger.error(unconnected_message)
+      end
+    end
 
   end
 

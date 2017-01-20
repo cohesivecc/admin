@@ -213,27 +213,33 @@ module CohesiveAdmin::Concerns::Resource
     end
 
     def cohesive_admin(args={})
-      
-      unless self.connected?
-        unconnected_message = "CohesiveAdmin failed to initialize - no database connection available. Be sure to create your database, run the CohesiveAdmin generators, migrate your database, and try again."
-        puts(unconnected_message)
-        Rails.logger.error(unconnected_message)
-        return 
-      end
-      
+
       @blacklisted_columns  = [:id, :created_at, :updated_at]
       @admin_args = args
       
       CohesiveAdmin.manage(self)
 
       class_eval do
-
-        unless self.attribute_method?(:to_label)
-
+        
+        # the attribute_method? function errors if the database hasn't been created or migrated yet.
+        # this is a problem when including the CMS gem in Rails Application templates.
+        # 
+        # Attempt to connect to the database.  If unable to connect, check for the presence of the to_label
+        # function using public_instance_methods instead of attribute_method?
+        connected = true
+        begin
+          self.connect unless self.connected?
+        rescue
+          connected = false
+          CohesiveAdmin.db_is_not_connected
+        end
+        
+        if (!connected && !self.public_instance_methods.include?(:to_label)) || (connected && !self.attribute_method?(:to_label))
+        
           def to_label
             self.send(self.class.display_name_method)
           end
-
+          
         end
 
         class << self
