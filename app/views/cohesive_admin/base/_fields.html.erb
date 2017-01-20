@@ -14,7 +14,7 @@ parent_klass ||= nil
 
         <div class="row">
           <div class="col s12">
-            <%= f.input(k, as: :nested, hint: v[:help]) %>
+            <%= f.input(k, as: :nested, hint: v[:help], label: v[:label]) %>
           </div>
         </div>
 
@@ -22,7 +22,7 @@ parent_klass ||= nil
 
         <div class="row">
           <div class="col s12">
-            <%= f.association(k, include_blank: true, hint: v[:help]) %>
+            <%= f.association(k, include_blank: true, hint: v[:help], label: v[:label]) %>
           </div>
         </div>
 
@@ -30,7 +30,7 @@ parent_klass ||= nil
 
     <% elsif v[:type] == 'polymorphic' %>
 
-      <%= f.input(k, as: 'polymorphic', hint: v[:help]) unless inverse_relationship_exists?(klass, k, parent_klass) %>
+      <%= f.input(k, as: 'polymorphic', hint: v[:help], label: v[:label]) unless inverse_relationship_exists?(klass, k, parent_klass) %>
 
     <% else %>
 
