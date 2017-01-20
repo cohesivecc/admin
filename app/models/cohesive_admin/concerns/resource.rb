@@ -212,21 +212,21 @@ module CohesiveAdmin::Concerns::Resource
       @admin_strong_params
     end
 
-
-
-
-
-
-
     def cohesive_admin(args={})
-
+      
+      unless self.connected?
+        unconnected_message = "CohesiveAdmin failed to initialize - no database connection available. Be sure to create your database, run the CohesiveAdmin generators, migrate your database, and try again."
+        puts(unconnected_message)
+        Rails.logger.error(unconnected_message)
+        return 
+      end
+      
       @blacklisted_columns  = [:id, :created_at, :updated_at]
       @admin_args = args
-
+      
       CohesiveAdmin.manage(self)
 
       class_eval do
-
 
         unless self.attribute_method?(:to_label)
 
