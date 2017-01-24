@@ -7,6 +7,8 @@ module CohesiveAdmin
     # ensure that the user is logged in as the very first filter
     prepend_before_action :load_user
 
+    before_action :setup_admin_navigation
+
     unless Rails.env.development?
       rescue_from Exception, with: lambda { |exception| render_500 }
       rescue_from ActionController::RoutingError, ActionController::UnknownController, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception| render_404 }
@@ -83,6 +85,26 @@ module CohesiveAdmin
           redirect_to(redirect_url)
         end
         session[:redirect_path] = nil
+      end
+
+      def setup_admin_navigation
+        # highest_order_number = -1
+        # CohesiveAdmin.config.managed_models.each do |mm|
+        #   if mm.admin_display_order != "unordered" && mm.admin_display_order > highest_order_number
+        #     highest_order_number = mm.admin_display_order
+        #   end
+        # end
+        #
+        # CohesiveAdmin.config.managed_models.each do |mm|
+        #   if mm.admin_display_order == "unordered"
+        #     mm.display_order = highest_order_number + 1
+        #   else
+        #     mm.display_order = mm.admin_display_order
+        #   end
+        # end
+
+        # @managed_models = CohesiveAdmin.config.managed_models.sort { |a,b| [a.display_order.to_i,a.admin_display_name.to_s] <=> [b.display_order.to_i, b.admin_display_name.to_s] }
+        @managed_models = CohesiveAdmin.set_display_order
       end
 
   end

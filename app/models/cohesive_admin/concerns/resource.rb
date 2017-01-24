@@ -3,6 +3,7 @@ module CohesiveAdmin::Concerns::Resource
 
   included do
     # any required hooks here
+    attr_accessor :display_order
   end
 
   def admin_resource?
@@ -11,6 +12,9 @@ module CohesiveAdmin::Concerns::Resource
 
   module ClassMethods
     include CohesiveAdmin::Engine.routes.url_helpers
+
+
+    attr_accessor :display_order
 
     def admin_resource?
       false
@@ -32,7 +36,9 @@ module CohesiveAdmin::Concerns::Resource
       send(admin_config[:finder], id)
     end
 
-
+    def admin_display_order
+      self.admin_config[:order] || "unordered"
+    end
 
     def default_url_options
       ActionMailer::Base.default_url_options
@@ -87,9 +93,11 @@ module CohesiveAdmin::Concerns::Resource
           finder: :find,
           fields: {},
           sort: false,
-          duplicate: false
+          duplicate: false,
+          order: "unordered"
         }.merge(@admin_args.symbolize_keys)
 
+        puts "Parsing #{self.name}"
         # attempt to parse config file
         # CohesiveAdmin configuration for a model can be placed in Rails.root/config/cohesive_admin/model_singular.yml
         fname = File.join('config', 'cohesive_admin', "#{ActiveModel::Naming.singular(self)}.yml")
@@ -216,14 +224,14 @@ module CohesiveAdmin::Concerns::Resource
 
       @blacklisted_columns  = [:id, :created_at, :updated_at]
       @admin_args = args
-      
+
       CohesiveAdmin.manage(self)
 
       class_eval do
-        
+
         # the attribute_method? function errors if the database hasn't been created or migrated yet.
         # this is a problem when including the CMS gem in Rails Application templates.
-        # 
+        #
         # Attempt to connect to the database.  If unable to connect, check for the presence of the to_label
         # function using public_instance_methods instead of attribute_method?
         connected = true
@@ -233,13 +241,13 @@ module CohesiveAdmin::Concerns::Resource
           connected = false
           CohesiveAdmin.db_is_not_connected
         end
-        
+
         if (!connected && !self.public_instance_methods.include?(:to_label)) || (connected && !self.attribute_method?(:to_label))
-        
+
           def to_label
             self.send(self.class.display_name_method)
           end
-          
+
         end
 
         class << self
