@@ -14,7 +14,7 @@ parent_klass ||= nil
 
         <div class="row">
           <div class="col s12">
-            <%= f.input(k, as: :nested, hint: v[:help]) %>
+            <%= f.input(k, as: :nested, hint: v[:help], label: v[:label]) %>
           </div>
         </div>
 
@@ -22,7 +22,7 @@ parent_klass ||= nil
 
         <div class="row">
           <div class="col s12">
-            <%= f.association(k, include_blank: true, hint: v[:help]) %>
+            <%= f.association(k, include_blank: true, hint: v[:help], label: v[:label]) %>
           </div>
         </div>
 
@@ -30,7 +30,7 @@ parent_klass ||= nil
 
     <% elsif v[:type] == 'polymorphic' %>
 
-      <%= f.input(k, as: 'polymorphic', hint: v[:help]) unless inverse_relationship_exists?(klass, k, parent_klass) %>
+      <%= f.input(k, as: 'polymorphic', hint: v[:help], label: v[:label]) unless inverse_relationship_exists?(klass, k, parent_klass) %>
 
     <% else %>
 
@@ -44,9 +44,17 @@ parent_klass ||= nil
         <div class="col s12">
           <% if [:boolean, :check_boxes, :radio_buttons].include?(v[:type].to_sym) %>
             <%= f.input_field(k, as: v[:type], input_html: input_html, hint: v[:help]) %>
-            <%= f.label(k) %>
+            <% if v[:label] %>
+              <%= f.label(v[:label]) %>
+            <% else %>
+              <%= f.label(k) %>
+            <% end %>
           <% else %>
-            <%= f.input(k, as: v[:type], input_html: input_html, hint: v[:help]) %>
+            <% if v[:label] %>
+              <%= f.input(k, as: v[:type], label: v[:label], input_html: input_html, hint: v[:help]) %>
+            <% else %>
+              <%= f.input(k, as: v[:type], input_html: input_html, hint: v[:help]) %>
+            <% end %>
           <% end %>
         </div>
       </div>

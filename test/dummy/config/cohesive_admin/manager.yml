@@ -3,6 +3,7 @@ fields:
   name:
     type: string
     help: "This is the display name for the person."
+    label: "Set a custom label"
   email: email
   address:
     type: association

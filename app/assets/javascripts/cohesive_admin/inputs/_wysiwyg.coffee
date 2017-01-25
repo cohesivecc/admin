@@ -8,7 +8,7 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
   froala_config = {
     zIndex: 999,
     heightMin: 300,
-    toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'insertImage', 'insertVideo', 'insertFile', '|', 'color', 'quote', 'insertHR', 'insertTable', '|', 'undo', 'redo', '|', 'html', '|', 'fullscreen', '|']
+    toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'insertLink', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'insertImage', 'insertVideo', 'insertFile', '|', 'color', 'quote', 'insertHR', 'insertTable', '|', 'undo', 'redo', '|', 'html', '|', 'fullscreen', '|']
   }
   if config.aws
 

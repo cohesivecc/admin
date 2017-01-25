@@ -15,8 +15,11 @@ gemspec
 
 
 group :development do
-  gem "refile", '>= 0.6', require: "refile/rails"
-  gem "refile-mini_magick"
-  gem 'web-console'
-  # gem "refile-s3"
+  gem "rails", '>= 5.0'
+
+  gem 'refile', github: 'refile/refile', require: 'refile/rails'
+  gem 'refile-mini_magick', github: 'refile/refile-mini_magick'
+  gem 'sinatra', github: 'sinatra/sinatra', branch: 'master'
+
+  gem 'web-console', '>= 3.4'
 end

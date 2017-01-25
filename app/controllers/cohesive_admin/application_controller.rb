@@ -85,5 +85,6 @@ module CohesiveAdmin
         session[:redirect_path] = nil
       end
 
+
   end
 end
