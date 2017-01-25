@@ -30,10 +30,14 @@ module CohesiveAdmin
 
     config.after_initialize do
 
-      # presort our managed models
       CohesiveAdmin::Engine.eager_load!
       Rails.application.eager_load!
+
+      # presort our managed models
       CohesiveAdmin.sort_managed_models!
+
+      # parse config for all managed models
+      CohesiveAdmin.config.managed_models.each {|m| m.admin_setup }
     end
 
 

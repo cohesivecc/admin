@@ -84,6 +84,7 @@ module CohesiveAdmin::Concerns::Resource
           name: self.name,
           finder: :find,
           fields: {},
+          filters: {},
           sort: false,
           duplicate: false,
           order: Float::MAX
@@ -146,12 +147,21 @@ module CohesiveAdmin::Concerns::Resource
             attrs = field.symbolize_keys
           end
 
+          # selects
+          self.validators_on(k).each do |v|
+            if v.kind == :inclusion && v.options[:in].is_a?(Array)
+              attrs[:type] = :select unless attrs[:type] == :radio_buttons
+              attrs[:collection] = v.options[:in]
+            end
+          end
+
           if %w{association polymorphic}.include?(attrs[:type])
             r = self.reflections[k.to_s]
             attrs[:reflection] = r
             attrs[:nested] = self.nested_attributes_options[k.to_sym]
           end
 
+          @admin_config[:filters][k] = attrs if field.is_a?(Hash) && field['filter']
           @admin_fields[k] = attrs
         end
         @admin_fields
@@ -202,6 +212,8 @@ module CohesiveAdmin::Concerns::Resource
       CohesiveAdmin.manage(self)
 
       class_eval do
+
+        scope :admin_sorted, -> { order("created_at DESC") }
 
         # the attribute_method? function errors if the database hasn't been created or migrated yet.
         # this is a problem when including the CMS gem in Rails Application templates.

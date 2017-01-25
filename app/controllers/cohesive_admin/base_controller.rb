@@ -7,6 +7,7 @@ module CohesiveAdmin
     before_action :set_klass
     before_action :set_header
     before_action :load_object, only: [:edit, :update, :destroy, :show, :clone]
+    before_action :load_search_object, only: [:index, :sort]
 
     # Force the classes to use the primary key as the to_param within our CMS
     # This addresses the scenario where the to_param fields can be manipulated in CMS,
@@ -33,19 +34,21 @@ module CohesiveAdmin
 
 
     def index
-      @skope = @klass.admin_sortable? ? @klass.admin_sorted : @klass.all
-      @skope = @skope.page(params[:page]) unless params[:page] == 'all'
-      search_values = {}
-      params.each do |k,v|
-        if k.include?("_id")
-          search_values[k] = v
+      @skope = @klass.admin_sorted
+
+      if params[:search]
+        # filter out anything except allowed params, pluck them from our @search_object
+        @search_args = {}
+        @klass.admin_strong_params.each do |p|
+          @search_args[p] = @search_object[p] unless @search_object[p] != false && @search_object[p].blank?
         end
+        @skope = @skope.where(@search_args)
       end
-      if search_values.length > 0
-        @items = @skope.where("#{search_values.flatten[0]} = ?", search_values.flatten[1])
-      else
-        @items = @skope.all
-      end
+
+      @skope = @skope.page(params[:page]) unless params[:page] == 'all'
+
+
+      @items = @skope.all
 
       respond_to do |format|
         format.html { render file: 'cohesive_admin/base/index' }
@@ -180,8 +183,15 @@ module CohesiveAdmin
       helper_method :klass_header
 
       def klass_params
-        # overwrite in your controller
         params.require(@klass.model_name.param_key).permit(*@klass.admin_strong_params)
+      end
+
+      def search_params
+        params.fetch(:search, {}).permit(*@klass.admin_strong_params)
+      end
+
+      def load_search_object
+        @search_object = @klass.new(search_params)
       end
 
   end

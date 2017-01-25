@@ -1,0 +1,18 @@
+<%= content_tag(:ul, class: 'collapsible', data: { collapsible: 'accordion' }) do %>
+  <li>
+    <div class="collapsible-header"><i class="material-icons">filter_drama</i> Search / Filter</div>
+    <div class="collapsible-body card">
+      <div class="search-panel card-content">
+
+        <%= simple_form_for(@search_object, method: :get, as: :search, html: { id: 'search-form' }) do |f| %>
+
+          <%= render(partial: 'cohesive_admin/filters/fields', locals: { klass: @klass, f: f }) %>
+
+          <button type="submit" class="waves-effect waves-light btn" data-disable-with="Filtering...">Go</button>
+          <%= link_to('Clear', @klass, class: 'waves-effect waves-grey btn-flat') -%>
+        <% end %>
+
+      </div>
+    </div>
+  </li>
+<% end unless @klass.admin_config[:filters].blank? %>

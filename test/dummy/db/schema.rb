@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -19,8 +18,8 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.string   "state"
     t.string   "zip"
     t.text     "description"
-    t.integer  "locatable_id"
     t.string   "locatable_type"
+    t.integer  "locatable_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
@@ -32,9 +31,8 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.string   "user_type"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.index ["email"], name: "index_cohesive_admin_users_on_email"
   end
-
-  add_index "cohesive_admin_users", ["email"], name: "index_cohesive_admin_users_on_email"
 
   create_table "jobs", force: :cascade do |t|
     t.string   "name"
@@ -47,9 +45,8 @@ ActiveRecord::Schema.define(version: 20161110160143) do
   create_table "jobs_locations", id: false, force: :cascade do |t|
     t.integer "job_id"
     t.integer "location_id"
+    t.index ["job_id", "location_id"], name: "index_jobs_locations_on_job_id_and_location_id"
   end
-
-  add_index "jobs_locations", ["job_id", "location_id"], name: "index_jobs_locations_on_job_id_and_location_id"
 
   create_table "locations", force: :cascade do |t|
     t.string   "slug",       limit: 20
@@ -57,14 +54,14 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.text     "json_data"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.index ["slug"], name: "index_locations_on_slug"
   end
-
-  add_index "locations", ["slug"], name: "index_locations_on_slug"
 
   create_table "managers", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.string   "phone_number"
+    t.string   "title"
     t.integer  "address_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false

@@ -3,9 +3,8 @@ require_dependency "cohesive_admin/application_controller"
 module CohesiveAdmin
   class SessionsController < BaseController
 
-    skip_filter :load_user
+    skip_before_action :load_user
     before_action :redirect_if_logged_in, except: [:logout]
-    skip_filter :authorize
 
     def new
       @object = @klass.new

@@ -1,0 +1,42 @@
+<%
+klass ||= nil
+f ||= nil
+parent_klass ||= nil
+%>
+<% if klass && f %>
+
+  <% klass.admin_config[:filters].each do |k,v| %>
+
+    <% if v[:type] == 'association' %>
+
+      <div class="row">
+        <div class="col s12">
+          <%= f.association(k, include_blank: true, label: v[:label]) %>
+        </div>
+      </div>
+
+    <% elsif v[:type] == 'polymorphic' %>
+
+      <%= f.input(k, as: 'polymorphic', label: v[:label]) unless inverse_relationship_exists?(klass, k, parent_klass) %>
+
+    <% else %>
+
+      <div class="row">
+        <div class="col s12">
+          <%
+              v[:collection] ||= case v[:type].to_sym
+                                    when :boolean
+                                      [['Yes', true], ['No', false]]
+                                    else
+                                      klass.distinct.pluck(k)
+                                  end
+          %>
+
+          <%= f.input(k, as: :select, collection: v[:collection], label: v[:label]) %>
+        </div>
+      </div>
+
+    <% end %>
+  <% end %>
+
+<% end %>

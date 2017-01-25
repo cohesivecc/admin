@@ -13,7 +13,7 @@ class window.CohesiveAdmin
     )
 
   @refreshForm: () ->
-    if($('#object-form').length)
+    if($('#object-form, #search-form').length)
       $('select').material_select()
       $('.collapsible').collapsible()
       Materialize.updateTextFields()

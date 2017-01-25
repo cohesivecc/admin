@@ -26,13 +26,16 @@ filters:
     scope: featured
   by_issue:
     association: issue
-```  
+```
 
 
 # class QuizDecorator
 #   def title
 #     { label:"Quiz Title", type:"Text", }
 #   end
+
+## Filters
+* Address :has_many and other relationships
 
 
 * Add default inputs for SimpleForm (take cues from Webflow?):

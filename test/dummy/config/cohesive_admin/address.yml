@@ -1,6 +1,8 @@
 duplicate: true
 fields:
-  locatable: polymorphic
+  locatable:
+    type: polymorphic
+    filter: true
   street:
   city:
   state:

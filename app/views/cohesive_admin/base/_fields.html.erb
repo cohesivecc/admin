@@ -44,17 +44,9 @@ parent_klass ||= nil
         <div class="col s12">
           <% if [:boolean, :check_boxes, :radio_buttons].include?(v[:type].to_sym) %>
             <%= f.input_field(k, as: v[:type], input_html: input_html, hint: v[:help]) %>
-            <% if v[:label] %>
-              <%= f.label(v[:label]) %>
-            <% else %>
-              <%= f.label(k) %>
-            <% end %>
+            <%= f.label(v[:label] || k) %>
           <% else %>
-            <% if v[:label] %>
-              <%= f.input(k, as: v[:type], label: v[:label], input_html: input_html, hint: v[:help]) %>
-            <% else %>
-              <%= f.input(k, as: v[:type], input_html: input_html, hint: v[:help]) %>
-            <% end %>
+            <%= f.input(k, as: v[:type], collection: v[:collection], label: v[:label], input_html: input_html, hint: v[:help]) %>
           <% end %>
         </div>
       </div>
