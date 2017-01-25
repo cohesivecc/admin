@@ -1,7 +1,7 @@
 module CohesiveAdmin
   class User < ActiveRecord::Base
 
-    cohesive_admin
+    cohesive_admin({ order: Float::INFINITY })
 
     has_secure_password
 

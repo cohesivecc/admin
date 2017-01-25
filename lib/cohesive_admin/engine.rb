@@ -28,5 +28,14 @@ module CohesiveAdmin
        app.config.assets.precompile += ['cohesive_admin/preloader.gif']
     end
 
+    config.after_initialize do
+
+      # presort our managed models
+      CohesiveAdmin::Engine.eager_load!
+      Rails.application.eager_load!
+      CohesiveAdmin.sort_managed_models!
+    end
+
+
   end
 end

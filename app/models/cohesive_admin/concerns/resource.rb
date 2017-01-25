@@ -32,8 +32,6 @@ module CohesiveAdmin::Concerns::Resource
       send(admin_config[:finder], id)
     end
 
-
-
     def default_url_options
       ActionMailer::Base.default_url_options
     end
@@ -87,7 +85,8 @@ module CohesiveAdmin::Concerns::Resource
           finder: :find,
           fields: {},
           sort: false,
-          duplicate: false
+          duplicate: false,
+          order: Float::MAX
         }.merge(@admin_args.symbolize_keys)
 
         # attempt to parse config file
@@ -154,23 +153,6 @@ module CohesiveAdmin::Concerns::Resource
           end
 
           @admin_fields[k] = attrs
-
-          # if field.is_a?(String)
-          #   # parse
-          #   if %w{association polymorphic}.include?(field)
-          #     r = self.reflections[k.to_s]
-          #     @admin_fields[k] = {
-          #       type:           field,
-          #       reflection:     r,
-          #       nested:         self.nested_attributes_options[k.to_sym]
-          #     }
-          #   else
-          #     field = :string if field.blank? # default to standard <input type="text" />
-          #     @admin_fields[k] = { type: field }
-          #   end
-          # else
-          #   @admin_fields[k] = field
-          # end
         end
         @admin_fields
       else
@@ -216,30 +198,30 @@ module CohesiveAdmin::Concerns::Resource
 
       @blacklisted_columns  = [:id, :created_at, :updated_at]
       @admin_args = args
-      
+
       CohesiveAdmin.manage(self)
 
       class_eval do
-        
+
         # the attribute_method? function errors if the database hasn't been created or migrated yet.
         # this is a problem when including the CMS gem in Rails Application templates.
-        # 
+        #
         # Attempt to connect to the database.  If unable to connect, check for the presence of the to_label
         # function using public_instance_methods instead of attribute_method?
         connected = true
         begin
-          self.connect unless self.connected?
+          self.connection unless self.connected?
         rescue
           connected = false
           CohesiveAdmin.db_is_not_connected
         end
-        
+
         if (!connected && !self.public_instance_methods.include?(:to_label)) || (connected && !self.attribute_method?(:to_label))
-        
+
           def to_label
             self.send(self.class.display_name_method)
           end
-          
+
         end
 
         class << self
