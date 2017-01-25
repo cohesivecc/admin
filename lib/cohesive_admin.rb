@@ -33,69 +33,35 @@ module CohesiveAdmin
       end
     end
 
-  end
 
-  def self.configure
-    self.config ||= Configuration.new
+    def configure
+      self.config ||= Configuration.new
 
-    yield(self.config)
+      yield(self.config)
 
-    after_configure
-  end
-
-  def self.after_configure
-
-    # conveniences for AWS keys
-    unless self.config.aws.blank?
-      self.config.aws[:acl]               ||= 'public-read'
-      self.config.aws[:key_start]         ||= 'cohesive_admin/'
-      self.config.aws[:secret_access_key] ||= (self.config.aws[:credentials].credentials.secret_access_key rescue nil)
-      self.config.aws[:access_key_id]     ||= (self.config.aws[:credentials].credentials.access_key_id rescue nil)
+      after_configure
     end
-  end
 
-=begin
+    def after_configure
 
-  The methods below are used to sort the models to work in the left hand navigation of the admin layout.
-
-  @managed_models is set in the before_action which can be found in the CohesiveAdmin::ApplicationController
-
-  It is set so the cohesive admin is always at the end of the list. We may want to set a way to configure this in the future. Maybe in an initializer??
-
-=end
-
-  def self.set_display_order
-
-    set_display_order_value(get_highest_order_number)
-
-    self.sort_managed_models!
-    return self.config.managed_models
-  end
-
-  def self.get_highest_order_number
-    highest_order_number = -1
-    self.config.managed_models.each do |mm|
-      if mm.admin_display_order != "unordered" && mm.admin_display_order > highest_order_number
-        highest_order_number = mm.admin_display_order
+      # conveniences for AWS keys
+      unless self.config.aws.blank?
+        self.config.aws[:acl]               ||= 'public-read'
+        self.config.aws[:key_start]         ||= 'cohesive_admin/'
+        self.config.aws[:secret_access_key] ||= (self.config.aws[:credentials].credentials.secret_access_key rescue nil)
+        self.config.aws[:access_key_id]     ||= (self.config.aws[:credentials].credentials.access_key_id rescue nil)
       end
     end
-    return highest_order_number
-  end
 
-  def self.set_display_order_value(highest_number)
-    self.config.managed_models.each do |mm|
-      if mm.model_name == "CohesiveAdmin::User"
-        mm.display_order = highest_number + 2 #set the CohesiveAdmin::User to always be last
-      elsif mm.admin_display_order == "unordered"
-        mm.display_order = highest_number + 1
-      else
-        mm.display_order = mm.admin_display_order
-      end
+    # This method sorts the managed models for display in the left hand navigation of the admin layout.
+    # This can be configured in the model's cohesive_admin/.yml file by specifying the :order 
+    def sort_managed_models!
+      self.config.managed_models.sort! { |a,b| [a.admin_config[:order].to_f,a.admin_display_name.to_s] <=> [b.admin_config[:order].to_f, b.admin_display_name.to_s] }
     end
+
   end
 
-  def self.sort_managed_models!
-    self.config.managed_models.sort! { |a,b| [a.display_order.to_i,a.admin_display_name.to_s] <=> [b.display_order.to_i, b.admin_display_name.to_s] }
-  end
+
+
 
 end

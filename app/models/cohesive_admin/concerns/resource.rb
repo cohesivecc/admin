@@ -3,7 +3,6 @@ module CohesiveAdmin::Concerns::Resource
 
   included do
     # any required hooks here
-    attr_accessor :display_order
   end
 
   def admin_resource?
@@ -12,9 +11,6 @@ module CohesiveAdmin::Concerns::Resource
 
   module ClassMethods
     include CohesiveAdmin::Engine.routes.url_helpers
-
-
-    attr_accessor :display_order
 
     def admin_resource?
       false
@@ -34,10 +30,6 @@ module CohesiveAdmin::Concerns::Resource
 
     def admin_find(id)
       send(admin_config[:finder], id)
-    end
-
-    def admin_display_order
-      self.admin_config[:order] || "unordered"
     end
 
     def default_url_options
@@ -94,10 +86,9 @@ module CohesiveAdmin::Concerns::Resource
           fields: {},
           sort: false,
           duplicate: false,
-          order: "unordered"
+          order: Float::MAX
         }.merge(@admin_args.symbolize_keys)
 
-        puts "Parsing #{self.name}"
         # attempt to parse config file
         # CohesiveAdmin configuration for a model can be placed in Rails.root/config/cohesive_admin/model_singular.yml
         fname = File.join('config', 'cohesive_admin', "#{ActiveModel::Naming.singular(self)}.yml")
@@ -162,23 +153,6 @@ module CohesiveAdmin::Concerns::Resource
           end
 
           @admin_fields[k] = attrs
-
-          # if field.is_a?(String)
-          #   # parse
-          #   if %w{association polymorphic}.include?(field)
-          #     r = self.reflections[k.to_s]
-          #     @admin_fields[k] = {
-          #       type:           field,
-          #       reflection:     r,
-          #       nested:         self.nested_attributes_options[k.to_sym]
-          #     }
-          #   else
-          #     field = :string if field.blank? # default to standard <input type="text" />
-          #     @admin_fields[k] = { type: field }
-          #   end
-          # else
-          #   @admin_fields[k] = field
-          # end
         end
         @admin_fields
       else
@@ -236,7 +210,7 @@ module CohesiveAdmin::Concerns::Resource
         # function using public_instance_methods instead of attribute_method?
         connected = true
         begin
-          self.connect unless self.connected?
+          self.connection unless self.connected?
         rescue
           connected = false
           CohesiveAdmin.db_is_not_connected
