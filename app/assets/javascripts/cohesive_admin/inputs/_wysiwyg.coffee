@@ -8,7 +8,7 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
   froala_config = {
     zIndex: 999,
     heightMin: 300,
-    toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'insertImage', 'insertVideo', 'insertFile', '|', 'color', 'quote', 'insertHR', 'insertTable', '|', 'undo', 'redo', '|', 'html', '|', 'fullscreen', '|']
+    toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'insertLink', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'insertImage', 'insertVideo', 'insertFile', '|', 'color', 'quote', 'insertHR', 'insertTable', '|', 'undo', 'redo', '|', 'html', '|', 'fullscreen', '|']
   }
   if config.aws
 
@@ -55,5 +55,5 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
 
   CohesiveAdmin.config.froala.config = froala_config
   $.extend($.FroalaEditor.DEFAULTS, froala_config)
-  $('textarea.wysiwyg').froalaEditor(toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'insertLink','|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'color', 'quote', 'insertHR', '|', 'insertImage', 'insertVideo', 'insertFile', '|', 'undo', 'redo', '|', 'html', '|', 'fullscreen', '|'])
+  $('textarea.wysiwyg').froalaEditor()
 )
