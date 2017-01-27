@@ -12,6 +12,8 @@ class Location < ActiveRecord::Base
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z0-9]*\Z/i, message: "must only include letters and numbers" }
 
+  scope :sorted, -> { order(:position) }
+  
   def to_param
     slug
   end

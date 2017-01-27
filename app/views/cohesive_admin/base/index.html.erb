@@ -4,7 +4,7 @@
   <% end %>
   <%= link_to([:sort, @klass], class: 'waves-effect waves-light btn-floating red') do %>
     <i class="material-icons">swap_vert</i>
-  <% end  if @klass.admin_sortable? %>
+  <% end if @klass.admin_sortable? %>
 <% end %>
 
 <%= render 'cohesive_admin/filters/form' %>

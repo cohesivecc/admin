@@ -8,6 +8,8 @@ class CreateAddresses < ActiveRecord::Migration
       t.string    :zip
       t.text      :description
 
+      t.integer   :position,  default: 0
+
       t.belongs_to :locatable, polymorphic: true
 
       t.timestamps null: false

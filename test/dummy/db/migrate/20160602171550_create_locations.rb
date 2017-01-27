@@ -4,6 +4,8 @@ class CreateLocations < ActiveRecord::Migration
 
       t.string    :slug,      limit: 20
 
+      t.string    :position,  default: 0
+
       t.string    :image_id
 
       t.text      :json_data

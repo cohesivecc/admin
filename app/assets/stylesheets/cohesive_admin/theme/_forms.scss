@@ -54,10 +54,6 @@
     }
   }
 
-  .collapsible-body > .nested-form-fields {
-    padding: 2rem;
-    background: color("grey", "lighten-5");
-  }
   .collapsible-add-link {
     // mimic the display of .collapsible-header, but without the collapsible click handlers
     display: block;

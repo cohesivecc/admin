@@ -1,0 +1,37 @@
+
+class window.CohesiveAdmin
+  @config       = null
+  @initialized  = false
+
+  @initialize: () ->
+    if(CohesiveAdmin.initialized)
+      $(document).trigger('cohesive_admin.initialized')
+    else
+      # side navigation
+      $(".button-collapse").sideNav()
+
+      $.ajax({
+        url: "<%= CohesiveAdmin::Engine.routes.url_helpers.config_path(format: :json) %>",
+        dataType: 'json'
+      }).done( (data) ->
+        CohesiveAdmin.configure(data);
+      )
+
+  @configure: (@config) ->
+    # listen for dynamic changes to the form
+    $(document).on('cohesive_admin.form_change', () ->
+      CohesiveAdmin.refreshForm()
+    )
+    $(document).on('cohesive_admin.initialized', () ->
+      CohesiveAdmin.refreshForm()
+    )
+    CohesiveAdmin.initialized = true
+    # publish initialize event
+    $(document).trigger('cohesive_admin.initialized')
+
+  @refreshForm: () ->
+    if($('#object-form, #search-form').length)
+      $('#object-form select, #search-form select').material_select()
+      $('#object-form .collapsible').collapsible()
+      Materialize.updateTextFields()
+      $('#object-form textarea.wysiwyg').froalaEditor()

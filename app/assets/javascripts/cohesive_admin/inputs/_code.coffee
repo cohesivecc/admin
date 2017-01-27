@@ -1,5 +1,5 @@
 
-$(document).on('turbolinks:load', () ->
+$(document).on('cohesive_admin.initialized', () ->
   $('textarea.code').each(() ->
     CodeMirror.fromTextArea($(@)[0], {
       lineNumbers: true,
