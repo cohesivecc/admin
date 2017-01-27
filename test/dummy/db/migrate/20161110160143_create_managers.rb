@@ -4,6 +4,7 @@ class CreateManagers < ActiveRecord::Migration
       t.string :name
       t.string :email
       t.string :phone_number
+      t.boolean :active
       t.belongs_to :address
 
       t.timestamps null: false

@@ -5,4 +5,5 @@ fields:
     help: "This is the display name for the person."
     label: "Set a custom label"
   email: email
+  active: boolean
   address: association
