@@ -25,8 +25,8 @@ title     = klass.admin_display_name.titleize
   </ul>
 
   <ul data-nested-template="<%= f.object.object_id %>" type="text/x-handlebars-template" style="display: none">
-    <%= f.simple_fields_for(attribute_name, klass.new(), child_index: "_{#{f.object.object_id}_index}_") do |f2| %>
-      <%= render(partial: '/cohesive_admin/inputs/nested/li', locals: { f: f2, klass: klass, parent_klass: parent_klass, id: "_{#{f.object.object_id}_object_id}_", label: "New #{title}"  }) %>
+    <%= f.simple_fields_for(attribute_name, klass.new(), child_index: "__#{f.object.object_id}_index__") do |f2| %>
+      <%= render(partial: '/cohesive_admin/inputs/nested/li', locals: { f: f2, klass: klass, parent_klass: parent_klass, id: "__#{f.object.object_id}_object_id__", label: "New #{title}"  }) %>
     <% end %>
   </ul>
 </div>

@@ -15,8 +15,8 @@ class window.NestedInput
     @key      = @t.data('nested-template')
     @t_html   = @t.remove().html()
 
-    ind_regex = new RegExp("_{"+@key+"_index}_", 'g')
-    obj_regex = new RegExp("_{"+@key+"_object_id}_", 'g')
+    ind_regex = new RegExp("__"+@key+"_index__", 'g')
+    obj_regex = new RegExp("__"+@key+"_object_id__", 'g')
 
     @t_html   = @t_html.replace(obj_regex, "{{"+@key+"_object_id}}").replace(ind_regex, "{{"+@key+"_index}}")
 
