@@ -18,10 +18,11 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.string   "state"
     t.string   "zip"
     t.text     "description"
+    t.integer  "position",       default: 0
     t.string   "locatable_type"
     t.integer  "locatable_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "cohesive_admin_users", force: :cascade do |t|
@@ -50,10 +51,11 @@ ActiveRecord::Schema.define(version: 20161110160143) do
 
   create_table "locations", force: :cascade do |t|
     t.string   "slug",       limit: 20
+    t.string   "position",              default: "0"
     t.string   "image_id"
     t.text     "json_data"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.index ["slug"], name: "index_locations_on_slug"
   end
 

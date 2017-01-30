@@ -47,6 +47,10 @@ main {
   }
 }
 
+.collapsible-body {
+  padding: 2rem;
+  background: color("grey", "lighten-5");
+}
 
 footer {
   color: color("grey", "lighten-1");

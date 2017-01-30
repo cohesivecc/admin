@@ -8,5 +8,5 @@ fields:
   json_data: code
   addresses:
     type: association
-    filter: true
   jobs: association
+sort: position

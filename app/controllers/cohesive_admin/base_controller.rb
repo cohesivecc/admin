@@ -8,6 +8,7 @@ module CohesiveAdmin
     before_action :set_header
     before_action :load_object, only: [:edit, :update, :destroy, :show, :clone]
     before_action :load_search_object, only: [:index, :sort]
+    before_action :load_list, only: [:index, :sort]
 
     # Force the classes to use the primary key as the to_param within our CMS
     # This addresses the scenario where the to_param fields can be manipulated in CMS,
@@ -33,28 +34,16 @@ module CohesiveAdmin
 
 
 
+
     def index
-      @skope = @klass.admin_sorted
-
-      if params[:search]
-        # filter out anything except allowed params, pluck them from our @search_object
-        @search_args = {}
-        @klass.admin_strong_params.each do |p|
-          @search_args[p] = @search_object[p] unless @search_object[p] != false && @search_object[p].blank?
-        end
-        @skope = @skope.where(@search_args)
-      end
-
-      @skope = @skope.page(params[:page]) unless params[:page] == 'all'
-
-
-      @items = @skope.all
-
       respond_to do |format|
         format.html { render file: 'cohesive_admin/base/index' }
         format.json { render json: @items.to_json(methods: [:to_label]) }
       end
     end
+
+
+
 
     def new
       @object = @klass.new
@@ -63,6 +52,9 @@ module CohesiveAdmin
         format.html { render file: 'cohesive_admin/base/form' }
       end
     end
+
+
+
 
     def create
       @object = @klass.new(klass_params)
@@ -84,11 +76,19 @@ module CohesiveAdmin
       end
     end
 
+
+
+
+
     def edit
       respond_to do |format|
         format.html { render file: 'cohesive_admin/base/form' }
       end
     end
+
+
+
+
 
     def update
       if @object.update(klass_params)
@@ -108,11 +108,17 @@ module CohesiveAdmin
       end
     end
 
+
+
+
     def sort
       render_404 and return unless @klass.admin_sortable?
-      @items = @klass.admin_sorted.all
+
       render file: 'cohesive_admin/base/sort'
     end
+
+
+
 
     def apply_sort
       params[:item].each_with_index do |x, i|
@@ -122,12 +128,20 @@ module CohesiveAdmin
       render text: ''
     end
 
+
+
+
+
     def clone
       @object = @klass.new(@object.attributes)
       respond_to do |format|
         format.html { render file: 'cohesive_admin/base/form' }
       end
     end
+
+
+
+
 
     def destroy
       # if it's not a 'permanent' object, destroy it
@@ -150,6 +164,7 @@ module CohesiveAdmin
       end
 
     end
+
 
 
     private
@@ -186,12 +201,52 @@ module CohesiveAdmin
         params.require(@klass.model_name.param_key).permit(*@klass.admin_strong_params)
       end
 
+
+      def load_list
+        # by default, use admin_sorted scope (see sortable)
+        @skope = @klass.admin_sorted
+
+        unless @search_args.blank?
+          # count of total objects (before applying filters)
+          @items_total = @skope.count
+          # apply any filters if necessary
+          @skope = @skope.where(@search_args)
+          # now count them again
+          @items_found = @skope.count
+        end
+
+        # page == 'all' is set on the :sort action (via routes.rb), or in the Ajax call from the polymorphic input (polymorphic.coffee)
+        @skope = @skope.page(params[:page]) unless params[:page] == 'all'
+
+        @items = @skope.all
+      end
+
       def search_params
         params.fetch(:search, {}).permit(*@klass.admin_strong_params)
       end
 
       def load_search_object
         @search_object = @klass.new(search_params)
+
+
+        if params[:search]
+          # filter out anything except allowed params, pluck them from our @search_object
+          @search_args = {}
+
+          @klass.admin_strong_params.each do |p|
+            if params[:search][p] && (@search_object[p] == false || !@search_object[p].blank?)
+              @search_args[p] = @search_object.send(p)
+            else
+              # reset all searchable values to nil unless they're present in the search params (prevents default values when calling @klass.new)
+              @search_object.send("#{p}=", nil) rescue nil
+            end
+          end
+        else
+          # reset all searchable values to nil (prevents default values when calling @klass.new)
+          @klass.admin_config[:filters].each do |k,v|
+            @search_object.send("#{k}=", nil)
+          end
+        end
       end
 
   end

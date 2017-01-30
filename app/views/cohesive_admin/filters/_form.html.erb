@@ -1,18 +1,22 @@
-<%= content_tag(:ul, class: 'collapsible', data: { collapsible: 'accordion' }) do %>
+<%= content_tag(:ul, class: 'collapsible', id: 'search-container', data: { collapsible: 'accordion' }) do %>
   <li>
-    <div class="collapsible-header"><i class="material-icons">filter_drama</i> Search / Filter</div>
-    <div class="collapsible-body card">
-      <div class="search-panel card-content">
+    <div class="collapsible-header">
+      <%= content_tag(:span, "#{@items_found} / #{@items_total}", class: 'badge new', data: { 'badge-caption' => '' }) unless params[:search].blank? %>
+      <i class="material-icons">swap_horiz</i> Filter
+      <div class="secondary-content"></div>
+    </div>
+    <div class="collapsible-body">
 
-        <%= simple_form_for(@search_object, method: :get, as: :search, html: { id: 'search-form' }) do |f| %>
+      <%
+        url_params = [(params[:action] == 'index' ? nil : params[:action]), @klass]
+      %>
+      <%= simple_form_for(@search_object, url: url_params, method: :get, as: :search, html: { id: 'search-form' }) do |f| %>
+        <%= render(partial: 'cohesive_admin/filters/fields', locals: { klass: @klass, f: f }) %>
 
-          <%= render(partial: 'cohesive_admin/filters/fields', locals: { klass: @klass, f: f }) %>
+        <button type="submit" class="waves-effect waves-light btn" data-disable-with="Filtering...">Apply Filters</button>
+        <%= link_to('Clear', url_params, class: 'waves-effect waves-grey btn-flat') -%>
+      <% end %>
 
-          <button type="submit" class="waves-effect waves-light btn" data-disable-with="Filtering...">Go</button>
-          <%= link_to('Clear', @klass, class: 'waves-effect waves-grey btn-flat') -%>
-        <% end %>
-
-      </div>
     </div>
   </li>
 <% end unless @klass.admin_config[:filters].blank? %>

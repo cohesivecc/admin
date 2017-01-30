@@ -2,7 +2,6 @@
 # TODO: fix this listener to prevent it from firing multiple times (due to Turbolinks)
 
 $(document).on('cohesive_admin.initialized', (e) ->
-
   $(document).off('change', 'select[data-polymorphic-type]').on('change', 'select[data-polymorphic-type]', () ->
     field         = $(@).data('polymorphic-type')
     initial_type  = $(@).data('initial')

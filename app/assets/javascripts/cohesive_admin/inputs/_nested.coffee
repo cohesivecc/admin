@@ -54,6 +54,6 @@ class window.NestedInput
         li.hide()
 
 
-$(document).on('turbolinks:load', () ->
+$(document).on('cohesive_admin.initialized', () ->
   NestedInput.initialize()
 )

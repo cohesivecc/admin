@@ -12,6 +12,7 @@ module CohesiveAdmin
       rescue_from ActionController::RoutingError, ActionController::UnknownController, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception| render_404 }
     end
 
+
     private
 
 

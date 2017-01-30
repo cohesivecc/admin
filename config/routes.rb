@@ -16,6 +16,8 @@ CohesiveAdmin::Engine.routes.draw do
       end
     end
 
+    get :config, to: 'config#index', format: :json, as: 'config'
+
 
     CohesiveAdmin::Engine.eager_load!
     Rails.application.eager_load!
@@ -29,7 +31,7 @@ CohesiveAdmin::Engine.routes.draw do
         end
         collection do
           if m.admin_config && m.admin_sortable?
-            get :sort
+            get :sort, defaults: { page: 'all' }
             put :apply_sort
           end
         end
