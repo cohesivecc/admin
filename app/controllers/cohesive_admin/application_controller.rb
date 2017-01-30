@@ -60,8 +60,15 @@ module CohesiveAdmin
       def load_user
         unless @user = CohesiveAdmin::User.find(session[:user_id]) rescue nil
           reset_session
-          session[:redirect_path] = request.fullpath
-          redirect_to(new_session_path) and return
+          respond_to do |format|
+            format.html {
+              session[:redirect_path] = request.fullpath
+              redirect_to(new_session_path) and return
+            }
+            format.json {
+              render nothing: true, status: 401
+            }
+          end
         end
       end
 

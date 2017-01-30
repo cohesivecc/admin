@@ -4,18 +4,20 @@ class window.CohesiveAdmin
   @initialized  = false
 
   @initialize: () ->
-    if(CohesiveAdmin.initialized)
-      $(document).trigger('cohesive_admin.initialized')
-    else
-      # side navigation
-      $(".button-collapse").sideNav()
+    # NEAL: this feels a bit hacky - on login screen, the AJAX call below causes CSRF validation to fail, so we simply skip this step on that page.
+    unless $('body#login').length
+      if(CohesiveAdmin.initialized)
+        $(document).trigger('cohesive_admin.initialized')
+      else
+        # side navigation
+        $(".button-collapse").sideNav()
 
-      $.ajax({
-        url: "<%= CohesiveAdmin::Engine.routes.url_helpers.config_path(format: :json) %>",
-        dataType: 'json'
-      }).done( (data) ->
-        CohesiveAdmin.configure(data);
-      )
+        $.ajax({
+          url: "<%= CohesiveAdmin::Engine.routes.url_helpers.config_path(format: :json) %>",
+          dataType: 'json',
+        }).done( (data) ->
+          CohesiveAdmin.configure(data);
+        )
 
   @configure: (@config) ->
     # listen for dynamic changes to the form

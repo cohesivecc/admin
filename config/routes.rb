@@ -2,7 +2,7 @@ CohesiveAdmin::Engine.routes.draw do
 
     root to: "dashboard#index"
 
-    resources :sessions do
+    resources :sessions, only: [:new, :create] do
       collection do
         get :forgot_password
         post :reset_password

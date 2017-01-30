@@ -13,6 +13,6 @@
 $(document).on('turbolinks:load', () ->
 
   # kick things off
-  CohesiveAdmin.initialize();
+  CohesiveAdmin.initialize()
 
 )
