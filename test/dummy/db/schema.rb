@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.string   "email"
     t.string   "phone_number"
     t.string   "title"
+    t.boolean  "active"
     t.integer  "address_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false

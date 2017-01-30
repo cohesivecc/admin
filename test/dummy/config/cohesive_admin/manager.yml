@@ -11,3 +11,4 @@ fields:
   address:
     type: association
     filter: true
+  active: boolean
