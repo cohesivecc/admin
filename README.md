@@ -109,7 +109,7 @@ order: 0
 
 ## Help Text and Labels
 
-It is possible to add help text to a field.  See example below:
+It is possible to add help text or change the label for a field.  See example below:
 
 ```yml
 fields:
@@ -123,4 +123,12 @@ fields:
   boolean_example: boolean
   checkbox_example: checkbox
   code_example: code
+```
+
+## Populating Dropdowns
+
+A dropdown can be populated by using validations to the model.
+
+```ruby
+validates :field_name, inclusion: { in: ['Value 1', 'Value 2'] }
 ```
