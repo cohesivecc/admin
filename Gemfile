@@ -17,9 +17,16 @@ gemspec
 group :development do
   gem "rails", '>= 5.0'
 
+  # Refile
   gem 'refile', github: 'refile/refile', require: 'refile/rails'
   gem 'refile-mini_magick', github: 'refile/refile-mini_magick'
   gem 'sinatra', github: 'sinatra/sinatra', branch: 'master'
+
+  # Shrine
+  gem "shrine", '~> 2.2'
+  gem 'image_processing'
+  gem 'mini_magick'
+  gem 'fastimage'
 
   gem 'web-console', '>= 3.4'
 end

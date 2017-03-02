@@ -1,4 +1,5 @@
 class Manager < ActiveRecord::Base
+  include ImageUploader[:image]
   cohesive_admin
 
   validates :name, presence: true

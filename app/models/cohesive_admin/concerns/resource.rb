@@ -193,7 +193,8 @@ module CohesiveAdmin::Concerns::Resource
           else
             @admin_strong_params << k
 
-            if f[:type] == 'refile'
+            # file deletion
+            if %w{refile shrine}.include?(f[:type])
               @admin_strong_params << "remove_#{k}"
             end
           end

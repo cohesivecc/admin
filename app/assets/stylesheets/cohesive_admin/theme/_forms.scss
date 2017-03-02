@@ -27,7 +27,7 @@
     }
   }
 
-  &.wysiwyg, &.code, &.nested, &.refile > .file-field {
+  &.wysiwyg, &.code, &.nested, &.refile > .file-field, &.shrine > .file-field {
     padding-top: 1em;
     > label {
       font-size: 0.8rem;

@@ -8,6 +8,9 @@ class CreateManagers < ActiveRecord::Migration
       t.boolean :active
       t.belongs_to :address
 
+      # Shrine
+      t.text :image_data
+
       t.timestamps null: false
     end
   end

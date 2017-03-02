@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.string   "title"
     t.boolean  "active"
     t.integer  "address_id"
+    t.text     "image_data"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
