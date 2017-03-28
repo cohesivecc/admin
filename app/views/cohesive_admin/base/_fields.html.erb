@@ -37,6 +37,7 @@ parent_klass ||= nil
       <%
       input_html = {}
       input_html[:placeholder] = v[:placeholder]
+      input_html[:disabled] = v[:disabled]
       input_html[:class] = 'materialize-textarea' if v[:type].to_sym == :text
       %>
 

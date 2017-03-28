@@ -190,6 +190,8 @@ module CohesiveAdmin::Concerns::Resource
             elsif r.macro == :has_many || r.macro == :has_and_belongs_to_many
               @admin_strong_params << { :"#{r.name.to_s.singularize}_ids" => [] }
             end
+          elsif f[:disabled] == "disabled"
+            next #don't allow this to be edited
           else
             @admin_strong_params << k
 

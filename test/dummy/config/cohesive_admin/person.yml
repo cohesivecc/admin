@@ -4,6 +4,7 @@ fields:
   name:
     type: string
     help: "This is the display name for the person."
+    disabled: "disabled"
   email: email
   job: association
   bio: wysiwyg
