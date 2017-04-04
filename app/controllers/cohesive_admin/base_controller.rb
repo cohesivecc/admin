@@ -6,6 +6,7 @@ module CohesiveAdmin
 
     before_action :set_klass
     before_action :set_header
+		before_action :require_admin_config
     before_action :load_object, only: [:edit, :update, :destroy, :show, :clone]
     before_action :load_search_object, only: [:index, :sort]
     before_action :load_list, only: [:index, :sort]
@@ -179,6 +180,10 @@ module CohesiveAdmin
         # optionally overwrite in your controllers
         @header = (@object ? object_header : klass_header.pluralize) rescue 'CMS'
       end
+			
+			def require_admin_config
+				render file: 'cohesive_admin/base/missing_admin_config' and return if @klass.admin_config[:error] == :missing_admin_config
+			end
 
       def load_object
         # default lookup by ID

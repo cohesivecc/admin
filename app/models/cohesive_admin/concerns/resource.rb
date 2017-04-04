@@ -100,28 +100,8 @@ module CohesiveAdmin::Concerns::Resource
           # user created models
           @admin_config.update( YAML.load_file(CohesiveAdmin.app_root.join(fname)).symbolize_keys )
         else
-          # construct default config
-
-          # reflections - ie. belongs_to, has_many
-          self.reflections.each do |k, r|
-
-            # omit has_one relationships by default, unless they are accepts_nested_attributes_for AND flagged as an admin_resource
-            next if r.has_one? && (!self.nested_attributes_options.symbolize_keys.has_key?(k.to_sym) || !r.klass.admin_resource?)
-
-
-            @admin_config[:fields][k.to_sym] = r.polymorphic? ? 'polymorphic' : 'association'
-            # omit foreign key columns
-            @blacklisted_columns << r.foreign_key.to_sym
-            @blacklisted_columns << r.foreign_type.to_sym if r.polymorphic?
-            # omit counter_cache columns
-            @blacklisted_columns << (r.options[:counter_cache].blank? ? "#{r.name}_count" : r.options[:counter_cache].to_s).to_sym
-          end
-
-          self.columns.each do |c|
-            @admin_config[:fields][c.name.to_sym] = {
-              type: c.type
-            } unless @blacklisted_columns.include?(c.name.to_sym)
-          end if self.table_exists?
+					# flag this model as having a missing config.
+          @admin_config[:error] = :missing_admin_config
         end
 
         self.admin_sortable(@admin_config[:sort]) if @admin_config[:sort]

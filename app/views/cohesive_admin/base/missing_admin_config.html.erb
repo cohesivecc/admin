@@ -1,0 +1,18 @@
+<%= content_tag(:div, class: "card-panel orange") do %>
+	<i class='material-icons' style="vertical-align:text-bottom">warning</i> The <%= @klass.to_s %> model's configuration is missing.
+<% end %>
+<br>
+<ol>
+	<li>
+		Run the cohesive_admin:model generator to create the default config file:
+		<pre class='card-panel grey lighten-2'>rails g cohesive_admin:model <%= @klass.to_s.downcase %></pre>
+		<br>
+	</li>
+	<li>
+		Customize its configuration in <i>Rails.root/config/cohesive_admin/<%= @klass.to_s.underscore.downcase %>.yml</i><br><br>
+	</li>
+	<li>
+		Configs are loaded once, so you'll need to restart Rails after creating or editing the file:
+		<pre class='card-panel grey lighten-2'>touch tmp/restart.txt</pre>
+	</li>
+</ol>
