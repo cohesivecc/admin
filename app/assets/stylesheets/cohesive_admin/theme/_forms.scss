@@ -17,13 +17,13 @@
     input[type=search],
     textarea.materialize-textarea {
       margin-bottom: 5px;
-      border-bottom: $input-invalid-border;
-      box-shadow: 0 1px 0 0 $input-error-color;
+      border-bottom: 1px solid #F44336;
+      box-shadow: 0 1px 0 0 #F44336;
     }
     .error-block {
-      margin: $input-margin;
-      color: $input-error-color;
-      font-size: $label-font-size;
+      margin: 0 0 15px 0;
+      color: #F44336;
+      font-size: .8rem;
     }
   }
 
@@ -105,4 +105,8 @@
     display: block;
     margin: 10px 0;
   }
+}
+
+.fr-sticky {
+  position: relative;
 }

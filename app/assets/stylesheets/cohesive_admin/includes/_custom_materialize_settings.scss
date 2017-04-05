@@ -1,0 +1,11 @@
+// These are settings are used as overrides for Cohesive's customizations to materialized.
+$secondary-color: #64B5F6 !default;
+
+
+.secondary-content {
+  color: $secondary-color;
+}
+
+.btn, .btn-large {
+  background-color: $secondary-color;
+}

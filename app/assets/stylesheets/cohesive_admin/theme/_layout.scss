@@ -43,7 +43,7 @@ main {
   li.logo-link {
     text-transform: uppercase;
     a { font-size: 0.9em; }
-    &, a, i.material-icons { height: $navbar-height; line-height: $navbar-height; }
+    &, a, i.material-icons { height: 64px; line-height: 64px; }
   }
 }
 
