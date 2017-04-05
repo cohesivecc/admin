@@ -9,6 +9,9 @@ module CohesiveAdmin
       g.stylesheets     false
       g.javascripts     false
       g.helper          false
+      g.test_framework :rspec, fixture: :false
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+      g.assets          false
     end
 
     initializer 'cohesive_admin.include_concerns' do

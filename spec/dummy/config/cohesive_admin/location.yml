@@ -1,0 +1,12 @@
+order: 2
+fields:
+  slug:
+  image:
+    type: refile
+    help: "Upload a picture here"
+    placeholder: "Here is some placeholder text"
+  json_data: code
+  addresses:
+    type: association
+  jobs: association
+sort: position

@@ -1,0 +1,12 @@
+duplicate: true
+fields:
+  locatable:
+    type: polymorphic
+    filter: true
+  street:
+  city:
+  state:
+  zip:
+  description: wysiwyg
+  managers: association
+sort: position

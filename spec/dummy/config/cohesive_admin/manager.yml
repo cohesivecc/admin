@@ -1,0 +1,15 @@
+duplicate: true
+fields:
+  name:
+    type: string
+    help: "This is the display name for the person."
+    label: "Set a custom label"
+  image: shrine
+  email: email
+  title:
+    type: string
+    filter: true
+  address:
+    type: association
+    filter: true
+  active: boolean
