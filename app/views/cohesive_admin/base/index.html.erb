@@ -29,9 +29,9 @@
         <tr>
           <td>
             <%= link_to([:clone, i], class: 'secondary-content') do %>
-              <i class="material-icons">library_add</i>
+              <i class="material-icons tooltipped" data-position="left" data-delay="500" data-tooltip="Duplicate">library_add</i>
             <% end if @klass.admin_duplicatable? %>
-            <%= link_to(i.to_label, [:edit, i]) %>
+            <%= link_to(i.to_label, [:edit, i], class: "tooltipped", "data-delay" => "500", "data-position" => "left", "data-tooltip" => "Click to Edit") %>
           </td>
         </tr>
       <% end %>
