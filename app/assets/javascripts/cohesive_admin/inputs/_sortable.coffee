@@ -1,5 +1,5 @@
 
-$(document).on('turbolinks:load', () ->
+$ ->
   $('[data-sortable]').sortable({
     containment: 'parent',
     cursor: 'move',
@@ -15,4 +15,3 @@ $(document).on('turbolinks:load', () ->
         url: list.attr('data-url')
       })
     })
-)

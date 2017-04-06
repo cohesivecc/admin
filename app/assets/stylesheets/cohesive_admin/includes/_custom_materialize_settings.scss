@@ -1,11 +1,37 @@
 // These are settings are used as overrides for Cohesive's customizations to materialized.
 $secondary-color: #64B5F6 !default;
 
-
 .secondary-content {
   color: $secondary-color;
 }
 
 .btn, .btn-large {
+  background-color: $secondary-color;
+  &:hover {
+    background-color: darken($secondary-color, 20%);
+  }
+}
+
+
+input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid $secondary-color;
+  box-shadow: 0 1px 0 0 $secondary-color;
+}
+
+input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([readonly])+label, input[type=password]:focus:not([readonly])+label, input[type=email]:focus:not([readonly])+label, input[type=url]:focus:not([readonly])+label, input[type=time]:focus:not([readonly])+label, input[type=date]:focus:not([readonly])+label, input[type=datetime]:focus:not([readonly])+label, input[type=datetime-local]:focus:not([readonly])+label, input[type=tel]:focus:not([readonly])+label, input[type=number]:focus:not([readonly])+label, input[type=search]:focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label {
+  color: $secondary-color;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+  color: $secondary-color;
+}
+
+
+[type="checkbox"]:checked+label:before {
+  border-right: 2px solid $secondary-color;
+  border-bottom: 2px solid $secondary-color;
+}
+
+span.badge.new {
   background-color: $secondary-color;
 }
