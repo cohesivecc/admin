@@ -1,12 +1,19 @@
 order: 2
 fields:
   slug:
+    type: string
+    help: "Can only include letters, numbers, underscores, and hyphens."
   image:
     type: refile
-    help: "Upload a picture here"
+    help: "Optimal image dimensions are 1200px x 600px."
     placeholder: "Here is some placeholder text"
-  json_data: code
+  json_data:
+    type: code
+    help: "Code is not validated! Ensure you're using valid JSON."
   addresses:
     type: association
-  jobs: association
+    help: "Each location can have multiple addresses."
+  jobs:
+    type: association
+    help: "Select which jobs are available at this location."
 sort: position

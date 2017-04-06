@@ -18,7 +18,7 @@ title     = klass.admin_display_name.titleize
     <% end %>
     <li>
       <%= content_tag(:a, class: 'collapsible-add-link green-text', data: { turbolinks: false, 'nested-add' => true }) do %>
-        <span class="secondary-content"><i class="material-icons green-text">add</i></span>
+        <span class="secondary-content"><i class="material-icons green-text tooltipped" data-delay="500" data-position="left" data-tooltip="Add new <%= title %>">add</i></span>
         Add New <%= title %>
       <% end %>
     </li>
