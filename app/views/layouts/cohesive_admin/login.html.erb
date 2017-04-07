@@ -13,7 +13,7 @@
 
     <%= stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css", 'cohesive_admin/application', '//fonts.googleapis.com/icon?family=Material+Icons', media: 'all'  %>
 
-    <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js", 'cohesive_admin/application' %>
+
 
     <%= csrf_meta_tags %>
   </head>
@@ -36,7 +36,7 @@
 				Happily engineered just for you by your friends at <br /><a href="http://www.cohesive.cc" target="_blank"><i class="co-icon-logo"></i></a>
 			</footer>
     </div>
-
+    <%= javascript_include_tag 'cohesive_admin/application',  "//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js" %>
 	</body>
 
 </html>
