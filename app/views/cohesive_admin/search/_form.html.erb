@@ -1,0 +1,16 @@
+<%= content_tag(:ul, class: 'collapsible', id: 'search-container', data: { collapsible: 'accordion' }) do %>
+  <li>
+    <div class="collapsible-header">
+      <%= content_tag(:span, @search_term, class: 'badge new') unless params[:search_term].blank? %>
+      <i class="material-icons">search</i> Search
+      <div class="secondary-content"></div>
+    </div>
+    <div class="collapsible-body">
+        <%
+          url_params = [(params[:action] == 'index' ? nil : params[:action]), @klass]
+        %>
+        <%= simple_form_for() %>
+
+    </div>
+  </li>
+<% end unless @klass.admin_config[:searchers].blank? %>

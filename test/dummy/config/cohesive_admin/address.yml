@@ -4,6 +4,8 @@ fields:
     type: polymorphic
     filter: true
   street:
+    type: string
+    searchable: true
   city:
   state:
   zip:

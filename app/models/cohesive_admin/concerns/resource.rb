@@ -85,6 +85,7 @@ module CohesiveAdmin::Concerns::Resource
           finder: :find,
           fields: {},
           filters: {},
+          searchers: {},
           sort: false,
           duplicate: false,
           order: Float::MAX
@@ -142,6 +143,7 @@ module CohesiveAdmin::Concerns::Resource
           end
 
           @admin_config[:filters][k] = attrs if field.is_a?(Hash) && field['filter']
+          @admin_config[:searchers][k] = attrs if field.is_a?(Hash) && field['searchable']
           @admin_fields[k] = attrs
         end
         @admin_fields

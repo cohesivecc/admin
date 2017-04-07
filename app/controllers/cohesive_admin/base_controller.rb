@@ -8,7 +8,7 @@ module CohesiveAdmin
     before_action :set_header
 		before_action :require_admin_config
     before_action :load_object, only: [:edit, :update, :destroy, :show, :clone]
-    before_action :load_search_object, only: [:index, :sort]
+    before_action :load_filter_object, only: [:index, :sort]
     before_action :load_list, only: [:index, :sort]
 
     # Force the classes to use the primary key as the to_param within our CMS
@@ -180,7 +180,7 @@ module CohesiveAdmin
         # optionally overwrite in your controllers
         @header = (@object ? object_header : klass_header.pluralize) rescue 'CMS'
       end
-			
+
 			def require_admin_config
 				render file: 'cohesive_admin/base/missing_admin_config' and return if @klass.admin_config[:error] == :missing_admin_config
 			end
@@ -211,11 +211,11 @@ module CohesiveAdmin
         # by default, use admin_sorted scope (see sortable)
         @skope = @klass.admin_sorted
 
-        unless @search_args.blank?
+        unless @filter_args.blank?
           # count of total objects (before applying filters)
           @items_total = @skope.count
           # apply any filters if necessary
-          @skope = @skope.where(@search_args)
+          @skope = @skope.where(@filter_args)
           # now count them again
           @items_found = @skope.count
         end
@@ -226,30 +226,30 @@ module CohesiveAdmin
         @items = @skope.all
       end
 
-      def search_params
-        params.fetch(:search, {}).permit(*@klass.admin_strong_params)
+      def filter_params
+        params.fetch(:filter, {}).permit(*@klass.admin_strong_params)
       end
 
-      def load_search_object
-        @search_object = @klass.new(search_params)
+      def load_filter_object
+        @filter_object = @klass.new(filter_params)
 
 
-        if params[:search]
-          # filter out anything except allowed params, pluck them from our @search_object
-          @search_args = {}
+        if params[:filter]
+          # filter out anything except allowed params, pluck them from our @filter_object
+          @filter_args = {}
 
           @klass.admin_strong_params.each do |p|
-            if params[:search][p] && (@search_object[p] == false || !@search_object[p].blank?)
-              @search_args[p] = @search_object.send(p)
+            if params[:filter][p] && (@filter_object[p] == false || !@filter_object[p].blank?)
+              @filter_args[p] = @filter_object.send(p)
             else
               # reset all searchable values to nil unless they're present in the search params (prevents default values when calling @klass.new)
-              @search_object.send("#{p}=", nil) rescue nil
+              @filter_object.send("#{p}=", nil) rescue nil
             end
           end
         else
           # reset all searchable values to nil (prevents default values when calling @klass.new)
           @klass.admin_config[:filters].each do |k,v|
-            @search_object.send("#{k}=", nil)
+            @filter_object.send("#{k}=", nil)
           end
         end
       end
