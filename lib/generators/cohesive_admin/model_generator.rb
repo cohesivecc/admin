@@ -3,10 +3,38 @@ require 'rails/generators/model_helpers'
 module CohesiveAdmin
   module Generators
     class ModelGenerator < Rails::Generators::NamedBase
+			
+			argument :name, type: :string, default:''
       
       desc "This generator creates the default yml config file for an ActiveRecord model that implements cohesive_admin"
-      def adminify
-        
+      def generate
+				
+				if(name != '')
+					names = [name]
+				else
+					Rails.application.eager_load!
+					names = ActiveRecord::Base.descendants.collect do |model|
+						model.name.underscore
+					end - ['cohesive_admin/user']
+					say ""
+					say "Generating config for model(s):", :yellow
+					names.each do |name|
+						say "  #{ name }", :green
+					end
+					say ""
+					say "You will be prompted to overwrite any existing config files.", :yellow
+					say ""
+				end
+				
+				names.each do |model_name|
+					adminify model_name
+				end
+			end
+			
+		private
+			
+			def adminify(name)
+				
         # inject cohesive_admin into the model's class definition (if not already present)
         model_path = "app/models/#{ name }.rb"        
         content = File.binread(Rails.root.join(model_path))
@@ -18,7 +46,9 @@ module CohesiveAdmin
         
         # generate the default yml file for the model, based on its attributes and associations.
         config_path = "config/cohesive_admin/#{ name }.yml"
-        unless File.exists?(Rails.root.join(config_path))
+				config_file = Rails.root.join(config_path)
+				
+				if !File.exists?(config_file) || overwrite = yes?("Overwrite #{name}.yml")
           
           klass = name.singularize.classify.constantize
           blacklist = [:id, :created_at, :updated_at]
@@ -62,7 +92,8 @@ module CohesiveAdmin
 					yaml += "# duplicate: true\n"
 					yaml += { 'fields' => fields }.to_yaml.sub(/^\-{3}\n/, '')
           
-          create_file Rails.root.join(config_path) do 
+					remove_file config_file if overwrite
+          create_file config_file do 
             yaml
           end
         end
