@@ -1,7 +1,7 @@
 <%= content_tag(:ul, class: 'collapsible', id: 'search-container', data: { collapsible: 'accordion' }) do %>
   <li>
     <div class="collapsible-header">
-      <%= content_tag(:span, @search_term, class: 'badge new') unless params[:search_term].blank? %>
+        <%= content_tag(:span, "#{@items_found} / #{@items_total}", class: 'badge new', data: { 'badge-caption' => '' }) unless params[:search].blank? %>
       <i class="material-icons">search</i> Search
       <div class="secondary-content"></div>
     </div>
@@ -9,8 +9,16 @@
         <%
           url_params = [(params[:action] == 'index' ? nil : params[:action]), @klass]
         %>
-        <%= simple_form_for() %>
+        <%= simple_form_for(@search_object, url: url_params, method: :get, as: :search, html: { id: 'search-form' }) do |f| %>
+          <% if params[:search] %>
+            <%= f.input :ca_search, as: :string, label: "Search", input_html: { value: params[:search][:ca_search] } %>
+          <% else %>
+            <%= f.input :ca_search, as: :string, label: "Search"  %>
+          <% end %>
+          <button type="submit" class="waves-effect waves-light btn" data-disable-with="Searching...">Search</button>
+          <%= link_to('Clear', url_params, class: 'waves-effect waves-grey btn-flat') %>
+        <% end %>
 
     </div>
   </li>
-<% end unless @klass.admin_config[:searchers].blank? %>
+<% end if @klass.admin_searchable? %>

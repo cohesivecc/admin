@@ -1,7 +1,7 @@
-<%= content_tag(:ul, class: 'collapsible', id: 'search-container', data: { collapsible: 'accordion' }) do %>
+<%= content_tag(:ul, class: 'collapsible', id: 'filter-container', data: { collapsible: 'accordion' }) do %>
   <li>
     <div class="collapsible-header">
-      <%= content_tag(:span, "#{@items_found} / #{@items_total}", class: 'badge new', data: { 'badge-caption' => '' }) unless params[:search].blank? %>
+      <%= content_tag(:span, "#{@items_found} / #{@items_total}", class: 'badge new', data: { 'badge-caption' => '' }) unless params[:filter].blank? %>
       <i class="material-icons">swap_horiz</i> Filter
       <div class="secondary-content"></div>
     </div>

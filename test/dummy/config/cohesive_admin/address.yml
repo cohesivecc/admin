@@ -7,6 +7,8 @@ fields:
     type: string
     searchable: true
   city:
+    type: string
+    searchable: true
   state:
   zip:
   description: wysiwyg

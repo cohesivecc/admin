@@ -9,6 +9,7 @@ module CohesiveAdmin
 		before_action :require_admin_config
     before_action :load_object, only: [:edit, :update, :destroy, :show, :clone]
     before_action :load_filter_object, only: [:index, :sort]
+    before_action :load_search_object, only: [:index, :sort]
     before_action :load_list, only: [:index, :sort]
 
     # Force the classes to use the primary key as the to_param within our CMS
@@ -220,6 +221,19 @@ module CohesiveAdmin
           @items_found = @skope.count
         end
 
+
+
+        # @skope.where(valu)
+        if params[:search] && @klass.admin_searchable?
+          @items_total = @skope.count
+          clauses = []
+          @klass.admin_config[:searchers].each do |search_field|
+            clauses << @klass.arel_table[search_field[0].to_sym].matches("%#{params[:search][:ca_search]}%").to_sql
+          end
+          @skope = @skope.where(clauses.join(' OR '))
+          @items_found = @skope.count
+        end
+
         # page == 'all' is set on the :sort action (via routes.rb), or in the Ajax call from the polymorphic input (polymorphic.coffee)
         @skope = @skope.page(params[:page]) unless params[:page] == 'all'
 
@@ -252,6 +266,14 @@ module CohesiveAdmin
             @filter_object.send("#{k}=", nil)
           end
         end
+      end
+
+      def search_params
+        params.fetch(:search, {}).permit(*@klass.admin_strong_params)
+      end
+
+      def load_search_object
+        @search_object = @klass.new(search_params)
       end
 
   end

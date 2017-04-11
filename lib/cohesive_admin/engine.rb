@@ -16,6 +16,7 @@ module CohesiveAdmin
         ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Resource)
         ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable)
         ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Duplicatable)
+        ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Searchable)
          # add new concerns for loading
       end
     end

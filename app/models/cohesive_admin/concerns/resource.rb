@@ -114,6 +114,10 @@ module CohesiveAdmin::Concerns::Resource
       end
     end
 
+    def set_admin_searchable
+      self.admin_searchable(true)
+    end
+
     def parse_admin_fields
       if self.admin_resource? && self.admin_config
         ### @admin_fields ###
@@ -143,7 +147,10 @@ module CohesiveAdmin::Concerns::Resource
           end
 
           @admin_config[:filters][k] = attrs if field.is_a?(Hash) && field['filter']
-          @admin_config[:searchers][k] = attrs if field.is_a?(Hash) && field['searchable']
+          if field.is_a?(Hash) && field['searchable']
+            @admin_config[:searchers][k] = attrs
+            set_admin_searchable
+          end
           @admin_fields[k] = attrs
         end
         @admin_fields
@@ -155,7 +162,7 @@ module CohesiveAdmin::Concerns::Resource
     def admin_strong_params
       unless @admin_strong_params
         # setup strong parameters from managed fields
-        @admin_strong_params = []
+        @admin_strong_params = [:ca_search]
         a = {}
 
         self.admin_fields.each do |k, f|
