@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.integer  "locatable_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.index ["locatable_type", "locatable_id"], name: "index_addresses_on_locatable_type_and_locatable_id"
   end
 
   create_table "cohesive_admin_users", force: :cascade do |t|
@@ -47,6 +48,8 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.integer "job_id"
     t.integer "location_id"
     t.index ["job_id", "location_id"], name: "index_jobs_locations_on_job_id_and_location_id"
+    t.index ["job_id"], name: "index_jobs_locations_on_job_id"
+    t.index ["location_id"], name: "index_jobs_locations_on_location_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -69,6 +72,7 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.text     "image_data"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.index ["address_id"], name: "index_managers_on_address_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -80,6 +84,7 @@ ActiveRecord::Schema.define(version: 20161110160143) do
     t.integer  "job_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.index ["job_id"], name: "index_people_on_job_id"
   end
 
 end

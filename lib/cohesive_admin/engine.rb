@@ -41,8 +41,7 @@ module CohesiveAdmin
 
       # parse config for all managed models
       CohesiveAdmin.config.managed_models.each {|m| m.admin_setup }
-    end if false
-
+    end
 
   end
 end

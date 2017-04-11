@@ -1,4 +1,4 @@
-class CreateJobsLocations < ActiveRecord::Migration
+class CreateJobsLocations < ActiveRecord::Migration[5.0]
   def change
     create_table :jobs_locations, id: false do |t|
       t.references :job
