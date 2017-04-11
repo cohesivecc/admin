@@ -18,6 +18,10 @@ class window.CohesiveAdmin
         }).done( (data) ->
           CohesiveAdmin.configure(data);
         )
+        # help/hints on form inputs
+        $(document).off('click', '[data-toggle-help]').on('click', '[data-toggle-help]', () ->
+          $(@).siblings('.help-block').toggle()
+        )
 
   @configure: (@config) ->
     # listen for dynamic changes to the form
@@ -37,3 +41,4 @@ class window.CohesiveAdmin
       $('#object-form .collapsible').collapsible()
       Materialize.updateTextFields()
       $('#object-form textarea.wysiwyg').froalaEditor()
+      $('#object-form .tooltipped, #search-form .tooltipped').tooltip()

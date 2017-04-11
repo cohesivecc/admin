@@ -5,24 +5,24 @@ SimpleForm.setup do |config|
   # wrapper, change the order or even add your own to the
   # stack. The options given below are used to wrap the
   # whole input.
-  config.wrappers :material_checkbox,
-    hint_class: :field_with_hint, error_class: 'has-error' do |b|
+  config.wrappers :material_checkbox, hint_class: :field_with_hint, error_class: 'has-error' do |b|
+
+    b.use :postfix
     b.use :input
     b.use :label
 
-    b.use :hint,  wrap_with: { tag: :span, class: 'help-block' }
+    b.use :hint,  wrap_with: { tag: :div, class: 'help-block' }
     b.use :error, wrap_with: { tag: :span, class: 'error-block' }
 
     b.use :html5
-    end
+  end
 
   config.wrappers :disabled_form do |b|
     b.use :label
     b.use :input, disabled: true, readonly: true
   end
 
-  config.wrappers :default, class: 'input-field',
-    hint_class: :field_with_hint, error_class: 'has-error' do |b|
+  config.wrappers :default, class: 'input-field', hint_class: :field_with_hint, error_class: 'has-error' do |b|
     ## Extensions enabled by default
     # Any of these extensions can be disabled for a
     # given input by passing: `f.input EXTENSION_NAME => false`.
@@ -59,10 +59,11 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     ## Inputs
+    b.use :postfix
     b.use :input
     b.use :label
 
-    b.use :hint,  wrap_with: { tag: :span, class: 'help-block' }
+    b.use :hint,  wrap_with: { tag: :div, class: 'help-block' }
     b.use :error, wrap_with: { tag: :span, class: 'error-block' }
 
     ## full_messages_for
@@ -301,3 +302,35 @@ end
 #   # The default wrapper to be used by the FormBuilder.
 #   config.default_wrapper = :vertical_form
 # end
+
+
+# Custom addition for Materialize and help text interaction
+module SimpleForm
+  module Components
+    # Needs to be enabled in order to do automatic lookups.
+    module Postfixes
+      def postfix(wrapper_options = nil)
+        @postfix ||= begin
+
+          if has_hint?
+            raw %Q{<i class="material-icons postfix tooltipped" data-tooltip="Help" data-position="left" data-delay="500" data-toggle-help>info_outline</i>}
+          end
+        end
+      end
+
+      def has_hint?
+        options[:hint] != false && hint.present?
+      end
+    end
+
+    autoload :Postfixes
+  end
+
+  module Inputs
+    class Base
+      include SimpleForm::Components::Postfixes
+      enable :postfix
+    end
+  end
+
+end

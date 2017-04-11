@@ -41,6 +41,23 @@
     border: none;
     overflow: visible;
   }
+
+  .postfix {
+    position: absolute;
+    // width: 3rem;
+    font-size: 2rem;
+    transition: color .2s;
+    right: 0;
+    text-align: right;
+    cursor: pointer;
+    color: color("orange", "lighten-1");
+
+    ~ input, ~ textarea, ~ label, ~ .validate ~ label, ~ .autocomplete-content, ~ .file-field, ~ .CodeMirror, ~ .select-wrapper, ~ .nested {
+      // margin-right: 3rem;
+      width: 92%;
+      width: calc(100% - 3rem);
+    }
+  }
 }
 
 // Nested Form Field
@@ -75,28 +92,41 @@
   }
 }
 
+.material-tooltip {
+  font-size: 0.8rem;
+  padding: 7px 5px;
+  min-height: auto;
+  .backdrop { background-color: color("orange", "lighten-1"); }
+}
+
 .help-block {
   font-size: 1em;
-  color: #81d4fa;
+  color: color("orange", "lighten-1");
   display: block;
-  &:before {
-    content: "new_releases";
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-    position: relative;
-    top: 6px;
-  }
+  margin-bottom: 2rem;
+  display: none;
+  font-weight: 300;
+  font-style: italic;
+
+  // &:before {
+  //   content: "new_releases";
+  //   font-family: 'Material Icons';
+  //   font-weight: normal;
+  //   font-style: normal;
+  //   font-size: 24px;
+  //   line-height: 1;
+  //   letter-spacing: normal;
+  //   text-transform: none;
+  //   display: inline-block;
+  //   white-space: nowrap;
+  //   word-wrap: normal;
+  //   direction: ltr;
+  //   margin-right: 0.5rem;
+  //   -webkit-font-feature-settings: 'liga';
+  //   -webkit-font-smoothing: antialiased;
+  //   position: relative;
+  //   top: 6px;
+  // }
 }
 
 .search-panel {

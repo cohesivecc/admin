@@ -1,8 +1,8 @@
 <% content_for(:hero_panel) do %>
-  <%= link_to([:new, ActiveModel::Naming.singular_route_key(@klass)], class: 'waves-effect waves-light btn-floating blue') do %>
+  <%= link_to([:new, ActiveModel::Naming.singular_route_key(@klass)], class: 'waves-effect waves-light btn-floating blue tooltipped', data: { position: 'top', delay: 500, tooltip: "Add New #{@header.singularize}"}) do %>
     <i class="material-icons">add</i>
   <% end %>
-  <%= link_to([:sort, @klass], class: 'waves-effect waves-light btn-floating red') do %>
+  <%= link_to([:sort, @klass], class: 'waves-effect waves-light btn-floating red tooltipped', data: { position: 'top', delay: 500, tooltip: "Sort #{@header}"}) do %>
     <i class="material-icons">swap_vert</i>
   <% end if @klass.admin_sortable? %>
 <% end %>
@@ -29,9 +29,9 @@
         <tr>
           <td>
             <%= link_to([:clone, i], class: 'secondary-content') do %>
-              <i class="material-icons">library_add</i>
+              <i class="material-icons tooltipped" data-position="left" data-delay="500" data-tooltip="Make a Copy">library_add</i>
             <% end if @klass.admin_duplicatable? %>
-            <%= link_to(i.to_label, [:edit, i]) %>
+            <%= link_to(i.to_label, [:edit, i], class: "tooltipped", "data-delay" => "500", "data-position" => "right", "data-tooltip" => "Click to Edit") %>
           </td>
         </tr>
       <% end %>

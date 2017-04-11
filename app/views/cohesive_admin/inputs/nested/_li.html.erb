@@ -3,21 +3,17 @@ klass ||= nil
 f ||= nil
 parent_klass ||= nil
 
-
-id    ||= f.object.object_id
-label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{klass.admin_display_name.titleize}" : f.object.to_label
-%>
+if klass
+  title = klass.admin_display_name.titleize
+  id    ||= f.object.object_id
+  label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{title}" : f.object.to_label
+  %>
 
 <li data-nested-object="<%= id %>">
   <div class="collapsible-header">
     <%= content_tag(:span, f.object.errors.count, class: 'new badge red', data: { 'badge-caption' => 'errors' }) unless f.object.errors.blank? %>
     <%= link_to(label, "##{id}", data: { turbolinks: false }) -%>
-    <a href="#!" class="secondary-content" data-nested-destroy="<%= id %>"><i class="material-icons">delete</i></a>
-    <% if klass.admin_duplicatable? && false %>
-      <%= link_to '#', class: "secondary-content" do %>
-        <i class="material-icons">library_add</i>
-      <% end %>
-    <% end %>
+    <a href="#!" class="secondary-content tooltipped" data-position="left" data-delay="500" data-tooltip="Delete <%= title %>" data-nested-destroy="<%= id %>"><i class="material-icons">delete</i></a>
   </div>
   <div class="collapsible-body">
     <div class="nested-form-fields">
@@ -27,3 +23,5 @@ label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{klass
     </div>
   </div>
 </li>
+
+<% end %>
