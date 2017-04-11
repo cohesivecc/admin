@@ -1,0 +1,2 @@
+excludeInFolderSearch = "{$exclude,test/dummy/tmp/cache/*}"
+excludeInFileChooser  = "{$exclude,test/dummy/tmp/cache/*}"
