@@ -43,4 +43,14 @@ describe CohesiveAdmin::User do
     expect(user.errors).to have_key(:email)
   end
 
+  it 'is invalid without a password_confirmation' do
+    user =   CohesiveAdmin::User.new(
+        name: 'Bad Tester',
+        email: 'test@example.com',
+        password: 'Hide@ndGoS33ky',
+        password_confirmation: '')
+    user.valid?
+    expect(user.errors).to have_key(:password_confirmation)
+  end
+
 end
