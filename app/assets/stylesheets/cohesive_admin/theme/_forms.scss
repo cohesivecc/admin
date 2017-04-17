@@ -21,6 +21,7 @@
       box-shadow: 0 1px 0 0 $input-error-color;
     }
     .error-block {
+      display: block;
       margin: $input-margin;
       color: $input-error-color;
       font-size: $label-font-size;
@@ -58,6 +59,11 @@
       width: calc(100% - 3rem);
     }
   }
+}
+
+[type="checkbox"] + label {
+  top: auto;
+  left: auto;
 }
 
 // Nested Form Field

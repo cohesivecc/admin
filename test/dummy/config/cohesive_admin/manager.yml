@@ -4,7 +4,9 @@ fields:
     type: string
     help: "This is the display name for the person."
     label: "Set a custom label"
-  image: shrine
+  image:
+    type: shrine
+    help: "Optimal aspect ratio is 16:9."
   email: email
   title:
     type: string

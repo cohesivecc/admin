@@ -51,27 +51,20 @@ class ShrineInput < SimpleForm::Inputs::Base
         end
       end
 
-      link_html = raw("")
-      if @img
-        link_html += template.link_to(
-                            template.image_tag(@img.url, width: 150),
-                            @img.url,
-                            target: '_blank'
-                      )
-      end
-
-      if @removeable
-        # Add the 'remove' button
-        link_html += raw(%Q{
-          <div>
-            #{@builder.input_field("remove_#{attribute_name}", as: :boolean)}
-            #{@builder.label("remove_#{attribute_name}", "Remove #{attribute_name.humanize}?")}
+      if @img || @removeable
+        link_html = raw(%Q{
+          <div class="row">
+            <div class="col s12">
+              #{template.link_to(template.image_tag(@img.url, width: 150), @img.url, target: '_blank') if @img}
+              <div>
+                #{@builder.input_field("remove_#{attribute_name}", as: :boolean) if @removeable}
+                #{@builder.label("remove_#{attribute_name}", "Remove #{attribute_name.humanize}?") if @removeable}
+              </div>
+            </div>
           </div>
           })
+        html += raw(link_html)
       end
-
-      link_html = template.content_tag(:div, link_html)
-      html += raw(link_html)
     end
 
     html.html_safe
