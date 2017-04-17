@@ -12,7 +12,7 @@ module CohesiveAdmin
     end
 
     initializer 'cohesive_admin.include_concerns' do
-      ActionDispatch::Reloader.to_prepare do
+      ActiveSupport::Reloader.to_prepare do
         ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Resource)
         ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable)
         ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Duplicatable)
@@ -38,7 +38,7 @@ module CohesiveAdmin
 
       # parse config for all managed models
       CohesiveAdmin.config.managed_models.each {|m| m.admin_setup }
-    end
+    end if false
 
 
   end

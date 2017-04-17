@@ -1,5 +1,5 @@
 # This migration comes from cohesive_admin (originally 20160408165151)
-class CreateCohesiveAdminUsers < ActiveRecord::Migration
+class CreateCohesiveAdminUsers < ActiveRecord::Migration[5.0]
   def change
     create_table :cohesive_admin_users do |t|
       t.string :name,             limit: 40

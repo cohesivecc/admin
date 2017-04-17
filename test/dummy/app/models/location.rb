@@ -1,11 +1,11 @@
 class Location < ActiveRecord::Base
-
+	
   cohesive_admin
 
   # has_one :address, inverse_of: :location
   has_many :addresses, as: :locatable, inverse_of: :locatable
   has_and_belongs_to_many :jobs
-
+	
   attachment :image, type: :image
 
   accepts_nested_attributes_for :addresses, allow_destroy: true

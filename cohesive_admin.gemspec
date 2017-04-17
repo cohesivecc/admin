@@ -33,9 +33,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari', '~> 0.17'
   s.add_dependency 'simple_form', '~> 3.1'
 
-
   s.add_dependency 'aws-sdk-rails', '~> 1.0'
 
   s.add_development_dependency "sqlite3"
-
+	
 end

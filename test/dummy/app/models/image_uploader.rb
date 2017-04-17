@@ -7,7 +7,7 @@ class ImageUploader < Shrine
   plugin :remove_attachment
   plugin :store_dimensions
   plugin :validation_helpers
-  plugin :versions, names: [:original, :thumb]
+  plugin :versions
 
   Attacher.validate do
     validate_max_size 2.megabytes, message: 'is too large (max is 2 MB)'
