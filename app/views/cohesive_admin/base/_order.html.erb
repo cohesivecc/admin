@@ -1,0 +1,22 @@
+<%
+  url_params = [(params[:action] == 'index' ? nil : params[:action]), @klass]
+%>
+
+<%
+page_params = {}
+if params[:filter]
+  filters = params[:filter]
+page_params = page_params.merge(filter: params[:filter].to_unsafe_h)
+end %>
+
+
+<nav class="white">
+  <div class="nav-wrapper">
+    <ul class="right">
+      <li class="grey-text text-darken-3">Sort by:</li>
+      <li><%= link_to "Newest First", [@klass, page_params.merge(sort: 'newest')], class: "#{params[:sort] == "newest" ? "blue-text" : "grey-text"}" %></li>
+      <li><%= link_to "Oldest First", [@klass, page_params.merge(sort: 'oldest')], class: "#{params[:sort] == "oldest" ? "blue-text" : "grey-text"}" %></li>
+      <li><%= link_to "Sorted Position", [@klass, page_params.merge(sort: 'position')], class: "#{params[:sort] == "position" ? "blue-text" : "grey-text"}" %></li>
+    </ul>
+  </div>
+</nav>

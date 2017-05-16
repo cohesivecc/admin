@@ -12,7 +12,7 @@
       %>
       <%= simple_form_for(@filter_object, url: url_params, method: :get, as: :filter, html: { id: 'filter-form' }) do |f| %>
         <%= render(partial: 'cohesive_admin/filters/fields', locals: { klass: @klass, f: f }) %>
-
+        <%= render(partial: 'cohesive_admin/filters/search', locals: { klass: @klass, f: f }) if @klass.admin_searchable? %>
         <button type="submit" class="waves-effect waves-light btn" data-disable-with="Filtering...">Apply Filters</button>
         <%= link_to('Clear', url_params, class: 'waves-effect waves-grey btn-flat') -%>
       <% end %>

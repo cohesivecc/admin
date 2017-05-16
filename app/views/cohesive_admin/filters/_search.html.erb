@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col s12">
+    <% if params[:filter] %>
+      <%= f.input :ca_search, as: :string, label: "Search", input_html: { value: params[:filter][:ca_search] } %>
+    <% else %>
+      <%= f.input :ca_search, as: :string, label: "Search"  %>
+    <% end %>
+  </div>
+</div>

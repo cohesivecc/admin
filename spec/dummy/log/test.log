@@ -1,0 +1,1189 @@
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateCohesiveAdminUsers (20160408175635)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "cohesive_admin_users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(40), "email" varchar(80), "password_digest" varchar, "user_type" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_cohesive_admin_users_on_email" ON "cohesive_admin_users" ("email")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160408175635"]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreatePeople (20160411180707)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "people" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "prefix" varchar, "name" varchar, "email" varchar, "bio" text, "active" boolean DEFAULT 't', "job_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_people_on_job_id" ON "people" ("job_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160411180707"]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateJobs (20160412174224)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "jobs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "position" integer DEFAULT 0, "people_count" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160412174224"]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateLocations (20160602171550)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "locations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "slug" varchar(20), "position" varchar DEFAULT '0', "image_id" varchar, "json_data" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_locations_on_slug" ON "locations" ("slug")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160602171550"]]
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateAddresses (20160603200419)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "addresses" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "street" varchar, "city" varchar, "state" varchar, "zip" varchar, "description" text, "position" integer DEFAULT 0, "locatable_type" varchar, "locatable_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_addresses_on_locatable_type_and_locatable_id" ON "addresses" ("locatable_type", "locatable_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160603200419"]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateJobsLocations (20160819190647)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "jobs_locations" ("job_id" integer, "location_id" integer)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_jobs_locations_on_job_id" ON "jobs_locations" ("job_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobs_locations_on_job_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobs_locations_on_job_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_jobs_locations_on_location_id" ON "jobs_locations" ("location_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobs_locations_on_location_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobs_locations_on_location_id' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobs_locations_on_job_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobs_locations_on_job_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_jobs_locations_on_job_id_and_location_id" ON "jobs_locations" ("job_id", "location_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160819190647"]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateManagers (20161110160143)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "managers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "email" varchar, "phone_number" varchar, "title" varchar, "active" boolean, "address_id" integer, "image_data" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_managers_on_address_id" ON "managers" ("address_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20161110160143"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", 2017-04-11 19:41:28 UTC], ["updated_at", 2017-04-11 19:41:28 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_addresses_on_locatable_type_and_locatable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_addresses_on_locatable_type_and_locatable_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_cohesive_admin_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_cohesive_admin_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobs_locations_on_job_id_and_location_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobs_locations_on_job_id_and_location_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobs_locations_on_location_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobs_locations_on_location_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobs_locations_on_job_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobs_locations_on_job_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_locations_on_slug' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_locations_on_slug' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_managers_on_address_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_managers_on_address_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_people_on_job_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_people_on_job_id' AND type='index'
+[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Admin User"], ["email", "info@cohesive.cc"], ["password_digest", "$2a$04$pTNKv4Vfz56EGWg7w.Jb5.rT4BdnqiKFv6BiMXLSaAXKtcxHPwCtm"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (10.8ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Tim White"], ["email", "tim.white@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "Tom King"], ["email", "tom.king@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Jessica Smith"], ["email", "jessica.smith@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Mary Lee"], ["email", "mary.lee@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Tom Norris"], ["email", "tom.norris@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "Robert Lee"], ["email", "robert.lee@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Laura Davis"], ["email", "laura.davis@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "David Smith"], ["email", "david.smith@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Matthew Johnson"], ["email", "matthew.johnson@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Helen Brown"], ["email", "helen.brown@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Tim Norris"], ["email", "tim.norris@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Matthew Taylor"], ["email", "matthew.taylor@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "William Brown"], ["email", "william.brown@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "Tom Taylor"], ["email", "tom.taylor@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Linda Martin"], ["email", "linda.martin@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "David Allen"], ["email", "david.allen@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Linda Garcia"], ["email", "linda.garcia@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "David White"], ["email", "david.white@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "Charles White"], ["email", "charles.white@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "Kevin Davis"], ["email", "kevin.davis@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Tim Martin"], ["email", "tim.martin@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Mark Hansen"], ["email", "mark.hansen@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "Mary Martin"], ["email", "mary.martin@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Matthew Brown"], ["email", "matthew.brown@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Tim Hansen"], ["email", "tim.hansen@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mr."], ["name", "Sally Johnson"], ["email", "sally.johnson@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "David King"], ["email", "david.king@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Mary Moore"], ["email", "mary.moore@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Mrs."], ["name", "Mark Young"], ["email", "mark.young@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "people" ("prefix", "name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["prefix", "Ms."], ["name", "Kevin Miller"], ["email", "kevin.miller@example.com"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "jobs" ("name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["name", "Plumber"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "jobs" ("name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["name", "Welder"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "jobs" ("name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["name", "Programmer"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "jobs" ("name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["name", "Designer"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "jobs" ("name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["name", "Executive"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLocation Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "locations" WHERE "locations"."slug" = ? LIMIT ?[0m  [["slug", "cohesive"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "locations" ("slug", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["slug", "cohesive"], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "addresses" ("street", "city", "state", "zip", "locatable_type", "locatable_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["street", "100 Eddystone Drive"], ["city", "Hudson"], ["state", "IA"], ["zip", "50613"], ["locatable_type", "Location"], ["locatable_id", 1], ["created_at", 2017-04-11 19:41:36 UTC], ["updated_at", 2017-04-11 19:41:36 UTC]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$QUbRD9elDL09VaR4tCxgluTaVScKmHnudEVVOobDiqbf1Nq5AxCIW"], ["created_at", 2017-04-12 16:54:52 UTC], ["updated_at", 2017-04-12 16:54:52 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (1.3ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.5ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$2v/8Fi2aqnlsO8PV5D/Lyeri3nAnARNGcQEJ.6bWR.d.S.JjULLxO"], ["created_at", 2017-04-12 17:29:09 UTC], ["updated_at", 2017-04-12 17:29:09 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$qBHP2HXYiuwpsubCQjV.Nu8YCBHxA64TRD/d53a452NwKlZTH441."], ["created_at", 2017-04-12 17:29:27 UTC], ["updated_at", 2017-04-12 17:29:27 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (2.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$snDnG3RezBRR9F0Q3rFBg.s9iiWxQVnSJWvRiVMotCJf5dWOtDoee"], ["created_at", 2017-04-14 18:35:51 UTC], ["updated_at", 2017-04-14 18:35:51 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$Yz1rGADyE5pAw5N05DRkmetSz5rep5Cj9ENDwVe4W6RVhMMK5/8gK"], ["created_at", 2017-04-14 18:58:33 UTC], ["updated_at", 2017-04-14 18:58:33 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$oOBAsbUX4blwcPJjSblBpeXOLNB/D.ggoRTSM9eLX2tx5QGSoEYsW"], ["created_at", 2017-04-14 19:00:55 UTC], ["updated_at", 2017-04-14 19:00:55 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.6ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$7wb.ULRiahMcyE67pmBQ1eXuDQRStNcvhScyQUktudKyzsN1r1Tyu"], ["created_at", 2017-04-14 19:01:50 UTC], ["updated_at", 2017-04-14 19:01:50 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$8iIkol/Ev14uwz1xTozck.rNsMmpGIx.yfkclfMc8rc4844m1ba5m"], ["created_at", 2017-04-14 19:04:21 UTC], ["updated_at", 2017-04-14 19:04:21 UTC]]
+  [1m[35m (0.6ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_1@example.com"], ["password_digest", "$2a$04$.OOk/flYrWuUTmzIyC.1vu3h5/.pRqWXX8T4DxY38oBItsJST9mf6"], ["created_at", 2017-04-14 19:04:21 UTC], ["updated_at", 2017-04-14 19:04:21 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_1@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.5ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$8/qMJW5l0ytmmebj0HC2jevY4EYw/MHDDyFIujE3CDo04iAzAcKY."], ["created_at", 2017-04-14 19:14:45 UTC], ["updated_at", 2017-04-14 19:14:45 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_1@example.com"], ["password_digest", "$2a$04$0bbIp0NMnIXwNF8WFVMoHeWkGkkY9H6ftd3F0xkkQuPXwEXs64GKS"], ["created_at", 2017-04-14 19:14:46 UTC], ["updated_at", 2017-04-14 19:14:46 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_1@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_1@example.com"], ["password_digest", "$2a$04$t6qRaWhvFU456QmauZk27uVnIfFV50vmxjbGrz///qp.8fDF6Bv/S"], ["created_at", 2017-04-14 19:15:09 UTC], ["updated_at", 2017-04-14 19:15:09 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_1@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test User"], ["email", "test@example.com"], ["password_digest", "$2a$04$6NKonqsz5gvFXBmv85QOiegKX81aTymvNYdJIZhRUGnEiXZuOddXm"], ["created_at", 2017-04-14 19:15:09 UTC], ["updated_at", 2017-04-14 19:15:09 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$0toGioHg6ejWcCH08P5CCuh2rZUULzCKvyTJ7wPSrotnEKKqBzrN."], ["created_at", 2017-04-14 19:17:47 UTC], ["updated_at", 2017-04-14 19:17:47 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_3@example.com"], ["password_digest", "$2a$04$ivoico21o5dysVdY8bJ84uTWeUiIDZnQLcdwEGbP45LhxXIDbxEsO"], ["created_at", 2017-04-14 19:17:47 UTC], ["updated_at", 2017-04-14 19:17:47 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_3@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$hIaC7zBj1A7EbUCELmz0OuhCzfLUS9chvWKFFQtqD9UuTa6u.AaSa"], ["created_at", 2017-04-14 19:19:06 UTC], ["updated_at", 2017-04-14 19:19:06 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_5@example.com"], ["password_digest", "$2a$04$ORy67hcAE76qD6ka4zMqOOnjzmHuw2MFF5fO5dK7q5Scb7iVsnd6O"], ["created_at", 2017-04-14 19:19:06 UTC], ["updated_at", 2017-04-14 19:19:06 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_5@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_4@example.com"], ["password_digest", "$2a$04$5v4ZMju4.WRULDAo6Ds4v.yAdvm20R12WDGayJRCcFe1KVXO5ZBDy"], ["created_at", 2017-04-14 19:19:46 UTC], ["updated_at", 2017-04-14 19:19:46 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_4@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$wz0jML2T0zrLHE0zTi6V3OMtliOZxDKad9l5MxynDhwzOJ76hKln."], ["created_at", 2017-04-14 19:19:46 UTC], ["updated_at", 2017-04-14 19:19:46 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$VCHmauCXladeV3FGVsNyB.5PCk2d/yMPByaF54DGU6XJi7BORBTEW"], ["created_at", 2017-04-14 19:20:33 UTC], ["updated_at", 2017-04-14 19:20:33 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_5@example.com"], ["password_digest", "$2a$04$eZoRqQPPhdgfCUPovHpcz.hQr9dzD9c.wLbHtITUNoL/gvJPy1Qvy"], ["created_at", 2017-04-14 19:20:33 UTC], ["updated_at", 2017-04-14 19:20:33 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_5@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.6ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$F0N8W5Dpj.PHZNdEneDpeew6AULxnKjTY9UXuxGUrx7AaLStmqD16"], ["created_at", 2017-04-14 19:22:16 UTC], ["updated_at", 2017-04-14 19:22:16 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_7@example.com"], ["password_digest", "$2a$04$66e3Wdnvc6UxrMoMPbS5Fu9oRiL.eCdaw.Q7JdIDrdQBXYj7qFE8m"], ["created_at", 2017-04-14 19:22:16 UTC], ["updated_at", 2017-04-14 19:22:16 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_7@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (2.0ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$g4e948X.V/ldyje3v6JRee1BVfWrsmzoKxreg1.PtyMrdq7KN04Ai"], ["created_at", 2017-04-14 19:22:55 UTC], ["updated_at", 2017-04-14 19:22:55 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_4@example.com"], ["password_digest", "$2a$04$md3KxYxhi/RYmRmfyooO2OMy8Crc0.BqrbSRluzzE2ZkkDD1JyzFK"], ["created_at", 2017-04-14 19:22:55 UTC], ["updated_at", 2017-04-14 19:22:55 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_4@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email.email.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_3@example.com"], ["password_digest", "$2a$04$MGZxc8XSfctrMK8fJZ1SPucwiRLjKyEqP3GuFt4Rbjhu9l.4iX9FC"], ["created_at", 2017-04-14 19:24:23 UTC], ["updated_at", 2017-04-14 19:24:23 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_3@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$pRFWFZNEc28/FRGIoWYBpuQL2b6ns41XdJkfan7KI9V9qklCxV672"], ["created_at", 2017-04-14 19:24:23 UTC], ["updated_at", 2017-04-14 19:24:23 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email.email.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.6ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_4@example.com"], ["password_digest", "$2a$04$CLdHbbaSQOy0y2YMlb12TekrCsFEVYY.xqbb6TwgLiNdZyq4EMzdm"], ["created_at", 2017-04-14 19:27:09 UTC], ["updated_at", 2017-04-14 19:27:09 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_4@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@emailcom"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$/jBaSZpMYDcPDbh20aDxiekvl1yAkw3UAHrhaKHRz5HaqkBsREEk6"], ["created_at", 2017-04-14 19:27:09 UTC], ["updated_at", 2017-04-14 19:27:09 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.9ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (1.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (2.7ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$b1shgVu5yRsmzjTGA4jR/uucy07/oIoNAdFUoDD6/Lm8cDPJqlKKq"], ["created_at", 2017-04-14 20:13:11 UTC], ["updated_at", 2017-04-14 20:13:11 UTC]]
+  [1m[35m (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@emailcom"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_2@example.com"], ["password_digest", "$2a$04$zUsx1eA1sAbG1X36NABmxuBP3XjaYLJnTPV.E5LyvWthPzT2TWZOC"], ["created_at", 2017-04-14 20:13:11 UTC], ["updated_at", 2017-04-14 20:13:11 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_2@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email.email.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@emailcom"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_6@example.com"], ["password_digest", "$2a$04$W2SHWIo140TzuE39HUJg/ueCqCfblitW74/5HKHWwUw7HTqzvBije"], ["created_at", 2017-04-14 20:14:37 UTC], ["updated_at", 2017-04-14 20:14:37 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_6@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email.email.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$qf75w7WCdx15aYvEWzBd3ODfpsn96Nuc.58fqsiDDWnWxWuiI9yoC"], ["created_at", 2017-04-14 20:14:37 UTC], ["updated_at", 2017-04-14 20:14:37 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email.email.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@emailcom"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$00ses/FeV5HNKJBAIGG/a.OTMA0RAOe1yvym15w1c37/Lrn7ZqIzW"], ["created_at", 2017-05-10 15:49:22 UTC], ["updated_at", 2017-05-10 15:49:22 UTC]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_6@example.com"], ["password_digest", "$2a$04$5m3nZQHdwQTZVMktOF82Qu4A7UnmcL4HwILmsYPpanp1z71.xjVge"], ["created_at", 2017-05-10 15:49:22 UTC], ["updated_at", 2017-05-10 15:49:22 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_6@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+Creating scope :admin_sorted. Overwriting existing method Address.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Job.admin_sorted.
+Creating scope :admin_sorted. Overwriting existing method Location.admin_sorted.
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.3ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test@example.com"], ["password_digest", "$2a$04$jgJSUpFa24bixrNiTIKpkeaOGdzKuyShuDSAlb0Be/zB3GqCqPQ7."], ["created_at", 2017-05-12 19:06:21 UTC], ["updated_at", 2017-05-12 19:06:21 UTC]]
+  [1m[35m (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@emailcom"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_1@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_2@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" IS NULL LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_3@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_4@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_5@example.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "cohesive_admin_users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "John Doe"], ["email", "test_5@example.com"], ["password_digest", "$2a$04$tQRAYAKZU5luIOnhGgEEEurIEVS5q11LqbX8Jk41Bsk4rA2IvnwjG"], ["created_at", 2017-05-12 19:06:21 UTC], ["updated_at", 2017-05-12 19:06:21 UTC]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? AND ("cohesive_admin_users"."id" != ?) LIMIT ?[0m  [["email", "test_5@example.com"], ["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.8ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_6@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email@"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "test_7@example.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCohesiveAdmin::User Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "cohesive_admin_users" WHERE "cohesive_admin_users"."email" = ? LIMIT ?[0m  [["email", "email.email.com"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m

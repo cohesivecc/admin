@@ -4,7 +4,6 @@ f ||= nil
 parent_klass ||= nil
 %>
 <% if klass && f %>
-
   <% klass.admin_config[:filters].each do |k,v| %>
 
     <% if v[:type] == 'association' %>

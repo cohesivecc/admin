@@ -8,13 +8,15 @@
 <% end %>
 
 <%= render 'cohesive_admin/filters/form' %>
-<%= render 'cohesive_admin/search/form' %>
+
+<%= render 'cohesive_admin/base/order' %>
 
 <div class="card-panel">
   <table class="bordered highlight">
     <thead>
       <tr>
         <th><%= @klass.display_name_method.to_s.humanize.titleize %></th>
+        <th class="right">Created</th>
       </tr>
     </thead>
 
@@ -28,11 +30,14 @@
     <% else %>
       <% @items.each do |i| %>
         <tr>
-          <td>
+          <td style="width: 85%;">
             <%= link_to([:clone, i], class: 'secondary-content') do %>
               <i class="material-icons tooltipped" data-position="left" data-delay="500" data-tooltip="Duplicate">library_add</i>
             <% end if @klass.admin_duplicatable? %>
             <%= link_to(i.to_label, [:edit, i], class: "tooltipped", "data-delay" => "500", "data-position" => "left", "data-tooltip" => "Click to Edit") %>
+          </td>
+          <td class="right">
+            <span class="text-small"><%= i.created_at.strftime("%_m-%d-%y at %l:%M %P") %></span>
           </td>
         </tr>
       <% end %>

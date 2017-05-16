@@ -210,7 +210,14 @@ module CohesiveAdmin
 
       def load_list
         # by default, use admin_sorted scope (see sortable)
-        @skope = @klass.admin_sorted
+        case params[:sort]
+        when "newest"
+          @skope = @klass.order("created_at DESC")
+        when "oldest"
+          @skope = @klass.order("created_at ASC")
+        else
+          @skope = @klass.admin_sorted
+        end
 
         unless @filter_args.blank?
           # count of total objects (before applying filters)
@@ -224,11 +231,11 @@ module CohesiveAdmin
 
 
         # @skope.where(valu)
-        if params[:search] && @klass.admin_searchable?
+        if params[:filter] && @klass.admin_searchable?
           @items_total = @skope.count
           clauses = []
           @klass.admin_config[:searchers].each do |search_field|
-            clauses << @klass.arel_table[search_field[0].to_sym].matches("%#{params[:search][:ca_search]}%").to_sql
+            clauses << @klass.arel_table[search_field[0].to_sym].matches("%#{params[:filter][:ca_search]}%").to_sql
           end
           @skope = @skope.where(clauses.join(' OR '))
           @items_found = @skope.count

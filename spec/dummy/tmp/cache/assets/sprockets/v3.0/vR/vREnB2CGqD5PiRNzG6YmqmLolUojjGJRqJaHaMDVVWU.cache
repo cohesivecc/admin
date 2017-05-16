@@ -1,0 +1,76 @@
+I"
+(function() {
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  window.NestedInput = (function() {
+    NestedInput.initialize = function() {
+      if (typeof Handlebars !== 'undefined') {
+        return $('[data-nested]').each(function() {
+          if ($(this).data('nested') === '') {
+            return $(this).data('nested', new NestedInput($(this)));
+          }
+        });
+      }
+    };
+
+    function NestedInput(ele) {
+      var ind_regex, obj_regex;
+      this.ele = ele;
+      this.destroy = bind(this.destroy, this);
+      this.add = bind(this.add, this);
+      this.t = $(this.ele).children('[data-nested-template]');
+      this.key = this.t.data('nested-template');
+      this.t_html = this.t.remove().html();
+      ind_regex = new RegExp("__" + this.key + "_index__", 'g');
+      obj_regex = new RegExp("__" + this.key + "_object_id__", 'g');
+      this.t_html = this.t_html.replace(obj_regex, "{{" + this.key + "_object_id}}").replace(ind_regex, "{{" + this.key + "_index}}");
+      this.template = Handlebars.compile(this.t_html);
+      this.list = $(this.ele).children('[data-nested-list]');
+      this.list.off('click.collapse', '> li a[data-nested-add]').on('click.collapse', '> li a[data-nested-add]', (function(_this) {
+        return function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          return _this.add();
+        };
+      })(this));
+      this.list.on('click', '> li a[data-nested-destroy]', (function(_this) {
+        return function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          return _this.destroy($(e.currentTarget).data('nested-destroy'));
+        };
+      })(this));
+    }
+
+    NestedInput.prototype.add = function() {
+      var data, timestamp;
+      timestamp = new Date().getTime();
+      data = {};
+      data[this.key + "_index"] = timestamp;
+      data[this.key + "_object_id"] = timestamp;
+      this.list.children('li:last').before(this.template(data));
+      NestedInput.initialize();
+      return $(document).trigger('cohesive_admin.form_change');
+    };
+
+    NestedInput.prototype.destroy = function(id) {
+      var li;
+      if (confirm("Are you sure you want to delete this item?")) {
+        li = this.list.children('[data-nested-object="' + id + '"]');
+        if (li.length) {
+          li.find('input[id$="_destroy"]').val('1');
+          return li.hide();
+        }
+      }
+    };
+
+    return NestedInput;
+
+  })();
+
+  $(document).on('cohesive_admin.initialized', function() {
+    return NestedInput.initialize();
+  });
+
+}).call(this);
+:ET

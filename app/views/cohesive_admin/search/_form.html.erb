@@ -10,6 +10,7 @@
           url_params = [(params[:action] == 'index' ? nil : params[:action]), @klass]
         %>
         <%= simple_form_for(@search_object, url: url_params, method: :get, as: :search, html: { id: 'search-form' }) do |f| %>
+          <%= render(partial: 'cohesive_admin/filters/fields', locals: { klass: @klass, f: f }) %>
           <% if params[:search] %>
             <%= f.input :ca_search, as: :string, label: "Search", input_html: { value: params[:search][:ca_search] } %>
           <% else %>
