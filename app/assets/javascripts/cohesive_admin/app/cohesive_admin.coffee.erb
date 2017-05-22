@@ -1,0 +1,26 @@
+class window.CohesiveAdmin
+  @config       = null
+  @initialized  = false
+
+  @initialize: () ->
+    @configure({})
+		
+  @configure: (@config) ->
+    # listen for dynamic changes to the form
+    $(document).on('cohesive_admin.form_change', () ->
+      CohesiveAdmin.refreshForm()
+    )
+    $(document).on('cohesive_admin.initialized', () ->
+      CohesiveAdmin.refreshForm()
+    )
+    CohesiveAdmin.initialized = true
+    # publish initialize event
+    $(document).trigger('cohesive_admin.initialized')
+
+  @refreshForm: () ->
+    if($('#object-form, #filter-form').length)
+      $('#object-form select, #filter-form select').material_select()
+      $('#object-form .collapsible').collapsible()
+      Materialize.updateTextFields()
+      $('#object-form textarea.wysiwyg').froalaEditor()
+      $('#object-form .tooltipped, #search-form .tooltipped').tooltip()

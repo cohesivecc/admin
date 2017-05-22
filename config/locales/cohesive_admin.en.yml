@@ -1,0 +1,30 @@
+---
+en:
+  time:
+    formats:
+      admin: "%b %-d, %Y at %l:%M %P"
+  admin:
+    fields:
+      id: "ID"
+      name: "Name"
+      created_at: "Created At"
+      updated_at: "Updated At"
+    index:
+      filters:
+        apply: Apply Filters
+        clear: Clear
+        filtering: Filtering...
+      sort:
+        by: "Sort By"
+        newest: "Newest First"
+        oldest: "Oldest First"
+        position: "Position"
+      empty: "No %{model} were found."
+      headers:
+        thumbnail: Thumbnail
+        label: Label
+        badge: Badge
+    actions:
+      edit: "edit"
+      delete: "delete"
+      save: "save changes"

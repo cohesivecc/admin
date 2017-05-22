@@ -1,0 +1,9 @@
+<%
+searchbox_options = { as: :string, label:"Search", required:false }
+searchbox_options[:input_html] = { value:params[:filter][:ca_search] } if(params[:filter])  
+%>
+<div class="row">
+  <div class="col s12">
+    <%= f.input :ca_search, searchbox_options %>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<% 
+fields = @dashboard.collection_fields
+if @collection  
+%>
+<% content_for(:hero_buttons) do %>
+  <%= link_to(
+        content_tag(:i, 'add', class:'material-icons'), 
+        @dashboard.path([:new, :admin, ActiveModel::Naming.singular_route_key(@model)]),
+        {
+          class: 'waves-effect waves-light btn-floating blue tooltipped', 
+          data: { position: 'top', delay: 500, tooltip: "Add New " }
+        }
+      ) %>
+<% end %>
+
+<%= render partial:'cohesive_admin/filters/form' %>
+<%= render partial:'ordering' %>
+
+<div class="card-panel">
+  <table id="index-collection" class="bordered highlight">
+    <thead>
+      <tr>
+        <%= content_tag(:th, fields[:thumbnail].label, class:'thumb') if fields[:thumbnail] %>
+        <%= content_tag(:th) do %><%= [fields[:label],fields[:description]].compact.map(&:label).join(' / ') %><% end if fields[:label] || fields[:description] %>
+        <%= content_tag(:th, fields[:badge].label, class:'badge') if fields[:badge] %>
+        <%= content_tag(:th, fields[:date].label, class:'date') if fields[:date] %>
+      </tr>
+    </thead>
+    <tbody>
+    
+    <% if @collection.empty? %>
+      <tr>
+        <td colspan='4'><%= t('admin.index.empty', model:@dashboard.plural_title) %></td>
+      </tr>
+    <% else %>
+      <%= render partial:'collection_item', collection:@collection, as: :item, locals:{ fields:@dashboard.collection_fields } -%>        
+    <% end %>
+    
+    </tbody>
+  </table>
+
+</div>
+
+<%= paginate(@collection, views_prefix:'cohesive_admin', theme:'materialize') %>
+
+<% end %>

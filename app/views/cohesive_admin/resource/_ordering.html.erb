@@ -1,0 +1,24 @@
+<%
+page_params = {}
+page_params = page_params.merge(filter: params[:filter].to_unsafe_h) if(params[:filter])
+
+default_sort_options = [:newest, :oldest]
+sort_options = default_sort_options.clone
+sort_options << @model.admin_sort_column.to_sym if(@model.admin_sortable?)
+
+%>
+<nav class="white">
+  <div class="nav-wrapper">
+    <ul class="right">
+      <li class="grey-text text-darken-3"><%= t('admin.index.sort.by') %>:</li>
+      <% sort_options.each do |sorter| 
+          sort_label = t("admin.index.sort.#{sorter}") 
+          sort_label ||= t("admin.fields.#{ @model }.#{ sorter }") unless(default_sort_options.include?(sorter))
+          querystring = page_params.merge(sort: sorter.to_s)
+          css_class = params[:sort] == sorter.to_s ? 'blue-text' : 'grey-text'
+      %>
+        <li><%= link_to(sort_label, @dashboard.path([:admin, @model, querystring]), class:css_class) -%></li>
+      <% end %>
+    </ul>
+  </div>
+</nav>

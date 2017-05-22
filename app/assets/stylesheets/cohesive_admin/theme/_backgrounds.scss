@@ -1,0 +1,8 @@
+
+[class^="bg-image-"], [class*=" bg-image-"] {
+  // @include background-size(cover);
+  background-repeat: repeat;
+}
+@each $name, $src in $theme-background-images {
+  .bg-image-#{$name} { background-image: image-url('#{$src}'); }
+}

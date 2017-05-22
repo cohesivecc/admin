@@ -1,0 +1,15 @@
+<tr>
+  <%= content_tag(:td, image_tag(fields[:thumbnail].value_for(item)), class:'thumb') if fields[:thumbnail] %>
+  <%= content_tag(:td) do %>
+    <% if(fields[:label]) 
+        label = fields[:label].value_for(item)
+        label_is_image = [:refile, :shrine].include?(fields[:label].type) %>
+        <%= label_is_image ? image_tag(label) : strip_tags("#{ label }").truncate(100) %>
+    <% end %>
+    <%= content_tag(:small, strip_tags("#{ fields[:description].value_for(item) }").truncate(100)) if fields[:description] %>
+  <% end if fields[:label] || fields[:description] %>
+  <%= content_tag(:td, class:'badge') do %>
+    <span class='badge <%= fields[:badge].color_for(item) %> white-text'><%= fields[:badge].value_for(item) %></span>
+  <% end if fields[:badge] %>
+  <%= content_tag(:td, l(fields[:date].value_for(item), format: :admin), class:'date') if fields[:date] %>
+</tr>

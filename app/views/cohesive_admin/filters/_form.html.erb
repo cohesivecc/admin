@@ -1,0 +1,22 @@
+<%= content_tag(:ul, class: 'collapsible', id: 'filter-container', data: { collapsible: 'accordion' }) do %>
+  <li>
+    <div class="collapsible-header">
+      <%= content_tag(:span, "#{@items_found} / #{@items_total}", class: 'badge new', data: { 'badge-caption' => '' }) unless params[:filter].blank? %>
+      <i class="material-icons">swap_horiz</i> Filter
+      <div class="secondary-content"></div>
+    </div>
+    <div class="collapsible-body">
+
+      <%
+        url_params = @dashboard.path([(params[:action] == 'index' ? nil : params[:action]), :admin, @model].compact)
+      %>
+      <%= simple_form_for(@filter_object, url: url_params, method: :get, as: :filter, html: { id: 'filter-form' }) do |f| %>
+        <%= render partial:'cohesive_admin/filters/fields', locals: { f: f } %>
+        <%= render(partial: 'cohesive_admin/filters/search', locals: { klass: @model, f: f }) if @model.admin_searchable? %>
+        <button type="submit" class="waves-effect waves-light btn" data-disable-with="<%= t('admin.index.filters.filtering') %>"><%= t('admin.index.filters.apply') %></button>
+        <%= link_to(t('admin.index.filters.clear'), url_params, class: 'waves-effect waves-grey btn-flat') -%>
+      <% end %>
+
+    </div>
+  </li>
+<% end unless @dashboard.filterable_fields.empty? %>

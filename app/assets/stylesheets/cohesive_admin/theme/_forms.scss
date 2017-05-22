@@ -1,0 +1,138 @@
+
+.input-field {
+  > label { left: 0; }
+
+  &.has-error {
+    input:not([type]),
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    input[type=url],
+    input[type=time],
+    input[type=date],
+    input[type=datetime],
+    input[type=datetime-local],
+    input[type=tel],
+    input[type=number],
+    input[type=search],
+    textarea.materialize-textarea {
+      margin-bottom: 5px;
+      border-bottom: $input-invalid-border;
+      box-shadow: 0 1px 0 0 $input-error-color;
+    }
+    .error-block {
+      margin: $input-margin;
+      color: $input-error-color;
+      font-size: $label-font-size;
+    }
+  }
+
+  &.wysiwyg, &.code, &.nested, &.refile > .file-field, &.shrine > .file-field {
+    padding-top: 1em;
+    > label {
+      font-size: 0.8rem;
+      transform: translateY(-140%);
+    }
+  }
+  .dropdown-content { z-index: 1000; }
+
+  &.collection {
+    margin: 1rem 0 0 0;
+    border: none;
+    overflow: visible;
+  }
+
+  .postfix {
+    position: absolute;
+    // width: 3rem;
+    font-size: 2rem;
+    transition: color .2s;
+    right: 0;
+    text-align: right;
+    cursor: pointer;
+    color: color("orange", "lighten-1");
+
+    ~ input, ~ textarea, ~ label, ~ .validate ~ label, ~ .autocomplete-content, ~ .file-field, ~ .CodeMirror, ~ .select-wrapper, ~ .nested {
+      // margin-right: 3rem;
+      width: 92%;
+      width: calc(100% - 3rem);
+    }
+  }
+}
+
+// Nested Form Field
+.collapsible.popout {
+  .collapsible-header {
+    span.badge.new.red {
+      background-color: transparent !important;
+      &:before {
+        background-color: color("red", "base") !important;
+      }
+    }
+  }
+
+  .collapsible-add-link {
+    // mimic the display of .collapsible-header, but without the collapsible click handlers
+    display: block;
+    cursor: pointer;
+    min-height: 3rem;
+    line-height: 3rem;
+    padding: 0 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    i {
+      width: 2rem;
+      font-size: 1.6rem;
+      line-height: 3rem;
+      display: block;
+      float: left;
+      text-align: center;
+      margin-right: 1rem;
+    }
+  }
+}
+
+.material-tooltip {
+  font-size: 0.8rem;
+  padding: 7px 5px;
+  min-height: auto;
+  .backdrop { background-color: color("orange", "lighten-1"); }
+}
+
+.help-block {
+  font-size: 1em;
+  color: color("orange", "lighten-1");
+  display: block;
+  margin-bottom: 2rem;
+  display: none;
+  font-weight: 300;
+  font-style: italic;
+
+  // &:before {
+  //   content: "new_releases";
+  //   font-family: 'Material Icons';
+  //   font-weight: normal;
+  //   font-style: normal;
+  //   font-size: 24px;
+  //   line-height: 1;
+  //   letter-spacing: normal;
+  //   text-transform: none;
+  //   display: inline-block;
+  //   white-space: nowrap;
+  //   word-wrap: normal;
+  //   direction: ltr;
+  //   margin-right: 0.5rem;
+  //   -webkit-font-feature-settings: 'liga';
+  //   -webkit-font-smoothing: antialiased;
+  //   position: relative;
+  //   top: 6px;
+  // }
+}
+
+.search-panel {
+  padding: 10px;
+  .select-search {
+    display: block;
+    margin: 10px 0;
+  }
+}
