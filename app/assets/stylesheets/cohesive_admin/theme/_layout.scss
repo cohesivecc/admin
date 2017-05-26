@@ -65,8 +65,8 @@ footer {
 
 table#index-collection {
   td.thumb {
-    width:76px;
-    padding:5px 5px 5px 0px;
+    width:81px;
+    padding:5px;
     img {
       vertical-align:middle;
       max-width:64px;
@@ -84,6 +84,23 @@ table#index-collection {
   td.date {
     font-size:12px;
     width:140px;
+  }
+  
+  td.actions {
+    width:100px;
+    text-align:right;
+    a {
+      display:inline-block;
+      vertical-align:middle;
+      line-height:0px;
+      margin-left:6px;
+    }
+  }
+  
+  tbody {
+    td {
+      cursor:pointer;
+    }
   }
 }
 

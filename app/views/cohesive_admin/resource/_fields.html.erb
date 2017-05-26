@@ -1,1 +1,68 @@
-THIS IS A TEST
+<%
+f             ||= nil    
+klass         ||= nil
+parent_klass  ||= nil
+
+types_with_labels = %i{boolean check_boxes radio_buttons}
+
+
+if(klass && f)
+  
+  form_fields = klass.admin_form_fields
+  form_fields.each do |k,field|
+    
+    has_inverse = field.associated? && !parent_klass.nil? && inverse_relationship_exists?(klass, k, parent_klass)
+    
+    next if(has_inverse && field.type == :polymorphic)
+    input_partial = field.form_input rescue nil
+    
+%>
+    <div class='row'>
+      <div class='col s12'>
+<%
+        html_options  = {}
+        html_options[:disabled]     = true if(field.disabled?)
+        html_options[:placeholder]  = field.placeholder unless(field.placeholder.blank?)
+        html_options[:class]        = 'materialize-textarea' if(field.type == :text)
+        
+        input_options = {}
+        input_options[:as]          = field.type
+        input_options[:hint]        = field.hint unless(field.hint.blank?)
+        input_options[:input_html]  = html_options
+        
+        if(field.type == :association)
+          if(field.nested?)
+            input_options[:as] = :nested
+          elsif(!has_inverse)
+            input_options[:include_blank] = true
+            input_options.delete(:as)
+          end
+        elsif(field.type == :polymorphic)
+          input_options[:as] = :polymorphic
+        elsif(!types_with_labels.include?(field.type))
+          input_options[:label] = field.label
+          input_options[:collection]  = field.collection unless(field.collection.nil?)
+        end
+        
+        
+        if(field.type == :association && !has_inverse)
+        %>
+          <%= f.association(k, input_options) %>
+        <%
+        elsif(types_with_labels.include?(field.type))
+        %>
+          <%= f.input_field(k, input_options) %>
+          <%= f.label(field.label || k) -%>
+        <%
+        else
+        %>
+          <%= f.input(k, input_options) %>
+        <%  
+        end
+%>
+      </div>
+    </div>
+<% 
+  end
+end
+%>

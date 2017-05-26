@@ -1,9 +1,27 @@
 CohesiveAdmin::Engine.routes.draw do
 	
+  resources :sessions, only: [:new, :create] do
+    collection do
+      get :forgot_password
+      post :reset_password
+      get :logout
+    end
+  end
+
+  resources :s3_assets, only: [:index, :delete] do
+    collection do
+      delete :delete
+    end
+  end	
+	
+	get :config, to:'config#index', format: :json, as:'config'
+	
 	CohesiveAdmin::Dashboard.manageable_models.each do |model|
 		resources ActiveModel::Naming.route_key(model), { controller: :resource, defaults: { model_class:model.name.underscore } } do
 	    member do
-	      get :clone
+				if(model.admin_duplicatable?)
+					get :clone
+				end
 	    end
 	    collection do
 	      get :sort, defaults: { page: 'all' }

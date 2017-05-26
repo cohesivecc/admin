@@ -10,6 +10,8 @@ en:
       created_at: "Created At"
       updated_at: "Updated At"
     index:
+      clone: Make a Copy
+      edit: Edit
       filters:
         apply: Apply Filters
         clear: Clear

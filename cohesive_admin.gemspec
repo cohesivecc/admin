@@ -26,6 +26,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-ui-rails', '~> 5.0'
   s.add_dependency 'materialize-sass', '~> 0.97.8'
 	
+	s.add_dependency "bcrypt-ruby", "~> 3.1.5"
+	
   s.add_dependency 'kaminari', '~> 0.17'
   s.add_dependency 'simple_form', '~> 3.1'
 	

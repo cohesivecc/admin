@@ -21,4 +21,17 @@ module CohesiveAdmin
 		@@router ||= CohesiveAdmin::Routing.new
 	end
 	
+	
+	def self.as_json(options={})
+		# pass CohesiveAdmin config settings down to Javascript
+		js_config = {
+			managed_models: CohesiveAdmin::Dashboard.all.map(&:model_config).compact,
+			aws: nil,
+			froala: { key:(config.froala[:key] rescue nil) },
+			mount_point: "/#{ namespace }"
+		}
+	
+		js_config
+	end
+	
 end

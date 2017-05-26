@@ -4,8 +4,13 @@ module CohesiveAdmin
 		class Field
 			
 			attr_reader :model
-			attr_reader :name, :type, :disabled, :filter, :searchable
+			attr_reader :name, :type, :hint, :disabled, :placeholder
+			
+			# association attributes
 			attr_reader :collection, :reflection, :nested
+			
+			# filterable and searchable field attributes
+			attr_reader :filter, :searchable
 			
 			def initialize(attribute, model, type=nil)
 				@model = model.name.underscore.sub("/", "_")
@@ -22,9 +27,13 @@ module CohesiveAdmin
 									type.to_sym
 								end
 				
-				@disabled		= !field_cfg.nil? && %w{true disabled}.include?(field_cfg[:disabled].to_s)
-				@filter  		= !field_cfg.nil? && field_cfg[:filter].to_s == 'true'
-				@searchable	= !field_cfg.nil? && field_cfg[:searchable].to_s == 'true'	
+				
+				@hint					= field_cfg[:hint] || field_cfg[:help] if(field_cfg)
+				@placeholder	= field_cfg[:placeholder] if(field_cfg)
+				
+				@disabled			= !field_cfg.nil? && %w{true disabled}.include?(field_cfg[:disabled].to_s)
+				@filter  			= !field_cfg.nil? && field_cfg[:filter].to_s == 'true'
+				@searchable		= !field_cfg.nil? && field_cfg[:searchable].to_s == 'true'	
 				
 				# use validations to determine if this should be a select box
 				model.validators_on(attribute).each do |v| 
@@ -60,6 +69,10 @@ module CohesiveAdmin
 			
 			def searchable?
 				searchable
+			end
+			
+			def nested?
+				!nested.nil?
 			end
 			
 			def attachment?

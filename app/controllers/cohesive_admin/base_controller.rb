@@ -6,9 +6,9 @@ module CohesiveAdmin
 		# 500 error catching for big problems, etc.
 		include CohesiveAdmin::ErrorHandling
 		
-		layout 'cohesive_admin/application'
-		
 		before_action :load_dashboard
+		
+		layout 'cohesive_admin/application'
 		
 		private
 		

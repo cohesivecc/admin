@@ -33,24 +33,44 @@ module CohesiveAdmin::ResourceDashboard
 	end
 	
 	def index
+		respond_to do |format|
+			format.html { render file: 'cohesive_admin/resource/index' }
+			format.json { render json: @collection.to_json(methods: [:to_label]) }
+		end
 	end
 	
 	def show
 	end
 	
 	def new
+		@object = @model.new
+    respond_to do |format|
+      format.html { render file: 'cohesive_admin/resource/form' }
+    end
 	end
 	
 	def create
 	end
 	
 	def edit
+    respond_to do |format|
+      format.html { render file: 'cohesive_admin/resource/form' }
+    end
 	end
 	
 	def update
 	end
 	
 	def destroy
+	end
+	
+	def clone
+	end
+	
+	def sort
+	end
+	
+	def apply_sort
 	end
 	
 	class_methods do

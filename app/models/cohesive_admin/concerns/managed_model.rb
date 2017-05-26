@@ -18,6 +18,13 @@ module CohesiveAdmin::Concerns::ManagedModel
     	:created_at
     end
 		
+		def admin_form_fields(*args)
+			options = args.extract_options!
+			options = options.slice(:controller, :path)
+			options[:model] = self
+			CohesiveAdmin::Dashboard.for(options).form_fields rescue nil
+		end
+		
 		def cohesive_admin(active=true)
 			unless active
 				class_eval do

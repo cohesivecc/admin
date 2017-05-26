@@ -1,0 +1,13 @@
+<%
+flash[:class] ||= flash[:alert].blank? ? 'teal' : 'red'
+%>
+
+<%= content_tag(:div, class: "card-panel white-text #{flash[:class]}") do %>
+	<%= flash[:notice] || flash[:alert] -%>
+<% end if(flash[:notice] || flash[:alert]) %>
+
+<!-- <%= content_tag(:ul, class: 'no-bullets') do  %>
+	<% @object.errors.full_messages.each do |m| %>
+		<%= content_tag(:li, m) %>
+	<% end %>
+<% end if @object && !@object.errors.empty? %> -->

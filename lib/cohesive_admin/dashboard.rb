@@ -29,9 +29,19 @@ class CohesiveAdmin::Dashboard
 		load_config
 		
 		if(@model)
-			@model.admin_sortable(@config[:sort]) if @config[:sort] && !@model.admin_sortable?
-			@model.admin_searchable unless searchable_fields.empty?
+			# enable the configured model concerns
+			@model.admin_sortable(@config[:sort]) if(@config[:sort] && !@model.admin_sortable?)
+			@model.admin_searchable unless(searchable_fields.empty?)
+			@model.admin_duplicatable(@config[:duplicate]) if(@config[:duplicate] && !@model.admin_duplicatable?)
 		end
+		
+		# load authentication for this model's controller (if configured and necessary)
+		auth_concern = CohesiveAdmin.config.authentication
+		unless(auth_concern == false)
+			auth_concern = CohesiveAdmin::Authentication if(auth_concern.nil? || !auth_concern.is_a?(ActiveSupport::Concern))
+			@controller.send(:include, auth_concern) unless(@controller.ancestors.include?(auth_concern))
+		end
+		
 	end
 	
 	def user_defined?
@@ -93,6 +103,22 @@ class CohesiveAdmin::Dashboard
 			@strong_params << a unless a.blank?
 		end
 		@strong_params
+	end
+	
+	def model_config
+		return nil if standalone?
+		path_parts	= path([:admin, route_key])
+		path_proxy  = path_parts.shift
+		board_uri   = path_proxy.polymorphic_path(path_parts, host:'http://example.com')
+		[
+			model.name,
+			{
+				class_name: model.name,
+				display_name: singular_title,
+				route_key: route_key,
+				uri: board_uri
+			}
+		]
 	end
 	
 	# def sort_field

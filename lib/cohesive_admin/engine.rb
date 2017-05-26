@@ -28,7 +28,7 @@ module CohesiveAdmin
 			ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Searchable)
 			ActiveSupport::Inflector.inflections do |inflect|
 				inflect.irregular 'base', 'bases'
-			end
+			end			
 		end
 		
   end

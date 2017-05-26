@@ -1,5 +1,5 @@
 # asynchronously load Froala and S3 settings for security purposes
-$(document).on( 'not.cohesive_admin.initialized', (e) ->
+$(document).on( 'cohesive_admin.initialized', (e) ->
 
   config = CohesiveAdmin.config
 

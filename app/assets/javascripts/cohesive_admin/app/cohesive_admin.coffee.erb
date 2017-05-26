@@ -3,7 +3,28 @@ class window.CohesiveAdmin
   @initialized  = false
 
   @initialize: () ->
-    @configure({})
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-Token':$('meta[name="csrf-token"]').attr('content')
+      }
+    })
+    
+    if(CohesiveAdmin.initialized)
+      $(document).trigger('cohesive_admin.initialized')
+    else
+      # side navigation
+      $(".button-collapse").sideNav()
+
+      $.ajax({
+        url: "<%= CohesiveAdmin::Engine.routes.url_helpers.config_path(format: :json) %>",
+        dataType: 'json',
+      }).done( (data) ->
+        CohesiveAdmin.configure(data);
+      )
+      # help/hints on form inputs
+      $(document).off('click', '[data-toggle-help]').on('click', '[data-toggle-help]', () ->
+        $(@).siblings('.help-block').toggle()
+      )
 		
   @configure: (@config) ->
     # listen for dynamic changes to the form
@@ -24,3 +45,10 @@ class window.CohesiveAdmin
       Materialize.updateTextFields()
       $('#object-form textarea.wysiwyg').froalaEditor()
       $('#object-form .tooltipped, #search-form .tooltipped').tooltip()
+    if($('table#index-collection')[0])
+      $('table#index-collection tbody td a').click((e) ->
+        e.stopPropagation()
+      )
+      $('table#index-collection tbody td').click((e) ->
+        window.location.href = $(this).closest('tr').find('td.actions a.edit').attr('href');
+      )

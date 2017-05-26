@@ -12,4 +12,8 @@
     <span class='badge <%= fields[:badge].color_for(item) %> white-text'><%= fields[:badge].value_for(item) %></span>
   <% end if fields[:badge] %>
   <%= content_tag(:td, l(fields[:date].value_for(item), format: :admin), class:'date') if fields[:date] %>
+  <td class='actions'>
+    <%= link_to(@dashboard.path([:clone, :admin, item]), class:'clone tooltipped', data:{ position:'top', delay:500, tooltip:t('admin.index.clone') }) do %><i class='material-icons'>library_add</i><% end if @model.admin_duplicatable? %>
+    <%= link_to(@dashboard.path([:edit, :admin, item]), class:'edit tooltipped', data:{ position:'top', delay:500, tooltip:t('admin.index.edit') }) do %><i class='material-icons'>edit</i><% end %>
+  </td>
 </tr>

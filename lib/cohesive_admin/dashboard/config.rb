@@ -3,14 +3,14 @@ module CohesiveAdmin
 		module Config
 			extend ActiveSupport::Concern
 			
-		#private
+		private
 		
 			def load_config
 				config_key = id.to_sym
-				@config = CohesiveAdmin.config.values[config_key].clone.with_indifferent_access rescue {} if(CohesiveAdmin.config.values.has_key?(config_key))
+				@config = CohesiveAdmin.config.dashboards[config_key].clone.with_indifferent_access rescue nil if(CohesiveAdmin.config.dashboards.has_key?(config_key))
 				@config ||= default_config
 				@config[:headings] ||= {}
-				@config[:order] ||= CohesiveAdmin.config.values.keys.index(config_key)
+				@config[:order] ||= CohesiveAdmin.config.dashboards.keys.index(config_key)
 				
 				load_field_config unless standalone?
 			end
