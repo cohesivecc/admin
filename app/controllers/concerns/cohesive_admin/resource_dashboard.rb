@@ -50,6 +50,25 @@ module CohesiveAdmin::ResourceDashboard
 	end
 	
 	def create
+		@object = @model.new(model_params)
+		ok = @object.update(model_params)
+		
+		flash_status = ok ? :success : :error
+		flash_msg(
+			t("admin.create.#{ flash_status}", model:@dashboard.singular_title),
+			flash_status
+		)
+		
+		respond_to do |format|
+			format.html {
+				if(ok)
+					redirect_to polymorphic_path(@dashboard.path)
+				else
+					render file:'cohesive_admin/resource/form'
+				end
+			}
+			format.json { render json: @object.to_json(methods:[:to_label]) }
+		end
 	end
 	
 	def edit
@@ -59,18 +78,64 @@ module CohesiveAdmin::ResourceDashboard
 	end
 	
 	def update
+		ok = @object.update(model_params)
+		
+		flash_status = ok ? :success : :error
+		flash_msg(
+			t("admin.update.#{ flash_status }", model:@dashboard.singular_title), 
+			status:flash_status
+		)
+		
+		respond_to do |format|
+			format.html {				
+				if(ok)
+					redirect_to polymorphic_path(@dashboard.path)
+				else
+					render file: 'cohesive_admin/resource/form'
+				end
+			}
+			format.json { render json:@object.to_json(methods:[:to_label]) }
+		end
 	end
 	
 	def destroy
+		# if it's not a 'permanent' object, destroy it
+		ok = (!@object.respond_to?(:permanent?) || !@object.permanent?) && @object.destroy
+		
+		flash_status = ok ? :success : :error
+		flash_msg(
+			t("admin.destroy.#{ flash_status }", model:@dashboard.singular_title),
+			status: flash_status
+		)
+		
+		respond_to do |format|
+			format.html {
+				redirect_to polymorphic_path(@dashboard.path)
+			}
+			format.json { render json:@object.to_json(methods:[:to_label]) }
+		end
 	end
 	
 	def clone
+		render_404 and return unless @model.admin_duplicatable?
+		@object = @model.new(@object.attributes)
+		respond_to do |format|
+			format.html { render file: 'cohesive_admin/resource/form' }
+		end
 	end
 	
 	def sort
+		render_404 and return unless @model.admin_sortable?
+		render file: 'cohesive_admin/resource/sort'
 	end
 	
 	def apply_sort
+		render_404 and return unless @model.admin_sortable?
+		params[:item].each_with_index do |x, i|
+      m = @model.find(x)
+      m.update_attribute(@model.admin_sort_column, i)
+    end
+    render text: ''
 	end
 	
 	class_methods do
@@ -95,21 +160,23 @@ module CohesiveAdmin::ResourceDashboard
 	def load_collection
 		
 		# 1. Determine the scope's sort order
-		sort_options = ['newest','oldest']
-		sort_options << @model.admin_sort_column if @model.admin_sortable?
+		unless(params[:action] == 'sort')
+			sort_options = ['newest','oldest']
+			sort_options << @model.admin_sort_column if @model.admin_sortable?
 
-		params[:sort].downcase! if(params[:sort])
-		params[:sort] = 'oldest' if !sort_options.include?(params[:sort])
+			params[:sort].downcase! if(params[:sort])
+			params[:sort] = 'oldest' if !sort_options.include?(params[:sort])
 		
-		if(params[:sort] =~ /\A(old|new)est\z/i)
-			order_field = :created_at
-			direction   = { 'newest' => 'DESC', 'oldest' => 'ASC' }[params[:sort]]	
-		else
-			order_field = @model.admin_sort_column
+			if(params[:sort] =~ /\A(old|new)est\z/i)
+				order_field = :created_at
+				direction   = { 'newest' => 'DESC', 'oldest' => 'ASC' }[params[:sort]]	
+			end
 		end
 		
-		@skope = @model.order([order_field, direction].compact.join(' '))
+		order_field ||= @model.admin_sort_column
+		direction   ||= 'ASC'
 
+		@skope = @model.order([order_field, direction].compact.join(' '))
 		
 		# 2. Filter the results (if filter options are present)
 		unless(@filter_args.blank?)
@@ -163,11 +230,20 @@ module CohesiveAdmin::ResourceDashboard
 		end
 	end
 	
+	def search_params
+		params.fetch(:search, {}).permit(*@dashboard.strong_params)
+	end
+	
 	def load_search_object
+		@search_object = @model.new(search_params)
 	end
 	
 	def controller_key
 		params[:model_class].gsub('/','_')
+	end
+	
+	def model_params
+		params.require(@model.model_name.param_key).permit(*@dashboard.strong_params)
 	end
 	
 end

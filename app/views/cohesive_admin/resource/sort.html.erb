@@ -1,0 +1,17 @@
+<%= render 'cohesive_admin/filters/form' %>
+
+<ul class="collection" data-sortable data-url="<%= url_for(@dashboard.path([:apply_sort, :admin, @model])) %>">
+  <% @collection.each do |i| 
+      thumb_field = @dashboard.collection_fields[:thumbnail]
+      label_field = @dashboard.collection_fields[:label]
+      
+      label = label_field.value_for(i)
+      label_is_image = [:refile, :shrine].include?(label_field.type)
+  %>
+    <%= content_tag(:li, class: 'collection-item', id: "item_#{i.id}") do %>
+      <%= image_tag(thumb_field.value_for(i)) if thumb_field %>
+      <%= label_is_image ? image_tag(label) : strip_tags("#{ label }").truncate(100) %>
+      <i class="secondary-content material-icons">reorder</i>
+    <% end %>
+  <% end %>
+</ul>

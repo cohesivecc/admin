@@ -10,6 +10,7 @@
                              '//fonts.googleapis.com/css?family=Open+Sans:400,300,700',
                              media: "all" %>
   <%= javascript_include_tag "cohesive_admin/application" %>
+  <%= javascript_include_tag "cohesive_admin/inputs" if(Rails.application.assets.find_asset("cohesive_admin/inputs.js")) %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -43,7 +44,7 @@
     <section class="content">
       <div class="row">
         <div class="col s12">
-          <%#= render partial: '/cohesive_admin/shared/flash_message' %>
+          <%= render partial: '/cohesive_admin/shared/flash_message' %>
           <%= yield %>
         </div>
       </div>

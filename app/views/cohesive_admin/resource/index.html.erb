@@ -8,9 +8,17 @@ if @collection
         @dashboard.path([:new, :admin, ActiveModel::Naming.singular_route_key(@model)]),
         {
           class: 'waves-effect waves-light btn-floating blue tooltipped', 
-          data: { position: 'top', delay: 500, tooltip: "Add New " }
+          data: { position: 'top', delay: 500, tooltip: t("admin.new", model:@dashboard.singular_title) }
         }
       ) %>
+  <%= link_to(
+        content_tag(:i, 'swap_vert', class:'material-icons'), 
+        @dashboard.path([:sort, :admin, ActiveModel::Naming.route_key(@model)]),
+        {
+          class: 'waves-effect waves-light btn-floating red tooltipped', 
+          data: { position: 'top', delay: 500, tooltip: t("admin.sort", model:@dashboard.plural_title) }
+        }
+      ) if @model.admin_sortable? %>
 <% end %>
 
 <%= render partial:'cohesive_admin/filters/form' %>

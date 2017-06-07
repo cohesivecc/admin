@@ -1,4 +1,6 @@
 class CohesiveAdmin::SessionsController < CohesiveAdmin::BaseController
+	
+	include CohesiveAdmin::Authentication
 
   skip_before_action :load_user
   before_action :redirect_if_logged_in, except: [:logout]

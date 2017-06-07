@@ -24,8 +24,10 @@ CohesiveAdmin::Engine.routes.draw do
 				end
 	    end
 	    collection do
-	      get :sort, defaults: { page: 'all' }
-	      put :apply_sort
+				if(model.admin_sortable?)
+					get :sort, defaults: { page: 'all' }
+	      	put :apply_sort
+				end
 	    end
 		end
 	end

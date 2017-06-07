@@ -14,8 +14,7 @@ module CohesiveAdmin
 			def path(poly_path=nil)
 		
 				unless poly_path
-					poly_path = [:admin]
-					poly_path << id
+					poly_path = [:admin, id]
 				end
 
 				# replace :admin with the namespace used

@@ -9,6 +9,11 @@ en:
       name: "Name"
       created_at: "Created At"
       updated_at: "Updated At"
+    new: "Add a %{model}"
+    sort: "Sort %{model}"
+    update:
+      success: "%{model} successfully updated!"
+      failure: "There was a problem updating the %{model}."
     index:
       clone: Make a Copy
       edit: Edit

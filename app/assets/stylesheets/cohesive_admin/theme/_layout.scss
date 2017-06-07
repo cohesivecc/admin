@@ -104,6 +104,13 @@ table#index-collection {
   }
 }
 
+li.ui-sortable-handle > img {
+  vertical-align: middle;
+  max-height: 48px;
+  margin-right: 12px;
+}
+
+
 
 @media only screen and (max-width : 992px) {
   header, main, footer {

@@ -44,7 +44,6 @@ if(klass && f)
           input_options[:collection]  = field.collection unless(field.collection.nil?)
         end
         
-        
         if(field.type == :association && !has_inverse)
         %>
           <%= f.association(k, input_options) %>
