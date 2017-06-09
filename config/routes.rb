@@ -20,7 +20,7 @@ CohesiveAdmin::Engine.routes.draw do
 		resources ActiveModel::Naming.route_key(model), { controller: :resource, defaults: { model_class:model.name.underscore } } do
 	    member do
 				if(model.admin_duplicatable?)
-					get :clone
+					get :duplicate
 				end
 	    end
 	    collection do

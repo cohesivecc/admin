@@ -3,7 +3,7 @@ module CohesiveAdmin::ResourceDashboard
 	
 	included do
 		before_action :set_model
-		before_action :load_object, only:[:edit,:update,:destroy,:show,:clone]
+		before_action :load_object, only:[:edit,:update,:destroy,:show,:duplicate]
 		before_action :load_filter_object, only:[:index,:sort]
 		before_action :load_search_object, only:[:index,:sort]
 		before_action :load_collection, only:[:index,:sort]
@@ -15,7 +15,6 @@ module CohesiveAdmin::ResourceDashboard
     # Best practice: all your cohesive_admin models should have the 'id' column as the primary key -
     # regardless of what is used as to_param on the front-end of your site.
     around_action do |controller, action|
-
       @model.class_eval do
         alias :__cohesive_admin_to_param :to_param
         def to_param() send(self.class.primary_key).to_s end
@@ -50,13 +49,41 @@ module CohesiveAdmin::ResourceDashboard
 	end
 	
 	def create
+
 		@object = @model.new(model_params)
-		ok = @object.update(model_params)
+		
+		if(params[:duplicate_of])
+			if(original_object = @model.find(params[:duplicate_of]))
+				# if duplicating an object, duplicate its attachments if new ones were not uploaded.
+				@dashboard.config[:fields].each { |field,cfg| 
+					
+					field_type =	if(cfg.is_a?(Hash))
+													cfg[:type]
+												elsif(cfg.is_a?(String))
+													cfg
+												end
+					
+					next unless %w{refile shrine}.include?(field_type)
+					
+					# If the field is a refile attachment and the attachment is present 
+					# on the original object, but a new attachment wasn't uploaded for the duplicate
+					if(field_type == "refile" && !original_object.send(field).nil? && @object.send(field).nil?)
+						# copy the image in the refile store and assign its id to the duplicate object.
+						copied_image = Refile.backends["store"].upload(original_object.send(field).download)
+						@object.send(:"#{ field }_id=", copied_image.id)
+					elsif(field_type == "shrine")
+						# TODO: handle shrine
+					end						
+				}
+			end
+		end
+		
+		ok = @object.save
 		
 		flash_status = ok ? :success : :error
 		flash_msg(
-			t("admin.create.#{ flash_status}", model:@dashboard.singular_title),
-			flash_status
+			t("admin.create.#{ flash_status }", model:@dashboard.singular_title),
+			status: flash_status
 		)
 		
 		respond_to do |format|
@@ -99,12 +126,19 @@ module CohesiveAdmin::ResourceDashboard
 	end
 	
 	def destroy
+		
+		descriptor = "with id #{ @object.id }"
+		
 		# if it's not a 'permanent' object, destroy it
 		ok = (!@object.respond_to?(:permanent?) || !@object.permanent?) && @object.destroy
 		
+    label_field = @dashboard.collection_fields[:label]
+    label = label_field.value_for(@object)
+		descriptor = "with #{ label_field.label } '#{ label }'" if label.is_a?(String)
+		
 		flash_status = ok ? :success : :error
 		flash_msg(
-			t("admin.destroy.#{ flash_status }", model:@dashboard.singular_title),
+			t("admin.destroy.#{ flash_status }", model:@dashboard.singular_title, descriptor:descriptor),
 			status: flash_status
 		)
 		
@@ -116,7 +150,7 @@ module CohesiveAdmin::ResourceDashboard
 		end
 	end
 	
-	def clone
+	def duplicate
 		render_404 and return unless @model.admin_duplicatable?
 		@object = @model.new(@object.attributes)
 		respond_to do |format|

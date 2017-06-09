@@ -11,9 +11,15 @@ en:
       updated_at: "Updated At"
     new: "Add a %{model}"
     sort: "Sort %{model}"
+    create:
+      success: "%{model} was created successfully."
+      error: "There was a problem creating the %{model}."
     update:
-      success: "%{model} successfully updated!"
-      failure: "There was a problem updating the %{model}."
+      success: "%{model} was updated successfully."
+      error: "There was a problem updating the %{model}."
+    destroy:
+      success: "The %{model} %{descriptor} was deleted successfully."
+      error: "There was a problem deleting the %{model}."
     index:
       clone: Make a Copy
       edit: Edit

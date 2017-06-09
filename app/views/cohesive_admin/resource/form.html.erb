@@ -1,5 +1,6 @@
 <%= simple_form_for(@object, url:@dashboard.path([:admin, @object]), include_id: true, html: { multipart: true, id: 'object-form' }) do |f| %>
 	<div class="card-panel">
+    <%= hidden_field_tag(:duplicate_of, @object.id) %>
 		<%= render(partial: 'fields', locals: { klass:@model, f: f }) %>
 	</div>
   <div class="row">

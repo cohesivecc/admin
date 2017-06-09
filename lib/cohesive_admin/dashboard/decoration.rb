@@ -116,9 +116,6 @@ module CohesiveAdmin
 		end
 		
 		
-		
-		
-		
 		module Decoration
 			extend ActiveSupport::Concern
 			

@@ -5,6 +5,7 @@ parent_klass  ||= nil
 
 types_with_labels = %i{boolean check_boxes radio_buttons}
 
+object_creation = %w{new duplicate}.include?(params[:action])
 
 if(klass && f)
   
@@ -21,7 +22,7 @@ if(klass && f)
       <div class='col s12'>
 <%
         html_options  = {}
-        html_options[:disabled]     = true if(field.disabled?)
+        html_options[:disabled]     = true if(field.disabled? && !object_creation)
         html_options[:placeholder]  = field.placeholder unless(field.placeholder.blank?)
         html_options[:class]        = 'materialize-textarea' if(field.type == :text)
         
