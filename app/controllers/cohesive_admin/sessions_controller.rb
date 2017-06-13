@@ -58,7 +58,7 @@ private
   end
 
   def redirect_if_logged_in
-    redirect_to(root_path) unless session[:user_id].blank?
+    redirect_to(root_path) if session[:user_id].blank?
   end
 
 end
