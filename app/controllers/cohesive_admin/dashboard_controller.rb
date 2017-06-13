@@ -1,7 +1,7 @@
 module CohesiveAdmin
   class DashboardController < CohesiveAdmin::BaseController
     def index
-       @header = "Dashboard"
+       redirect_to new_session_path
      end
 	end
 end
