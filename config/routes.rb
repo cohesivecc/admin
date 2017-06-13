@@ -1,5 +1,5 @@
 CohesiveAdmin::Engine.routes.draw do
-  root to: 'session#new'
+  root to: 'sessions#new'
 
   resources :sessions, only: [:new, :create] do
     collection do
