@@ -1,5 +1,6 @@
 CohesiveAdmin::Engine.routes.draw do
-	
+	root to: redirect_to('/admin/sessions/new')
+
   resources :sessions, only: [:new, :create] do
     collection do
       get :forgot_password
@@ -12,10 +13,10 @@ CohesiveAdmin::Engine.routes.draw do
     collection do
       delete :delete
     end
-  end	
-	
+  end
+
 	get :config, to:'config#index', format: :json, as:'config'
-	
+
 	CohesiveAdmin::Dashboard.manageable_models.each do |model|
 		resources ActiveModel::Naming.route_key(model), { controller: :resource, defaults: { model_class:model.name.underscore } } do
 	    member do
@@ -32,5 +33,5 @@ CohesiveAdmin::Engine.routes.draw do
 		end
 	end
 	CohesiveAdmin::Dashboard.init
-	
+
 end
