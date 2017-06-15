@@ -64,7 +64,24 @@ module CohesiveAdmin
 		
 			end
 			
+			def default_fields_from(cfg)
+				return nil if @model.nil? || !@model.table_exists?
 			
+				fallback_thumb_field = nil
+				fallback_label_field = nil
+			
+				cfg[:fields].each do |field, type|
+					fallback_thumb_field ||= field if %w{refile shrine}.include?(type)
+					fallback_label_field ||= field unless %w{refile shrine association polymorphic}.include?(type)
+				end
+
+				cfg[:headings] ||= {}
+				cfg[:headings][:thumbnail] ||= fallback_thumb_field if fallback_thumb_field
+				cfg[:headings][:label] ||= fallback_label_field || :id
+				cfg[:headings][:date]  ||= :created_at
+				cfg
+			end
+
 			
 			def load_field_config
 				return nil if @model.nil? || !@model.table_exists?
@@ -80,11 +97,11 @@ module CohesiveAdmin
 					fallback_thumb_field ||= field if %w{refile shrine}.include?(type)
 					fallback_label_field ||= field unless %w{refile shrine association polymorphic}.include?(type)
 				end
-				
-				
+
 				config[:headings][:thumbnail] ||= fallback_thumb_field if fallback_thumb_field
 				config[:headings][:label] ||= fallback_label_field || :id
 				config[:headings][:date]  ||= :created_at
+				
 				config[:headings].each do |heading, field|
 					@collection_fields[heading] = @form_fields[field] || Field.new(field, @model)
 				end
