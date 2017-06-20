@@ -23,6 +23,19 @@
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
           </li>
         </ul>
+        <ul class="right hide-on-med-and-down">
+          <li>
+              <%= link_to(@dashboard.path([:edit, :admin, current_user])) do %>
+                <i class="material-icons left">account_circle</i>
+                <%= current_user.name %>
+              <% end %>
+          </li>
+          <li>
+            <%= link_to(@dashboard.path([:logout, :admin, :sessions]), title: 'Logout', class: 'tooltipped', data: { position: 'bottom', delay: 500, tooltip: 'Logout'}) do %>
+              <i class="material-icons">power_settings_new</i>
+            <% end %>
+          </li>
+        </ul>
       </div>
     </nav>
   </header>
@@ -34,7 +47,7 @@
     <section class="hero-panel blue darken-2 lighten-1 bg-image-escheresque">
       <div class="row">
         <div class="col s12 m10">
-          <%= content_tag(:h4, @dashboard.title, class:'white-text') %>
+          <%= content_tag(:h4, (@dashboard.title rescue @dashboard_title), class:'white-text') if @dashboard || @dashboard_title %>
         </div>
         <div class="col s12 m2 right-align">
           <%= yield(:hero_buttons) %>

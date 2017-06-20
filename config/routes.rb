@@ -1,5 +1,7 @@
 CohesiveAdmin::Engine.routes.draw do
 	
+	root to:'dashboard#default_dashboard'
+	
   resources :sessions, only: [:new, :create] do
     collection do
       get :forgot_password

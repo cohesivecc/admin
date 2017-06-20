@@ -1,20 +1,12 @@
 <ul id="slide-out" class="side-nav fixed grey darken-3">
   <li class="grey darken-3 z-depth-1 logo-link">
     <%= link_to("/#{namespace}") do %>
-      <i class="material-icons left white-text">donut_small</i> Cohesive Admin
+      <i class="material-icons left white-text">donut_small</i> <%= t('admin.title') %>
     <% end %>
   </li>
-  
   <% CohesiveAdmin::Dashboard.all.each do |dashboard| %>
     <%= content_tag(:li, class:"#{ 'active' if dashboard == @dashboard }") do %>
       <%= link_to(dashboard.title, dashboard.path) %>
     <% end %>
   <% end %>
-  
-
-  
-  
-  
-  
-
 </ul>

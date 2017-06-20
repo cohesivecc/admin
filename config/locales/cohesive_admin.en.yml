@@ -4,7 +4,17 @@ en:
     formats:
       admin: "%b %-d, %Y at %l:%M %P"
   admin:
+    title: "Cohesive Admin"
+    dashboards:
+      dashboard: "Cohesive Admin"
+      cohesive_admin_user:
+        one: "User"
+        other: "Users"
     fields:
+      cohesive_admin_user:
+        email: "Email Address"
+        password: "Password"
+        password_confirmation: "Confirm Password"
       id: "ID"
       name: "Name"
       created_at: "Created At"

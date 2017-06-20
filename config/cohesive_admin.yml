@@ -1,0 +1,10 @@
+---
+cohesive_admin_users:
+  fields:
+    name: string
+    email: email
+    password: password
+    password_confirmation: password
+  headings:
+    label: name
+    description: email

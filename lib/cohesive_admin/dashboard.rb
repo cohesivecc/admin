@@ -142,7 +142,7 @@ private
 			dashboards = {}
 			(user_defined_routes + engine_routes).each do |route|
 				_controller = route.defaults[:controller]
-				_model      = route.defaults[:model_class]
+				_model      = route.defaults[:model_class]	
 				
 				key         = _model || _controller
 				
@@ -201,11 +201,12 @@ private
 			all_manageable_models - user_managed_models
 		end
 		
-	private
 		
 		def active_record_models
 			# Eager load all models unless it already happened
 			Rails.application.eager_load! unless Rails.application.config.eager_load
+			CohesiveAdmin::Engine.eager_load!
+			
 			# Get all subclasses of ActiveRecord::Base
 			ActiveRecord::Base.descendants.keep_if { |m| 
 				m.table_exists? &&  # whose table exists
@@ -241,11 +242,20 @@ private
 			controllers = {}
 			CohesiveAdmin::BaseController.descendants.keep_if { |c| 
 				c.name == c.to_s && # that has a name (isn't a constant)
-				c != CohesiveAdmin::DashboardController # isn't the base dashboard controller
+				!hidden_controllers.include?(c) # isn't a hidden controller (s3 assets, sessions, etc)
 			}.each { |c|
 				controllers[c.name.underscore.sub(/_controller\z/, '')] = c
 			}
 			controllers
+		end
+		
+		def hidden_controllers
+			[
+				CohesiveAdmin::ConfigController,
+				CohesiveAdmin::DashboardController,
+				CohesiveAdmin::S3AssetsController,
+				CohesiveAdmin::SessionsController
+			]
 		end
 		
 	end

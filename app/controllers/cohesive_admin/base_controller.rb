@@ -14,6 +14,7 @@ module CohesiveAdmin
 		
 		def load_dashboard
 			@dashboard = CohesiveAdmin::Dashboard.for(controller:self.class, model:params[:model_class], path:request.path)
+			@dashboard ||= CohesiveAdmin::Dashboard.new(controller:CohesiveAdmin::DashboardController)
 		end
 		
 		def namespace
