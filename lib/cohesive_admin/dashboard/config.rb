@@ -7,9 +7,11 @@ module CohesiveAdmin
 		
 			def load_config
 				config_key = id.to_sym
+				
 				@config = CohesiveAdmin.config.dashboards[config_key].clone.with_indifferent_access rescue nil if(CohesiveAdmin.config.dashboards.has_key?(config_key))
 				@config ||= default_config
 				@config[:headings] ||= {}
+				@config[:order] = 999999 if @model == CohesiveAdmin::User
 				@config[:order] ||= CohesiveAdmin.config.dashboards.keys.index(config_key)
 				
 				load_field_config unless standalone?
