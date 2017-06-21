@@ -28,13 +28,6 @@ class CohesiveAdmin::Dashboard
 
 		load_config
 
-		if(@model)
-			# enable the configured model concerns
-			@model.admin_sortable(@config[:sort]) if(@config[:sort] && !@model.admin_sortable?)
-			@model.admin_searchable unless(searchable_fields.empty?)
-			@model.admin_duplicatable(@config[:duplicate]) if(@config[:duplicate] && !@model.admin_duplicatable?)
-		end
-
 		# load authentication for this model's controller (if configured and necessary)
 		auth_concern = CohesiveAdmin.config.authentication
 		unless(auth_concern == false)
@@ -121,21 +114,27 @@ class CohesiveAdmin::Dashboard
 		]
 	end
 
-	# def sort_field
-	# 	return nil if standalone?
-	# 	columns = @model.columns.map { |c| c.name.to_sym }
-	# 	f = nil
-	# 	[@config[:sort], CohesiveAdmin.config.default_sort_field].compact.each do |field|
-	# 		f ||= field if columns.include?(field)
-	# 	end
-	# 	f
-	# end
-
 private
 
 	@@collection = nil
 
 	class << self
+		
+		def init_models
+			managed_models.each do |model|
+				
+				cfg = config_for(model)
+				search_fields = cfg[:fields].select { |field,data| 
+					data.is_a?(Hash) && data[:searchable] == true
+				}
+				
+				# enable the configured model concerns
+				model.admin_sortable(cfg[:sort]) if(cfg[:sort] && !model.admin_sortable?)
+				model.admin_searchable unless(search_fields.empty?)
+				model.admin_duplicatable(cfg[:duplicate]) if(cfg[:duplicate] && !model.admin_duplicatable?)
+
+			end
+		end
 
 		def init
 			@@collection = nil
@@ -201,6 +200,7 @@ private
 			all_manageable_models - user_managed_models
 		end
 
+		private
 
 		def active_record_models
 			# Eager load all models unless it already happened

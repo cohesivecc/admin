@@ -3,6 +3,27 @@ module CohesiveAdmin
 		module Config
 			extend ActiveSupport::Concern
 			
+			class_methods do
+				def config_for(model_or_controller)
+					key = if(model_or_controller.ancestors.include?(ActiveRecord::Base))
+									ActiveModel::Naming.route_key(model_or_controller)
+								elsif(model_or_controller.ancestors.include?(CohesiveAdmin::BaseController))
+									model_or_controller.name.gsub(/.+::|Controller$/, '').underscore
+								else
+									nil
+								end
+
+					return nil unless key
+					
+					key = key.to_sym
+
+					cfg = CohesiveAdmin.config.dashboards[key].clone.with_indifferent_access if(CohesiveAdmin.config.dashboards.has_key?(key))
+					cfg[:order] = 999999 if model_or_controller == CohesiveAdmin::User
+					cfg[:order] ||= CohesiveAdmin.config.dashboards.keys.map(&:to_sym).index(key)
+					cfg	
+				end
+			end
+			
 		private
 		
 			def load_config
@@ -12,7 +33,7 @@ module CohesiveAdmin
 				@config ||= default_config
 				@config[:headings] ||= {}
 				@config[:order] = 999999 if @model == CohesiveAdmin::User
-				@config[:order] ||= CohesiveAdmin.config.dashboards.keys.index(config_key)
+				@config[:order] ||= CohesiveAdmin.config.dashboards.keys.map(&:to_sym).index(config_key)
 				
 				load_field_config unless standalone?
 			end
