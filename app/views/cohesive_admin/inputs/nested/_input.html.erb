@@ -5,9 +5,10 @@ klass ||= nil
 parent_klass ||= nil
 
 singular  ||= false
+attribute_name = attribute_name.to_s.sub(/_id(s)?\z/, '\1')
 title     = t("admin.fields.#{ parent_klass.name.underscore.sub("/", "_") }.#{ attribute_name }")
 
-attribute_name = attribute_name.to_s.sub(/_id\z/, '')
+
 %>
 
 <div data-nested class="input-field nested">

@@ -72,7 +72,7 @@ module CohesiveAdmin
 			end
 			
 			def nested?
-				!nested.nil?
+				!@nested.nil?
 			end
 			
 			def attachment?

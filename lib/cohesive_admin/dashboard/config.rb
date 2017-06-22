@@ -15,7 +15,7 @@ module CohesiveAdmin
 
 					return nil unless key
 					
-					key = key.to_sym
+					key = key.to_s
 
 					cfg = CohesiveAdmin.config.dashboards[key].clone.with_indifferent_access if(CohesiveAdmin.config.dashboards.has_key?(key))
 					cfg[:order] = 999999 if model_or_controller == CohesiveAdmin::User

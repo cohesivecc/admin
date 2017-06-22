@@ -14,9 +14,8 @@ if(klass && f)
     
     has_inverse = field.associated? && !parent_klass.nil? && inverse_relationship_exists?(klass, k, parent_klass)
     
-    next if(has_inverse && field.type == :polymorphic)
+    next if(has_inverse && [:polymorphic,:association,:nested].include?(field.type))
     input_partial = field.form_input rescue nil
-    
 %>
     <div class='row'>
       <div class='col s12'>
@@ -45,7 +44,7 @@ if(klass && f)
           input_options[:collection]  = field.collection unless(field.collection.nil?)
         end
         
-        if(field.type == :association && !has_inverse)
+        if(field.type == :association)
         %>
           <%= f.association(k, input_options) %>
         <%

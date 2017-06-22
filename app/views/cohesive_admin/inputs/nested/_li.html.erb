@@ -3,16 +3,23 @@ klass ||= nil
 f ||= nil
 parent_klass ||= nil
 
-if klass
+if klass && !f.object.nil?
   title = klass.to_s #klass.admin_display_name.titleize
   id    ||= f.object.object_id
-  label ||= f.object.to_label.blank? ? "#{f.object.id.blank? ? 'New ' : ''}#{title}" : f.object.to_label
-  %>
+  
+  d = CohesiveAdmin::Dashboard.for(model:klass)
+  field = d.collection_fields["label"]
+  
+  label ||= field.value_for(f.object)
+  label_is_image = [:refile, :shrine].include?(field.type)
+%>
 
 <li data-nested-object="<%= id %>">
   <div class="collapsible-header">
-    <%= content_tag(:span, f.object.errors.count, class: 'new badge red', data: { 'badge-caption' => 'errors' }) unless f.object.errors.blank? %>
-    <%= link_to(label, "##{id}", data: { turbolinks: false }) -%>
+    <%= content_tag(:span, f.object.errors.count, class: 'new badge red', data: { 'badge-caption' => 'errors' }) unless f.object.blank? || f.object.errors.blank? %>
+    <%= link_to("##{id}") do %>
+      <%= label_is_image ? image_tag(label) : strip_tags("#{ label }").truncate(100) %>
+    <% end %>
     <a href="#!" class="secondary-content tooltipped" data-position="left" data-delay="500" data-tooltip="Delete <%= title %>" data-nested-destroy="<%= id %>"><i class="material-icons">delete</i></a>
   </div>
   <div class="collapsible-body">
@@ -24,6 +31,4 @@ if klass
   </div>
 </li>
 <% end %>
-
-
 
