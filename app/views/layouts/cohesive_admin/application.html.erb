@@ -25,13 +25,13 @@
         </ul>
         <ul class="right hide-on-med-and-down">
           <li>
-              <%= link_to(@dashboard.path([:edit, :admin, current_user])) do %>
+              <%= link_to(cohesive_admin.edit_cohesive_admin_user_path(current_user)) do %>
                 <i class="material-icons left">account_circle</i>
                 <%= current_user.name %>
               <% end %>
           </li>
           <li>
-            <%= link_to(@dashboard.path([:logout, :admin, :sessions]), title: 'Logout', class: 'tooltipped', data: { position: 'bottom', delay: 500, tooltip: 'Logout'}) do %>
+            <%= link_to(cohesive_admin.logout_sessions_path, title: 'Logout', class: 'tooltipped', data: { position: 'bottom', delay: 500, tooltip: 'Logout'}) do %>
               <i class="material-icons">power_settings_new</i>
             <% end %>
           </li>

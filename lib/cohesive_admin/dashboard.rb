@@ -130,8 +130,8 @@ private
 				
 				# enable the configured model concerns
 				model.admin_sortable(cfg[:sort]) if(cfg[:sort] && !model.admin_sortable?)
-				model.admin_searchable unless(search_fields.empty?)
-				model.admin_duplicatable(cfg[:duplicate]) if(cfg[:duplicate] && !model.admin_duplicatable?)
+				model.admin_searchable           unless(search_fields.empty?)
+				model.admin_duplicatable         if(cfg[:duplicate] && !model.admin_duplicatable?)
 
 			end
 		end
