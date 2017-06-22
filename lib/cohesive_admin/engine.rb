@@ -21,14 +21,17 @@ module CohesiveAdmin
        app.config.assets.precompile += ['cohesive_admin/preloader.gif']
     end
 		
-		config.after_initialize do
+		config.after_initialize do			
 			ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::ManagedModel)
       ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable)
       ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Duplicatable)
 			ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Searchable)
 			ActiveSupport::Inflector.inflections do |inflect|
 				inflect.irregular 'base', 'bases'
-			end			
+			end
+			
+			CohesiveAdmin::Dashboard.init_models
+			
 		end
 		
   end
