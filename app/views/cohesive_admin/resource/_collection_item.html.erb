@@ -1,7 +1,8 @@
+<% thumbnail = fields[:thumbnail].value_for(item) rescue nil %>
 <tr>
-  <%= content_tag(:td, image_tag(fields[:thumbnail].value_for(item)), class:'thumb') if fields[:thumbnail] %>
+  <%= content_tag(:td, class:'thumb') do %><%= image_tag(thumbnail) if(thumbnail) %><% end if fields[:thumbnail] %>
   <%= content_tag(:td) do %>
-    <% if(fields[:label]) 
+    <% if(fields[:label])
         label = fields[:label].value_for(item)
         label_is_image = [:refile, :shrine].include?(fields[:label].type) %>
         <%= label_is_image ? image_tag(label) : strip_tags("#{ label }").truncate(100) %>
