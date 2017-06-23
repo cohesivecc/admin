@@ -6,10 +6,10 @@ parent_klass ||= nil
 if klass && !f.object.nil?
   title = klass.to_s #klass.admin_display_name.titleize
   id    ||= f.object.object_id
-  
+
   d = CohesiveAdmin::Dashboard.for(model:klass)
   field = d.collection_fields["label"]
-  
+
   label ||= field.value_for(f.object)
   label_is_image = [:refile, :shrine].include?(field.type)
 %>
@@ -25,10 +25,9 @@ if klass && !f.object.nil?
   <div class="collapsible-body">
     <div class="nested-form-fields">
       <%= f.hidden_field :_destroy %>
-      <%= f.hidden_field :id, value: (params[:action] == 'clone' ? nil : f.object.id)  %>
+      <%= f.hidden_field :id, value: (params[:action] == 'duplicate' ? nil : f.object.id)  %>
       <%= render(partial: '/cohesive_admin/resource/fields', locals: { klass: klass, f: f, parent_klass: parent_klass  }) %>
     </div>
   </div>
 </li>
 <% end %>
-
