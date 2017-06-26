@@ -1,8 +1,6 @@
 module CohesiveAdmin
   class User < ActiveRecord::Base
 
-    cohesive_admin({ order: Float::INFINITY })
-
     has_secure_password
 
     validates :email,         presence: true,
@@ -24,7 +22,7 @@ module CohesiveAdmin
     end
 
     class << self
-			
+
 			def model_name
 				ActiveModel::Name.new(self, nil, "CohesiveAdmin::User")
 			end
