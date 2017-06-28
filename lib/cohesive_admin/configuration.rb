@@ -33,6 +33,17 @@ module CohesiveAdmin
 			end
 			thing
 		end
+
+		def after_configure
+
+			# conveniences for AWS keys
+			unless self.config.aws.blank?
+				self.config.aws[:acl]               ||= 'public-read'
+				self.config.aws[:key_start]         ||= 'cohesive_admin/'
+				self.config.aws[:secret_access_key] ||= (self.config.aws[:credentials].credentials.secret_access_key rescue nil)
+				self.config.aws[:access_key_id]     ||= (self.config.aws[:credentials].credentials.access_key_id rescue nil)
+			end
+		end
 		
 	private
 		
@@ -69,15 +80,6 @@ module CohesiveAdmin
 		yield config
 	end
 
-	def after_configure
 
-		# conveniences for AWS keys
-		unless self.config.aws.blank?
-			self.config.aws[:acl]               ||= 'public-read'
-			self.config.aws[:key_start]         ||= 'cohesive_admin/'
-			self.config.aws[:secret_access_key] ||= (self.config.aws[:credentials].credentials.secret_access_key rescue nil)
-			self.config.aws[:access_key_id]     ||= (self.config.aws[:credentials].credentials.access_key_id rescue nil)
-		end
-	end
 	
 end
