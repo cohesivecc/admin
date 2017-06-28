@@ -20,9 +20,12 @@ module CohesiveAdmin
     initializer "cohesive_admin.precompile_images" do |app|
        app.config.assets.precompile += ['cohesive_admin/preloader.gif']
     end
+
+    config.before_initialize do
+      ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::ManagedModel)
+    end
 		
-		config.after_initialize do			
-			ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::ManagedModel)
+		config.after_initialize do
       ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable)
       ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Duplicatable)
 			ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Searchable)
