@@ -23,12 +23,13 @@ module CohesiveAdmin
 
     config.before_initialize do
       ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::ManagedModel)
+      ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable)
+      ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Duplicatable)
+      ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Searchable)
     end
 		
 		config.after_initialize do
-      ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Sortable)
-      ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Duplicatable)
-			ActiveRecord::Base.send(:include, CohesiveAdmin::Concerns::Searchable)
+
 			ActiveSupport::Inflector.inflections do |inflect|
 				inflect.irregular 'base', 'bases'
 			end
