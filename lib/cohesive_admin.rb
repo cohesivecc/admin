@@ -9,6 +9,7 @@ require "cohesive_admin/configuration"
 require "cohesive_admin/routing"
 require "cohesive_admin/dashboard"
 require "cohesive_admin/engine"
+require "cohesive_admin/amazon_signature"
 
 module CohesiveAdmin
 
@@ -43,8 +44,8 @@ module CohesiveAdmin
           key_start:      self.config.aws[:key_start],
           acl:            self.config.aws[:acl],
           access_key_id:  self.config.aws[:access_key_id],
-          policy:         CohesiveAdmin::AmazonSignature.policy,
-          signature:      CohesiveAdmin::AmazonSignature.signature,
+          policy:         AmazonSignature.policy,
+          signature:      AmazonSignature.signature,
           assets:         {
                             index:      Engine.routes.url_helpers.s3_assets_path,
                             delete:     Engine.routes.url_helpers.delete_s3_assets_path,
