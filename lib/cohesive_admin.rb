@@ -43,8 +43,8 @@ module CohesiveAdmin
           key_start:      self.config.aws[:key_start],
           acl:            self.config.aws[:acl],
           access_key_id:  self.config.aws[:access_key_id],
-          policy:         AmazonSignature.policy,
-          signature:      AmazonSignature.signature,
+          policy:         CohesiveAdmin::AmazonSignature.policy,
+          signature:      CohesiveAdmin::AmazonSignature.signature,
           assets:         {
                             index:      Engine.routes.url_helpers.s3_assets_path,
                             delete:     Engine.routes.url_helpers.delete_s3_assets_path,
