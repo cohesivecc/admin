@@ -46,7 +46,7 @@ module CohesiveAdmin
           bucket:         self.config.aws[:bucket],
           region:         region,
           acl: 'public-read',
-          key_start: 'cohesive_admin/'
+          key_start: 'cohesive_admin/',
           access_key_id:  self.config.aws[:access_key_id],
           policy:         AmazonSignature.policy,
           signature:      AmazonSignature.signature,
