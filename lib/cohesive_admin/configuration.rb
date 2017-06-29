@@ -17,7 +17,10 @@ module CohesiveAdmin
       @namespace	= :admin
       @default_sort_field	= :position
       @dashboards	= {}.with_indifferent_access
-      @aws	= nil
+      @aws	= {
+        acl: 'public-read',
+        key_start: 'cohesive_admin/'
+      }.with_indifferent_access
       @froala	= nil
       @authentication	= CohesiveAdmin::Authentication
 
