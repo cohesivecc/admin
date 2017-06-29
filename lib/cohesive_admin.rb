@@ -38,11 +38,15 @@ module CohesiveAdmin
       bucket = Aws::S3::Bucket.new(self.config.aws[:bucket], { region: self.config.aws[:region] })
       region = bucket.client.config.endpoint.host.gsub(/\.amazonaws\.com\Z/, '')
 
+          # acl: 'public-read',
+          # key_start: 'cohesive_admin/'
+          # key_start:      self.config.aws[:key_start],
+          # acl:            self.config.aws[:acl],
       js_config[:aws] = {
           bucket:         self.config.aws[:bucket],
           region:         region,
-          key_start:      self.config.aws[:key_start],
-          acl:            self.config.aws[:acl],
+          acl: 'public-read',
+          key_start: 'cohesive_admin/'
           access_key_id:  self.config.aws[:access_key_id],
           policy:         AmazonSignature.policy,
           signature:      AmazonSignature.signature,
