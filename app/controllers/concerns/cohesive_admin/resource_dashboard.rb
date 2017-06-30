@@ -243,14 +243,20 @@ module CohesiveAdmin::ResourceDashboard
 		unless @dashboard.filterable_fields.empty?
 
 			filter_params = params.fetch(:filter, {}).permit(@dashboard.strong_params)
+			search_param  = filter_params.delete(:ca_search)
+
 			@filter_object = @model.new(filter_params)
+			@filter_object.ca_search = search_param if @filter_object.respond_to?(:ca_search)
 
 			if(params[:filter])
 				@filter_args = {}
 				@dashboard.strong_params.each do |p|
-					filter_val = @filter_object.send(p)
 
-					if(params[:filter][p] && (filter_val == false || !filter_val.blank?))
+					filter_val = @filter_object.send(p) unless p == :ca_search
+
+					if(p == :ca_search)
+						@filter_args[p] = filter_params[:ca_search]
+					elsif(params[:filter][p] && (filter_val == false || !filter_val.blank?))
 						@filter_args[p] = filter_val
 					else
 						@filter_object.send("#{p}=", nil) rescue nil
