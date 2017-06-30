@@ -22,6 +22,7 @@ module CohesiveAdmin
       @authentication	= CohesiveAdmin::Authentication
 
       load_model_config
+      configure_aws
 
     end
 
@@ -49,6 +50,11 @@ module CohesiveAdmin
           @dashboards.update(config_contents)
         end
       end
+    end
+
+    def configure_aws
+      @aws[:acl] = 'public-read'
+      @aws[:key_start] = 'cohesive_admin/'
     end
 
   end
