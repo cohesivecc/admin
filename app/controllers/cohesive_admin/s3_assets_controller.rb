@@ -50,6 +50,7 @@ class CohesiveAdmin::S3AssetsController < CohesiveAdmin::BaseController
 private
 
   def load_bucket
+    logger.info CohesiveAdmin.config.aws[:key_start]
     @bucket = Aws::S3::Bucket.new(CohesiveAdmin.config.aws[:bucket])
     type = %w{images files}.include?(params[:type]) ? params[:type] : 'images'
     @prefix = %Q{#{CohesiveAdmin.config.aws[:key_start]}#{type}/}
