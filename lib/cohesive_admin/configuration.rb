@@ -53,8 +53,7 @@ module CohesiveAdmin
     end
 
     def configure_aws
-      @aws[:acl] = 'public-read'
-      @aws[:key_start] = 'cohesive_admin/'
+      @aws.update(acl: 'public-read', key_start: 'cohesive_admin/')
     end
 
   end
