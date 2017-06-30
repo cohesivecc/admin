@@ -53,9 +53,12 @@ module CohesiveAdmin
     end
 
     def configure_aws
-      @aws.update(acl: 'public-read', key_start: 'cohesive_admin/')
-      Rails.logger.info "LOGGING AWS: #{@aws}"
-      # Rails.logger.info "LOGGING CONFIG: #{CohesiveAdmin.config.aws}"
+      unless self.config.aws.blank?
+        self.config.aws[:acl]               ||= 'public-read'
+        self.config.aws[:key_start]         ||= 'cohesive_admin/'
+        self.config.aws[:secret_access_key] ||= (self.config.aws[:credentials].credentials.secret_access_key rescue nil)
+        self.config.aws[:access_key_id]     ||= (self.config.aws[:credentials].credentials.access_key_id rescue nil)
+      end
     end
 
   end
