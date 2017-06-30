@@ -252,7 +252,7 @@ module CohesiveAdmin::ResourceDashboard
 				@filter_args = {}
 				@dashboard.strong_params.each do |p|
 
-					filter_val = @filter_object.send(p) unless p == :ca_search
+					filter_val = @filter_object.send(p) if p != :ca_search && p.is_a?(Symbol)
 
 					if(p == :ca_search)
 						@filter_args[p] = filter_params[:ca_search]
