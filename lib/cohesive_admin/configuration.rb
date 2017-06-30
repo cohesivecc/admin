@@ -53,11 +53,11 @@ module CohesiveAdmin
     end
 
     def configure_aws
-      unless self.config.aws.blank?
-        self.config.aws[:acl]               ||= 'public-read'
-        self.config.aws[:key_start]         ||= 'cohesive_admin/'
-        self.config.aws[:secret_access_key] ||= (self.config.aws[:credentials].credentials.secret_access_key rescue nil)
-        self.config.aws[:access_key_id]     ||= (self.config.aws[:credentials].credentials.access_key_id rescue nil)
+      unless @aws.blank?
+        @aws[:acl]               ||= 'public-read'
+        @aws[:key_start]         ||= 'cohesive_admin/'
+        @aws[:secret_access_key] ||= (@aws[:credentials].credentials.secret_access_key rescue nil)
+        @aws[:access_key_id]     ||= (@aws[:credentials].credentials.access_key_id rescue nil)
       end
     end
 
