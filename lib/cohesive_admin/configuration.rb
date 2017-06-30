@@ -54,6 +54,7 @@ module CohesiveAdmin
 
     def configure_aws
       if @aws.blank?
+        logger.info 'CONFIGURING AWS'
         @aws[:acl]               ||= 'public-read'
         @aws[:key_start]         ||= 'cohesive_admin/'
         @aws[:secret_access_key] ||= (@aws[:credentials].credentials.secret_access_key rescue nil)
