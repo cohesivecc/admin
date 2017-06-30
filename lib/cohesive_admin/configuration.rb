@@ -54,8 +54,8 @@ module CohesiveAdmin
 
     def configure_aws
       @aws.update(acl: 'public-read', key_start: 'cohesive_admin/')
-      logger.info "LOGGING AWS: #{@aws}"
-      logger.info "LOGGING CONFIG: #{CohesiveAdmin.config.aws}"
+      Rails.logger.info "LOGGING AWS: #{@aws}"
+      Rails.logger.info "LOGGING CONFIG: #{CohesiveAdmin.config.aws}"
     end
 
   end
