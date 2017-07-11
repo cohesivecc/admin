@@ -19,7 +19,7 @@ CohesiveAdmin::Engine.routes.draw do
 	get :config, to:'config#index', format: :json, as:'config'
 	
 	CohesiveAdmin::Dashboard.manageable_models.each do |model|
-		resources ActiveModel::Naming.route_key(model), { controller: :resource, defaults: { model_class:model.name.underscore } } do
+		resources ActiveModel::Naming.route_key(model), { controller: :resource, defaults: { model_class:model.name.underscore }, as:ActiveModel::Naming.route_key(model).to_s } do
 	    member do
 				if(model.admin_duplicatable?)
 					get :duplicate

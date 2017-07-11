@@ -19,11 +19,13 @@ module CohesiveAdmin
       page_params = @params.symbolize_keys.merge(@param_name.to_sym => (page <= 1 ? nil : page), :only_path => true)
 
       # If this is a resource URL, we need to intercept
-      if page_params.has_key?(:class_name)
-        klass = (page_params.delete(:class_name).constantize rescue nil)
+      if page_params.has_key?(:model_class)
+				dashboard = CohesiveAdmin::Dashboard.for(model:page_params.delete(:model_class))
+				klass = dashboard.model
         page_params.delete(:action) if page_params[:action] == 'index'
         page_params = [klass, page_params]
       end
+			
       @template.url_for page_params
     end
 

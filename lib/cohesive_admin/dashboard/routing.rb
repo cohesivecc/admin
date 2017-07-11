@@ -10,6 +10,15 @@ module CohesiveAdmin
 			def singular_route_key
 				ActiveModel::Naming.singular_route_key(@model) if @model
 			end
+			
+			def proxy
+				# prefix the entire path with the correct RoutesProxy
+				if(user_defined?)
+					CohesiveAdmin.routing.main_app
+				else
+					CohesiveAdmin.routing.cohesive_admin
+				end
+			end
 
 			def path(poly_path=nil)
 		
@@ -27,13 +36,6 @@ module CohesiveAdmin
 						poly_path[pos] = nil
 					end
 				end
-		
-				# prefix the entire path with the correct RoutesProxy
-				proxy = if(user_defined?)
-									CohesiveAdmin.routing.main_app
-								else
-									CohesiveAdmin.routing.cohesive_admin
-								end		
 		
 				poly_path.unshift(proxy)
 				poly_path.compact
