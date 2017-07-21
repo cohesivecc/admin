@@ -16,7 +16,7 @@ parent_klass ||= nil
       </div>
     <% elsif(field.type == :polymorphic) %>
       <%= f.input(k, as:'polymorphic', label:field.label, required:false) unless inverse_relationship_exists?(model, k, parent_klass) %>
-    <% else 
+    <% else
     opts = field.collection
     opts ||=  if(field.type == :boolean)
                 [['Yes', true],['No',false]]
@@ -26,7 +26,7 @@ parent_klass ||= nil
     %>
       <div class="row">
         <div class="col s12">
-          <%= f.input(k, as: :select, collection:opts, label:field.label, required:false) %>
+          <%= f.input(k, as: :select, collection:opts, label:field.label, required:false, 'browser-default' => true) %>
         </div>
       </div>
     <% end %>
