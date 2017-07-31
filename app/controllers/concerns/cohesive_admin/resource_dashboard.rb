@@ -199,7 +199,7 @@ module CohesiveAdmin::ResourceDashboard
 			sort_options << @model.admin_sort_column if @model.admin_sortable?
 
 			params[:sort].downcase! if(params[:sort])
-			params[:sort] = 'oldest' if !sort_options.include?(params[:sort])
+			params[:sort] = 'newest' if !sort_options.include?(params[:sort])
 
 			if(params[:sort] =~ /\A(old|new)est\z/i)
 				order_field = :created_at
