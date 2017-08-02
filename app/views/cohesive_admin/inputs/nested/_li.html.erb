@@ -15,7 +15,7 @@ if klass && !f.object.nil?
 %>
 
 <li data-nested-object="<%= id %>">
-  <div class="collapsible-header">
+  <div class="collapsible-header collapsible-add-link">
     <%= content_tag(:span, f.object.errors.count, class: 'new badge red', data: { 'badge-caption' => 'errors' }) unless f.object.blank? || f.object.errors.blank? %>
     <%= link_to("##{id}") do %>
       <%= label_is_image ? image_tag(label) : strip_tags("#{ label }").truncate(100) %>
