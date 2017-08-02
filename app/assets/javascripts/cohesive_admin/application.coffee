@@ -1,4 +1,5 @@
 #= require jquery2
+#= require materialize
 #= require jquery-ui
 #= require jquery_ujs
 #= require_tree ./includes
