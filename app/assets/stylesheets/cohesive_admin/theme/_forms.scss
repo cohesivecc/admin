@@ -34,6 +34,12 @@
       transform: translateY(-10%);
     }
   }
+  &.nested {
+    > label {
+      transform: translateY(0%);
+      top: -20px;
+    }
+  }
   .dropdown-content { z-index: 1000; }
 
   &.collection {
