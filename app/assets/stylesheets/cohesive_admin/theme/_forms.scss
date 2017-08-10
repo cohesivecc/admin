@@ -1,4 +1,6 @@
-
+.input-field label {
+  pointer-events: auto;
+}
 .input-field {
   > label { left: 0; }
 
