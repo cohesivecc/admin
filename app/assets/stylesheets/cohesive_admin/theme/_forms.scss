@@ -35,6 +35,22 @@
       transform: translateY(-140%);
     }
   }
+  &.wysiwyg {
+    .fr-element {
+      ul, ol, dl {
+        margin-bottom: 1rem;
+        list-style-position: outside;
+        line-height: 1.6;
+        padding: 0;
+        margin-left: 2.25rem;
+      }
+      ul {
+        &, > li {
+          list-style-type: disc;
+        }
+      }
+    }
+  }
   .dropdown-content { z-index: 1000; }
 
   &.collection {
