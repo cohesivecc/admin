@@ -10,4 +10,5 @@ fields:
   bio: wysiwyg
   active:
     type: boolean
+    label: "Is Active?"
     filter: true
