@@ -11,4 +11,5 @@ fields:
   active:
     type: boolean
     label: "Is Active?"
+    help: "Only active people show up in the directory."
     filter: true
