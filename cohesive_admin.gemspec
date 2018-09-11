@@ -17,12 +17,12 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", ['>= 4.2.6', '< 5.1']
+  s.add_dependency "rails", "~> 5.0"
 
   s.add_dependency "sass-rails"
   s.add_dependency "compass-rails", ">= 3.0"
   s.add_dependency "coffee-rails"
-  s.add_dependency 'jquery-rails', ['>= 3.0', '< 5']
+  s.add_dependency 'jquery-rails', "~> 4.0"
   s.add_dependency 'jquery-ui-rails', '~> 5.0'
   s.add_dependency 'materialize-sass', '~> 0.100.2'
   s.add_dependency 'puma'
