@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'aws-sdk-rails', '~> 2.0'
 
+
   s.add_development_dependency "sqlite3"
 
 end
