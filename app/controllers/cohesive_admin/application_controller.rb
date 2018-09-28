@@ -9,7 +9,7 @@ module CohesiveAdmin
 
     unless Rails.env.development?
       rescue_from Exception, with: lambda { |exception| render_500 }
-      rescue_from ActionController::RoutingError, ActionController::UnknownController, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception| render_404 }
+      rescue_from ActionController::RoutingError, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception| render_404 }
     end
 
 
