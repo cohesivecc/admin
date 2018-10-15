@@ -1,6 +1,9 @@
 
 .input-field {
-  > label { left: 0; }
+  > label {
+    left: 0;
+    height: auto;
+  }
 
   &.has-error {
     input:not([type]),
