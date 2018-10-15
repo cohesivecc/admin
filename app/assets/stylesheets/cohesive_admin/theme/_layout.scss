@@ -3,6 +3,16 @@ body {
   background-color: color("grey", "lighten-4");
 }
 
+.cohesive-logo {
+  background: transparent image-url('cohesive_admin/logo.svg') no-repeat top center;
+  width: 130px;
+  height: 36px;
+  margin-top: 5px;
+  background-size: contain;
+  text-indent: -99999px;
+  display: inline-block;
+}
+
 header, main {
   padding-left: 300px;
 }
