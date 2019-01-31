@@ -44,8 +44,8 @@ main {
   }
 }
 
-.side-nav {
-  a, &.fixed a {
+.sidenav {
+  a, &.sidenav-fixed a {
     color: #FFF;
     // font-weight: 200;
     font-size: 0.8em;

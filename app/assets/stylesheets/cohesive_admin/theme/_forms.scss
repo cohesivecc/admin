@@ -31,13 +31,14 @@
     }
   }
 
-  &.wysiwyg, &.code, &.nested, &.refile > .file-field, &.shrine > .file-field {
+  &.wysiwyg, &.code, &.nested, &.file-field {
     padding-top: 1em;
     > label {
       font-size: 0.8rem;
       transform: translateY(-140%);
     }
   }
+  &.file-field > label { transform: translateY(-50%); }
   &.wysiwyg {
     .fr-element {
       ul, ol, dl {
@@ -62,22 +63,27 @@
     overflow: visible;
   }
 
-  .postfix {
-    position: absolute;
-    // width: 3rem;
-    font-size: 2rem;
-    transition: color .2s;
-    right: 0;
-    text-align: right;
-    cursor: pointer;
-    color: color("orange", "lighten-1");
 
-    ~ input, ~ textarea, ~ label, ~ .validate ~ label, ~ .autocomplete-content, ~ .file-field, ~ .CodeMirror, ~ .select-wrapper, ~ .nested {
-      // margin-right: 3rem;
-      width: 92%;
-      width: calc(100% - 3rem);
-    }
+}
+
+.postfix {
+  position: absolute;
+  // width: 3rem;
+  font-size: 2rem;
+  transition: color .2s;
+  right: 0;
+  text-align: right;
+  cursor: pointer;
+  color: color("orange", "lighten-1");
+
+  ~ input, ~ textarea, ~ label, ~ .validate ~ label, ~ .autocomplete-content, ~ .file-field, ~ .CodeMirror, ~ .select-wrapper, ~ .nested {
+    // margin-right: 3rem;
+    width: 92%;
+    width: calc(100% - 3rem);
   }
+}
+.boolean, .check_boxes, .radio_buttons {
+  position: relative;
 }
 
 [type="checkbox"] + label {
@@ -152,6 +158,12 @@
   //   position: relative;
   //   top: 6px;
   // }
+}
+
+.hint {
+  font-style: italic;
+  font-size: 0.8rem;
+
 }
 
 .search-panel {

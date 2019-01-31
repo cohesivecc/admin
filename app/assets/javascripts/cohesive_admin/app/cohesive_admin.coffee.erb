@@ -10,7 +10,7 @@ class window.CohesiveAdmin
         $(document).trigger('cohesive_admin.initialized')
       else
         # side navigation
-        $(".button-collapse").sideNav()
+        $(".button-collapse").sidenav()
 
         $.ajax({
           url: "<%= CohesiveAdmin::Engine.routes.url_helpers.config_path(format: :json) %>",
@@ -37,8 +37,8 @@ class window.CohesiveAdmin
 
   @refreshForm: () ->
     if($('#object-form, #search-form').length)
-      $('#object-form select, #search-form select').material_select()
-      $('#object-form .collapsible').collapsible()
-      Materialize.updateTextFields()
+      $('#object-form select, #search-form select').formSelect()
+      $('.collapsible').collapsible()
+      M.updateTextFields()
       $('#object-form textarea.wysiwyg').froalaEditor()
       $('#object-form .tooltipped, #search-form .tooltipped').tooltip()

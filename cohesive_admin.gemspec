@@ -24,14 +24,14 @@ Gem::Specification.new do |s|
   s.add_dependency "coffee-rails"
   s.add_dependency 'jquery-rails'
   s.add_dependency 'jquery-ui-rails'
-  s.add_dependency 'materialize-sass', '~> 0.100.2'
+  s.add_dependency 'materialize-sass', '>= 1.0'
   s.add_dependency 'puma'
   s.add_dependency 'turbolinks'
 
   s.add_dependency "bcrypt-ruby", "~> 3.1.5"
 
-  s.add_dependency 'kaminari', '~> 0.17'
-  s.add_dependency 'simple_form', '>= 3.1'
+  s.add_dependency 'kaminari'
+  s.add_dependency 'simple_form', '>= 4.0'
 
   s.add_dependency 'aws-sdk-rails', '~> 2.0'
 
