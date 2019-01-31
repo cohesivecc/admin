@@ -29,4 +29,5 @@ group :development do
   gem 'fastimage'
 
   gem 'web-console', '>= 3.4'
+  gem 'rack', '2.0.6'
 end

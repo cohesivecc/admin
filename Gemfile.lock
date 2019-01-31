@@ -188,7 +188,7 @@ GEM
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     puma (3.12.0)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.1)
@@ -273,6 +273,7 @@ DEPENDENCIES
   fastimage
   image_processing
   mini_magick
+  rack (= 2.0.6)
   rails (>= 5.0)
   refile!
   refile-mini_magick!
