@@ -28,14 +28,15 @@ module CohesiveAdmin
         @item = @bucket.object(params["data-key"])
         if @item.exists?
           # good to delete
-          if (resp = @item.delete).successful?
+          begin
+            @item.delete
             respond_to do |format|
               format.html {
                 render json: { status: 'success' }
               }
             end and return
-          else
-            error = "Delete failed: #{resp.error.message}"
+          rescue => exception
+            error = "Delete failed. AWS Error."
           end
         else
           error = "File not found: #{params["data-key"]}"
