@@ -23,7 +23,7 @@ group :development do
   gem 'sinatra', github: 'sinatra/sinatra', branch: 'master'
 
   # Shrine
-  gem "shrine", '~> 2.2'
+  gem "shrine", '~> 3.3'
   gem 'image_processing'
   gem 'mini_magick'
   gem 'fastimage'
