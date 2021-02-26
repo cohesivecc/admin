@@ -24,8 +24,8 @@ module CohesiveAdmin
 
     def delete
       # attempt to prevent manipulation
-      if params[:key].index(@prefix) == 0
-        @item = @bucket.object(params[:key])
+      if params["data-key"].index(@prefix) == 0
+        @item = @bucket.object(params["data-key"])
         if @item.exists?
           # good to delete
           if (resp = @item.delete).successful?
@@ -38,10 +38,10 @@ module CohesiveAdmin
             error = "Delete failed: #{resp.error.message}"
           end
         else
-          error = "File not found: #{params[:key]}"
+          error = "File not found: #{params["data-key"]}"
         end
       else
-        error = "Invalid file key: #{params[:key]}"
+        error = "Invalid file key: #{params["data-key"]}"
       end
 
       respond_to do |format|

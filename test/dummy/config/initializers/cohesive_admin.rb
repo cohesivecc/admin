@@ -1,9 +1,6 @@
 CohesiveAdmin.configure do |config|
-  # config.aws = {
-  #   credentials: Aws.config[:credentials],
-  #   region: Aws.config[:region],
+  # config.aws = Aws.config.dup.update({
   #   bucket: 'cohesive-admin-dev',
-  #   acl: 'public-read'
-  # }
+  # })
   # config.froala = { key: 'KEY HERE' }
 end
