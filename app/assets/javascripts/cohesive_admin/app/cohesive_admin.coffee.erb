@@ -40,5 +40,6 @@ class window.CohesiveAdmin
       $('#object-form select, #search-form select').formSelect()
       $('.collapsible').collapsible()
       M.updateTextFields()
-      $('#object-form textarea.wysiwyg').froalaEditor()
+      new FroalaEditor('#object-form textarea.wysiwyg')
+      # $('#object-form textarea.wysiwyg').froalaEditor()
       $('#object-form .tooltipped, #search-form .tooltipped').tooltip()

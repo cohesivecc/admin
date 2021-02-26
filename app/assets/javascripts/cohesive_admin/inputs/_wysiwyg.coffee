@@ -3,13 +3,39 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
 
   config = CohesiveAdmin.config
 
-  $.FroalaEditor.DEFAULTS.key = config.froala.key
+  FroalaEditor.DEFAULTS.key = config.froala.key
 
   froala_config = {
     zIndex: 999,
     heightMin: 300,
-    toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'insertLink', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '|', 'insertImage', 'insertVideo', 'insertFile', '|', 'color', 'quote', 'insertHR', 'insertTable', '|', 'undo', 'redo', '|', 'html', '|', 'fullscreen', '|']
+    toolbarButtons: {
+      'moreText': {
+        'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+      },
+      'moreParagraph': {
+        'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'specialCharacters', 'quote']
+      },
+      'moreRich': {
+        'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
+      },
+      'moreMisc': {
+        'buttons': ['undo', 'redo', 'fullscreen', 'spellChecker', 'selectAll', 'html', 'help'],
+        'align': 'right',
+        'buttonsVisible': 2
+      }
+    }
   }
+  FroalaEditor.DEFAULTS.specialCharactersSets.push({
+    title: 'Other',
+    char: '&Amacr;',
+    list: [
+      { 'char': '&Amacr;', desc: 'LATIN CAPITAL A WITH MACRON' },
+      { 'char': '&amacr;', desc: 'LATIN LOWERCASE A WITH MACRON' },
+      { 'char': '&Umacr;', desc: 'LATIN CAPITAL U WITH MACRON' },
+      { 'char': '&#363;', desc: 'LATIN LOWERCASE U WITH MACRON' },
+    ]
+  })
+
   if config.aws
 
     froala_config.imageUploadToS3 = {
@@ -54,6 +80,6 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
     froala_config.imageManagerPreloader    = config.aws.assets.preloader
 
   CohesiveAdmin.config.froala.config = froala_config
-  $.extend($.FroalaEditor.DEFAULTS, froala_config)
-  $('textarea.wysiwyg').froalaEditor()
+  $.extend(FroalaEditor.DEFAULTS, froala_config)
+  new FroalaEditor('textarea.wysiwyg')
 )
