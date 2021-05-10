@@ -1,5 +1,5 @@
 <% content_for(:hero_panel) do %>
-  <%= link_to([:new, ActiveModel::Naming.singular_route_key(@klass)], class: 'waves-effect waves-light btn-floating blue tooltipped', data: { position: 'top', delay: 500, tooltip: "Add New #{@header.singularize}"}) do %>
+  <%= link_to([:new, ActiveModel::Naming.singular_route_key(@klass).to_sym], class: 'waves-effect waves-light btn-floating blue tooltipped', data: { position: 'top', delay: 500, tooltip: "Add New #{@header.singularize}"}) do %>
     <i class="material-icons">add</i>
   <% end %>
   <%= link_to([:sort, @klass], class: 'waves-effect waves-light btn-floating red tooltipped', data: { position: 'top', delay: 500, tooltip: "Sort #{@header}"}) do %>

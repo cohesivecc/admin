@@ -1,11 +1,13 @@
-# asynchronously load Froala and S3 settings for security purposes
-$(document).on( 'cohesive_admin.initialized', (e) ->
+// asynchronously load Froala and S3 settings for security purposes
+$(document).on( 'cohesive_admin.initialized', function(e) {
 
-  config = CohesiveAdmin.config
+  const {
+    config
+  } = CohesiveAdmin;
 
-  FroalaEditor.DEFAULTS.key = config.froala.key
+  FroalaEditor.DEFAULTS.key = config.froala.key;
 
-  froala_config = {
+  const froala_config = {
     zIndex: 999,
     heightMin: 300,
     toolbarButtons: {
@@ -24,7 +26,7 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
         'buttonsVisible': 2
       }
     }
-  }
+  };
   FroalaEditor.DEFAULTS.specialCharactersSets.push({
     title: 'Other',
     char: '&Amacr;',
@@ -34,52 +36,53 @@ $(document).on( 'cohesive_admin.initialized', (e) ->
       { 'char': '&Umacr;', desc: 'LATIN CAPITAL U WITH MACRON' },
       { 'char': '&#363;', desc: 'LATIN LOWERCASE U WITH MACRON' },
     ]
-  })
+  });
 
-  if config.aws
+  if (config.aws) {
 
     froala_config.imageUploadToS3 = {
       bucket:   config.aws.bucket,
       region:   config.aws.region,
       keyStart: config.aws.key_start + 'images/',
-      callback: (url, key) ->
-        # // The URL and Key returned from Amazon.
-        # console.log (url);
-        # console.log (key);
+      callback(url, key) {},
+        // // The URL and Key returned from Amazon.
+        // console.log (url);
+        // console.log (key);
       params: {
         acl: config.aws.acl,
         AWSAccessKeyId: config.aws.access_key_id,
         policy: config.aws.policy,
         signature: config.aws.signature,
       }
-    }
+    };
 
     froala_config.fileUploadToS3 = {
       bucket:   config.aws.bucket,
       region:   config.aws.region,
       keyStart: config.aws.key_start + 'files/',
-      callback: (url, key) ->
-        # // The URL and Key returned from Amazon.
-        # console.log (url);
-        # console.log (key);
+      callback(url, key) {},
+        // // The URL and Key returned from Amazon.
+        // console.log (url);
+        // console.log (key);
       params: {
         acl: config.aws.acl,
         AWSAccessKeyId: config.aws.access_key_id,
         policy: config.aws.policy,
         signature: config.aws.signature,
       }
-    }
+    };
 
-    froala_config.imageManagerLoadURL      = config.aws.assets.index
-    froala_config.imageManagerDeleteURL    = config.aws.assets.delete
-    froala_config.imageManagerDeleteMethod = 'DELETE'
+    froala_config.imageManagerLoadURL      = config.aws.assets.index;
+    froala_config.imageManagerDeleteURL    = config.aws.assets.delete;
+    froala_config.imageManagerDeleteMethod = 'DELETE';
     froala_config.imageManagerDeleteParams = {
                                                 authenticity_token: $('meta[name="csrf-token"]').attr('content'),
                                                 type: 'image'
-                                              }
-    froala_config.imageManagerPreloader    = config.aws.assets.preloader
+                                              };
+    froala_config.imageManagerPreloader    = config.aws.assets.preloader;
+  }
 
-  CohesiveAdmin.config.froala.config = froala_config
-  $.extend(FroalaEditor.DEFAULTS, froala_config)
-  new FroalaEditor('textarea.wysiwyg')
-)
+  CohesiveAdmin.config.froala.config = froala_config;
+  $.extend(FroalaEditor.DEFAULTS, froala_config);
+  return new FroalaEditor('textarea.wysiwyg');
+});
