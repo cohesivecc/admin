@@ -15,7 +15,7 @@ gemspec
 
 
 group :development do
-  gem "rails", '>= 5.0'
+  gem "rails", '>= 6.0'
 
   # Refile
   gem 'refile', github: 'refile/refile', require: 'refile/rails'
@@ -29,5 +29,5 @@ group :development do
   gem 'fastimage'
 
   gem 'web-console', '>= 3.4'
-  gem 'rack', '2.0.6'
+  gem 'rack'
 end
