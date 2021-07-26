@@ -9,6 +9,10 @@ class Person < ActiveRecord::Base
 
 
   has_one :address, as: :locatable
+  has_one_attached :image
+  has_one_attached :file
+  has_many_attached :documents
+
 
   def to_label
     [self.prefix, " ", self.name.strip].join

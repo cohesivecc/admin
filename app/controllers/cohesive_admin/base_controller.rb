@@ -93,6 +93,9 @@ module CohesiveAdmin
 
     def update
       if @object.update(klass_params)
+        if !params[:removeAttachment].nil?
+          delete_image_attachment(params[:removeAttachment])
+        end 
         respond_to do |format|
           format.html {
             flash_success("#{klass_header} successfully updated!")
@@ -138,6 +141,14 @@ module CohesiveAdmin
       respond_to do |format|
         format.html { render 'cohesive_admin/base/form' }
       end
+    end
+
+    def delete_image_attachment(records)
+      (records).each do |record|
+        @currentRecord = ActiveStorage::Attachment.find(record)
+        @currentRecord.purge
+      end  
+      return
     end
 
 

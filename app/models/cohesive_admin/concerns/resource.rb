@@ -163,7 +163,6 @@ module CohesiveAdmin::Concerns::Resource
             if f[:nested]
               a["#{k}_attributes".to_sym] = [:id] + r.klass.admin_strong_params
               a["#{k}_attributes".to_sym] << '_destroy' if f[:nested][:allow_destroy]
-
             elsif r.macro == :belongs_to
               @admin_strong_params << r.foreign_key
               @admin_strong_params << r.foreign_type.to_sym if r.polymorphic?
@@ -172,6 +171,8 @@ module CohesiveAdmin::Concerns::Resource
             end
           elsif f[:disabled] == "disabled"
             next #don't allow this to be edited
+          elsif f[:type] == "activeStorage" && f[:multiple]
+            admin_strong_params <<   {k=>[]}
           else
             @admin_strong_params << k
 
