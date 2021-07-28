@@ -21,8 +21,6 @@ class ActiveStorageInput < SimpleForm::Inputs::Base
   end
 
   def input(wrapper_options=nil)
-    Rails.logger.info "-------------"
-    Rails.logger.info input_html_options;
     merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
     merged_input_options = merge_wrapper_options(merged_input_options, {:multiple=>@multiple})
     html = @builder.label(attribute_name)
@@ -43,40 +41,37 @@ class ActiveStorageInput < SimpleForm::Inputs::Base
     if @has_file
 
       obj = @builder.object.send(attribute_name)
-      attachmentCount = obj.attachments.count
-      if  attachmentCount == 1
-        html += attachedFileHtml(obj)
+      if  !obj.respond_to?('each')
+          html += attached_file_html(obj)
       else
         (obj).each do |attachment|
-          html += attachedFileHtml(attachment)
+          html += attached_file_html(attachment)
         end
-
       end
-
     end
 
     html.html_safe
   end
 
-  def attachedFileHtml(record)
+  def attached_file_html(atttachment)
     returnHtml = ''
-    filePath = Rails.application.routes.url_helpers.rails_blob_path(record, only_path: true)
+    file_path = Rails.application.routes.url_helpers.rails_blob_path(atttachment, only_path: true)
     content = ''
-    if record.image?
-      thumbPath = Rails.application.routes.url_helpers.rails_representation_url(record.variant(resize_to_limit:[100,100]), only_path: true)
-      content = template.image_tag(thumbPath, width: 100)  
-
+    if atttachment.image?
+      thumb_path = Rails.application.routes.url_helpers.rails_representation_url(atttachment.variant(resize_to_limit:[100,100]), only_path: true)
+      content = template.image_tag(thumb_path, width: 100)  
     else
-      content = record.filename
+      content = atttachment.filename
     end
 
     returnHtml = raw(%Q{
         <div class="col s4 attachment">
-          #{template.link_to(content, filePath, target: '_blank')}
-          <label for="remove-#{record.id}"><input class="boolean optional" type="checkbox" value="#{record.id}"  name="removeAttachment[]" id="remove-#{record.id}"><span>Remove</span></label>
+          #{template.link_to(content, file_path, target: '_blank')}
+          <label for="remove-#{atttachment.id}"><input class="boolean optional" type="checkbox" value="#{atttachment.id}"  name="removeAttachment[]" id="remove-#{atttachment.id}"><span>Remove</span></label>
         </div>
+        #{}
       })
-
+      
     return returnHtml
   end
 

@@ -28,6 +28,7 @@ group :development do
   gem 'mini_magick'
   gem 'fastimage'
   gem 'activestorage'
+  gem 'active_storage_validations'
   gem "aws-sdk-s3", require: false
   gem 'web-console', '>= 3.4'
   gem 'rack'

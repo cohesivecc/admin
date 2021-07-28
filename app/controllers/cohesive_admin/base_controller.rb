@@ -143,10 +143,12 @@ module CohesiveAdmin
       end
     end
 
-    def delete_image_attachment(records)
-      (records).each do |record|
-        @currentRecord = ActiveStorage::Attachment.find(record)
-        @currentRecord.purge
+    def delete_image_attachment(ids)
+      (ids).each do |id|
+        current_record = ActiveStorage::Attachment.where(attachable: @object).find(id) rescue nil
+        if !current_record.nil?
+          current_record.purge
+        end  
       end  
       return
     end
