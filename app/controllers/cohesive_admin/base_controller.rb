@@ -38,7 +38,7 @@ module CohesiveAdmin
 
     def index
       respond_to do |format|
-        format.html { render file: 'cohesive_admin/base/index' }
+        format.html { render template: 'cohesive_admin/base/index' }
         format.json { render json: @items.to_json(methods: [:to_label]) }
       end
     end
@@ -50,7 +50,7 @@ module CohesiveAdmin
       @object = @klass.new
 
       respond_to do |format|
-        format.html { render file: 'cohesive_admin/base/form' }
+        format.html { render template: 'cohesive_admin/base/form' }
       end
     end
 
@@ -71,7 +71,7 @@ module CohesiveAdmin
       else
         flash_error("There was a problem creating the #{klass_header}.")
         respond_to do |format|
-          format.html { render file: 'cohesive_admin/base/form' }
+          format.html { render template: 'cohesive_admin/base/form' }
           format.json { render json: @object.to_json(methods: [:to_label]) }
         end
       end
@@ -83,7 +83,7 @@ module CohesiveAdmin
 
     def edit
       respond_to do |format|
-        format.html { render file: 'cohesive_admin/base/form' }
+        format.html { render template: 'cohesive_admin/base/form' }
       end
     end
 
@@ -103,7 +103,7 @@ module CohesiveAdmin
       else
         flash_error("There was a problem updating the #{klass_header}.")
         respond_to do |format|
-          format.html { render file: 'cohesive_admin/base/form' }
+          format.html { render template: 'cohesive_admin/base/form' }
           format.json { render json: @object.to_json(methods: [:to_label]) }
         end
       end
@@ -115,7 +115,7 @@ module CohesiveAdmin
     def sort
       render_404 and return unless @klass.admin_sortable?
 
-      render file: 'cohesive_admin/base/sort'
+      render template: 'cohesive_admin/base/sort'
     end
 
 
@@ -136,7 +136,7 @@ module CohesiveAdmin
     def clone
       @object = @klass.new(@object.attributes)
       respond_to do |format|
-        format.html { render file: 'cohesive_admin/base/form' }
+        format.html { render template: 'cohesive_admin/base/form' }
       end
     end
 
@@ -182,7 +182,7 @@ module CohesiveAdmin
       end
 			
 			def require_admin_config
-				render file: 'cohesive_admin/base/missing_admin_config' and return if @klass.admin_config[:error] == :missing_admin_config
+				render template: 'cohesive_admin/base/missing_admin_config' and return if @klass.admin_config[:error] == :missing_admin_config
 			end
 
       def load_object

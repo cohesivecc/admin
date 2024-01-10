@@ -48,7 +48,7 @@ module CohesiveAdmin
         config_path = "config/cohesive_admin/#{ name }.yml"
 				config_file = Rails.root.join(config_path)
 				
-				if !File.exists?(config_file) || overwrite = yes?("Overwrite #{name}.yml")
+				if !File.exist?(config_file) || overwrite = yes?("Overwrite #{name}.yml")
           
           klass = name.singularize.classify.constantize
           blacklist = [:id, :created_at, :updated_at]

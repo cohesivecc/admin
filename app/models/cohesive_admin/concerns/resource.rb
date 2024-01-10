@@ -93,10 +93,10 @@ module CohesiveAdmin::Concerns::Resource
         # attempt to parse config file
         # CohesiveAdmin configuration for a model can be placed in Rails.root/config/cohesive_admin/model_singular.yml
         fname = File.join('config', 'cohesive_admin', "#{ActiveModel::Naming.singular(self)}.yml")
-        if File.exists?(CohesiveAdmin::Engine.root.join(fname))
+        if File.exist?(CohesiveAdmin::Engine.root.join(fname))
           # CohesiveAdmin core models
           @admin_config.update( YAML.load_file(CohesiveAdmin::Engine.root.join(fname)).symbolize_keys )
-        elsif File.exists?(CohesiveAdmin.app_root.join(fname))
+        elsif File.exist?(CohesiveAdmin.app_root.join(fname))
           # user created models
           @admin_config.update( YAML.load_file(CohesiveAdmin.app_root.join(fname)).symbolize_keys )
         else

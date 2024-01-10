@@ -46,9 +46,9 @@ main {
 
 .sidenav {
   a, &.sidenav-fixed a {
-    color: #FFF;
+    color: #FFF !important;
     // font-weight: 200;
-    font-size: 0.8em;
+    font-size: 0.8em !important;
   }
   li.logo-link {
     text-transform: uppercase;

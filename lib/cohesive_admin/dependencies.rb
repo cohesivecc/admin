@@ -1,5 +1,5 @@
 require 'simple_form'
-require 'compass-rails'
+# require 'compass-rails'
 require 'jquery-rails'
 require 'jquery-ui-rails'
 require 'kaminari'
