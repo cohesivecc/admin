@@ -173,3 +173,10 @@
     margin: 10px 0;
   }
 }
+
+select {
+  display: none;
+  &.browser-default {
+    display: block
+  }
+}
